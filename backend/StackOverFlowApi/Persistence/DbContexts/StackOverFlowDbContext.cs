@@ -17,8 +17,7 @@ public class StackOverFlowDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        string targetNamespace = "Persistence.Configurations";
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(StackOverFlowDbContext).Assembly, type => type.Namespace == targetNamespace);
+        modelBuilder.ApplyConfigurationsFromAssembly(ModuleAssembly.GetExecutionAssembly);
     }
 
     public DbSet<Tag> tags => Set<Tag>();

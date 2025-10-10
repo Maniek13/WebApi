@@ -11,7 +11,7 @@ using Persistence.DbContexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(StackOverFlowDbContext))]
-    [Migration("20251010200547_init")]
+    [Migration("20251010201616_init")]
     partial class init
     {
         /// <inheritdoc />
