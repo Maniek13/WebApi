@@ -1,18 +1,35 @@
-﻿using FastEndpoints;
+﻿using Application.Commands;
+using Domain.Entities;
+using FastEndpoints;
+using MediatR;
 
 namespace Presentation.Endpoints
 {
-    internal class GetTags : EndpointWithoutRequest
+    internal class GetTags : EndpointWithoutRequest<Tag[]>
     {
+        private readonly IMediator _mediator;
+
+        public GetTags(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         public override void Configure()
         {
-            Post("/api/tags/get");
+            Get("/api/tags/get");
             AllowAnonymous();
         }
 
         public override async Task HandleAsync(CancellationToken ct)
         {
-            await Send.OkAsync();
+            var query = new GetTagsQuery
+            {
+
+            };
+
+            var res = await _mediator.Send(query, ct);
+
+            await Send.OkAsync(res);
         }
     }
 }
