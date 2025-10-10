@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Persistence.Configurations;
 
 namespace Persistence.DbContexts;
 
@@ -18,7 +17,9 @@ public class StackOverFlowDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TagConfiguration).Assembly);
+        string targetNamespace = "Persistence.Configurations";
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(StackOverFlowDbContext).Assembly, type => type.Namespace == targetNamespace);
     }
+
     public DbSet<Tag> tags => Set<Tag>();
 }

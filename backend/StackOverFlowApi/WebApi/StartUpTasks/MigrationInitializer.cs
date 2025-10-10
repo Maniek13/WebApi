@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts;
 
-namespace WebApi.StartUpTasks;
+namespace WebApi.StartupTasks;
 
 public class MigrationInitializer
 {

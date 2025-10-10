@@ -1,6 +1,6 @@
 using Configuration.Extensions;
 using FastEndpoints;
-using WebApi.StartUpTasks;
+using WebApi.StartupTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
