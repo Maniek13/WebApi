@@ -1,13 +1,26 @@
-﻿using Abstractions.SetUp;
+﻿using Abstractions.Setup;
+using FastEndpoints;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 
-namespace Presentation.SetUp;
+namespace Presentation.Setup;
 
-
-public class ModuleSetUp : IModuleSetup
+public class ModuleSetup : IModuleSetup
 {
-    public void SetUp(WebApplication application, IConfigurationBuilder configuration)
+    public void Setup(WebApplicationBuilder builder)
     {
+
+        builder.Services
+            .AddFastEndpoints();
+
+        builder.Services.SwaggerDocument(o =>
+        {
+            o.DocumentSettings = s =>
+            {
+                s.Title = "StackOverFlow Api";
+                s.Version = "v1";
+                s.DocumentName = "Data";
+            };
+        });
     }
 }

@@ -1,13 +1,10 @@
-using Extensions;
+using Configuration.Extensions;
 using FastEndpoints;
 using WebApi.StartUpTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.ConfigureModules(typeof(Persistence.Configuration.ModuleConfiguration).Assembly,
-    typeof(Presentation.Configuration.ModuleConfiguration).Assembly);
-
+builder.SetupWebApi();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,7 +17,7 @@ if(app.Environment.IsDevelopment())
 app.UseFastEndpoints()
     .UseSwagger();
 
-app.SetUpModules(builder.Configuration, typeof(Presentation.SetUp.ModuleSetUp).Assembly);
+app.StartupWebApi(builder.Configuration);
 
 
 if (app.Environment.IsDevelopment())

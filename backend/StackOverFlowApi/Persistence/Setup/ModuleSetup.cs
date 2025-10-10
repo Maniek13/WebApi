@@ -1,13 +1,13 @@
-﻿using Abstractions.Configuration;
+﻿using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.DbContexts;
 
-namespace Persistence.Configuration;
+namespace Persistence.Setup;
 
-public class ModuleConfiguration : IModuleConfiguration
+public class ModuleSetup : IModuleSetup
 {
-    public void SetUp(WebApplicationBuilder builder)
+    public void Setup(WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<StackOverFlowDbContext>();
         builder.Services.AddDbContext<StackOverFlowDbContextRO>();
