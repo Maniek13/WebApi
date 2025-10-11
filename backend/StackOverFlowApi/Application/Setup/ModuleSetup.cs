@@ -1,6 +1,4 @@
-﻿using Abstractions.Services;
-using Abstractions.Setup;
-using Application.Services;
+﻿using Abstractions.Setup;
 using Mapster;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +12,6 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddMapster();
         TypeAdapterConfig.GlobalSettings.Scan(typeof(ModuleAssembly).Assembly);
 
-        builder.Services.AddScoped<ITagService, TagService>();
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(ModuleAssembly).Assembly));
     }
 }
