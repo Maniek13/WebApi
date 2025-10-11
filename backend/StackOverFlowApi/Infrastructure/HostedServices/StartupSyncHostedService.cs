@@ -17,9 +17,7 @@ public class StartupSyncHostedService : IHostedService
     {
         using var scoped = _serviceProvider.CreateScope();
         var dataService = scoped.ServiceProvider.GetRequiredService<IStackOverFlowDataService>();
-
-
-       // await dataService.SyncAsync(false, cancellationToken);
+        //await dataService.SyncAsync(false, cancellationToken);
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
