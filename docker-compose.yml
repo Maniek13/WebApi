@@ -2,7 +2,7 @@ services:
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
     build:
-      context: ../..
+      context: .
       dockerfile: backend/StackOverFlowApi/WebApi/Dockerfile
     ports:
       - "5000:80"
