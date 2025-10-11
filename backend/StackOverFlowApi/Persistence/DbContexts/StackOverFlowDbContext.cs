@@ -6,6 +6,10 @@ namespace Persistence.DbContexts;
 
 public class StackOverFlowDbContext : DbContext
 {
+    public StackOverFlowDbContext(DbContextOptions<StackOverFlowDbContext> options) : base(options)
+    {
+
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var cfg = new ConfigurationBuilder()

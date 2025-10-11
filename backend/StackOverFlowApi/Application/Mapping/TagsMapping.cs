@@ -14,5 +14,11 @@ public class TagsMapping : IRegister
                     el.Count
                 ));
 
+        cfg.NewConfig<TagDto, Tag>()
+           .MapWith(el => Tag.Create(
+                   el.Name,
+                   el.Count
+               ));
+
     }
 }

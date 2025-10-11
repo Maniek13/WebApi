@@ -1,5 +1,5 @@
 ﻿using Abstractions.Caches;
-using Abstractions.Repositories;
+using Abstractions.Interfaces;
 using Contracts.Dtos;
 using Domain.Entities;
 using MapsterMapper;
@@ -15,7 +15,7 @@ public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, TagDto[]>
     private readonly ITagsRepositoryRO _tagsRepositoryRO;
     private readonly IMapper _mapper;
 
-    public GetTagsQueryHandler(IMemoryCache cache, ICacheVersionService cacheVersionService, ITagsRepositoryRO tagsRepositoryRO, IMapper mapper)
+    public GetTagsQueryHandler(IMemoryCache cache, ICacheVersionService cacheVersionService, ITagsRepositoryRO tagsRepositoryRO, IMapper mapper) 
     {
         _cache = cache;
         _cacheVersionService = cacheVersionService;

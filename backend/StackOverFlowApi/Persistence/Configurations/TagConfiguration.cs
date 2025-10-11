@@ -13,6 +13,7 @@ internal class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.HasIndex(el => el.Name);
 
         builder.Property(el => el.Id)
+            
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 

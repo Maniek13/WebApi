@@ -1,16 +1,23 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.Interfaces;
+using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Persistence.DbContexts;
 
 namespace Persistence.Repositories;
 
 public class TagsRepository : ITagsRepository
 {
-    public Task RefreshTags(CancellationToken ct)
+    private readonly StackOverFlowDbContext _dbContext;
+
+    public TagsRepository(StackOverFlowDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task SetTags(CancellationToken ct)
+    public async Task SetTags(List<Tag> tags, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        await _dbContext.tags.ExecuteDeleteAsync();
+        await _dbContext.tags.AddRangeAsync(tags, ct);
+        await _dbContext.SaveChangesAsync();
     }
 }

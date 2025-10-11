@@ -1,7 +1,8 @@
-﻿
+﻿using Contracts.Dtos;
+
 namespace Abstractions.Api;
 
 public interface IStackOverFlowApiClient
 {
-    Task GetAsync(int page, int pageSize);
+    Task<TagDto[]> GetAsync(int page, int pageSize);
 }
