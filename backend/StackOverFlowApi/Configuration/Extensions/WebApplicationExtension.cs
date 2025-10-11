@@ -8,6 +8,9 @@ public static class WebApplicationExtension
 {
     public static void StartupWebApi(this WebApplication app, IConfigurationBuilder configuration)
     {
-        app.StartupModules(configuration, typeof(Presentation.Startup.ModuleStartup).Assembly);
+        app.StartupModules(configuration,
+            typeof(Infrastructure.Startup.ModuleStartup).Assembly,
+            typeof(Presentation.Startup.ModuleStartup).Assembly
+            );
     }
 }

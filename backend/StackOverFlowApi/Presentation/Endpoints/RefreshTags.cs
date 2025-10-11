@@ -21,7 +21,6 @@ internal class RefreshTags : EndpointWithoutRequest
     public override async Task HandleAsync(CancellationToken ct)
     {
         await _mediator.Send(new RefreshTagsQuery(), ct);
-
         await Send.OkAsync(ct);
     }
 }

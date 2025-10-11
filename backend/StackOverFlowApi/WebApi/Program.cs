@@ -1,10 +1,13 @@
 using Configuration.Extensions;
 using FastEndpoints;
+using Serilog;
+
 using WebApi.StartupTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.SetupWebApi();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,21 +1,15 @@
-﻿using Abstractions.Caches;
-using Abstractions.Repositories;
-using Abstractions.Services;
-using MapsterMapper;
+﻿using Abstractions.Services;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Commands;
 
 public class RefreshTagsQueryHandler : IRequestHandler<RefreshTagsQuery>
 {
     private readonly ITagService _tagService;
-    private readonly ITagsRepository _tagsRepository;
 
-    public RefreshTagsQueryHandler(ITagService tagService, ITagsRepository tagsRepository)
+    public RefreshTagsQueryHandler(ITagService tagService)
     {
         _tagService = tagService;
-        _tagsRepository = tagsRepository;
     }
     public async Task Handle(RefreshTagsQuery request, CancellationToken cancellationToken)
     {
