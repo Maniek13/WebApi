@@ -1,4 +1,4 @@
-﻿namespace Contracts.DTOs;
+﻿namespace Contracts.Dtos;
 
 public record TagDto(
             string Name,

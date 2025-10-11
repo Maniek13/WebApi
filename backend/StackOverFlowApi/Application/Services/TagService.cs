@@ -1,23 +1,24 @@
-﻿using Application.Commands;
-using MediatR;
-using Abstractions.Caches;
+﻿using Abstractions.Caches;
+using Abstractions.Services;
 
 namespace Application.Services;
 
-public class TagService
+public class TagService : ITagService
 {
     private readonly ICacheVersionService _cacheVersionService;
-    private readonly IMediator _mediator;
-    public TagService(IMediator mediator ,ICacheVersionService cacheVersionService)
+    public TagService(ICacheVersionService cacheVersionService)
     {
-        _mediator = mediator;
         _cacheVersionService = cacheVersionService;
     }
-    public async Task UpdateTags()
+    public async Task RefreshTags(CancellationToken ct)
     {
-        var res = await _mediator.Send(new RefreshTagsQuery());
-        if(res)
-            _cacheVersionService.Invalidate();
         throw new NotImplementedException();
+        _cacheVersionService.Invalidate();
+    }
+
+    public async Task SetTags(CancellationToken ct)
+    {
+        throw new NotImplementedException();
+        _cacheVersionService.Invalidate();
     }
 }

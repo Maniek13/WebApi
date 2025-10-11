@@ -4,12 +4,12 @@ namespace Persistence.Repositories;
 
 public class TagsRepository : ITagsRepository
 {
-    public void RefreshTags()
+    public Task RefreshTags(CancellationToken ct)
     {
         throw new NotImplementedException();
     }
 
-    public void SetTags()
+    public Task SetTags(CancellationToken ct)
     {
         throw new NotImplementedException();
     }

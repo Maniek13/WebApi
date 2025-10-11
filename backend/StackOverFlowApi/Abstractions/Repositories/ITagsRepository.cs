@@ -2,6 +2,6 @@
 
 public interface ITagsRepository
 {
-    public void SetTags();
-    public void RefreshTags();
+    public Task SetTags(CancellationToken ct);
+    public Task RefreshTags(CancellationToken ct);
 }

@@ -5,5 +5,8 @@ namespace Persistence.Repositories;
 
 public class TagsRepositoryRO : ITagsRepositoryRO
 {
-    public IEnumerable<Tag> GetTags() => throw new NotImplementedException();
+    public async Task<IEnumerable<Tag>> GetTags(int page, int PageSize, string SortBy, bool descanding, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
 }

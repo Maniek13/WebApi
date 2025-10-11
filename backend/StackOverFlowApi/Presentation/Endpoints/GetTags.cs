@@ -1,35 +1,38 @@
 ﻿using Application.Commands;
-using Domain.Entities;
+using Contracts.Dtos;
+using Contracts.Requests;
 using FastEndpoints;
 using MediatR;
 
-namespace Presentation.Endpoints
+namespace Presentation.Endpoints;
+
+internal class GetTags : Endpoint<GetTagsRequest,TagDto[]>
 {
-    internal class GetTags : EndpointWithoutRequest<Tag[]>
+    private readonly IMediator _mediator;
+
+    public GetTags(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public GetTags(IMediator mediator)
+    public override void Configure()
+    {
+        Get("/api/tags/get");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(GetTagsRequest req, CancellationToken ct)
+    {
+        var query = new GetTagsQuery
         {
-            _mediator = mediator;
-        }
+            Page = req.Page,
+            PageSize = req.PageSize,
+            SortBy = req.SortBy,
+            Descanding = req.Descanding,
+        };
 
-        public override void Configure()
-        {
-            Get("/api/tags/get");
-            AllowAnonymous();
-        }
+        var res = await _mediator.Send(query, ct);
 
-        public override async Task HandleAsync(CancellationToken ct)
-        {
-            var query = new GetTagsQuery
-            {
-
-            };
-
-            var res = await _mediator.Send(query, ct);
-
-            await Send.OkAsync(res);
-        }
+        await Send.OkAsync(res);
     }
 }

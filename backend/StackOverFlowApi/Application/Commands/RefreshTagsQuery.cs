@@ -2,6 +2,6 @@
 
 namespace Application.Commands;
 
-public record RefreshTagsQuery : IRequest<bool>
+public record RefreshTagsQuery : IRequest
 {
 }

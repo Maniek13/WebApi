@@ -1,18 +1,27 @@
-﻿using FastEndpoints;
+﻿using Application.Commands;
+using FastEndpoints;
+using MediatR;
 
-namespace Presentation.Endpoints
+namespace Presentation.Endpoints;
+
+internal class RefreshTags : EndpointWithoutRequest
 {
-    internal class RefreshTags : EndpointWithoutRequest
-    {
-        public override void Configure()
-        {
-            Put("/api/tags/refresh");
-            AllowAnonymous();
-        }
+    private readonly IMediator _mediator;
 
-        public override async Task HandleAsync(CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
+    public RefreshTags(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+    public override void Configure()
+    {
+        Put("/api/tags/refresh");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        await _mediator.Send(new RefreshTagsQuery(), ct);
+
+        await Send.OkAsync(ct);
     }
 }

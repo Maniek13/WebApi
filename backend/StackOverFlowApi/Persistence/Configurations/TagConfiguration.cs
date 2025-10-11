@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.Configurations;
 
-
 internal class TagConfiguration : IEntityTypeConfiguration<Tag>
 {
     public void Configure(EntityTypeBuilder<Tag> builder)
