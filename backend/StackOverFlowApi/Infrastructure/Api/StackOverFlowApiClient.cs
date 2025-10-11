@@ -1,5 +1,5 @@
 ﻿using Abstractions.Api;
-using Configuration.ExternalApies;
+using Abstractions.ExternalApies;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Api;
@@ -19,6 +19,5 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
     {
 
         var response = await _httpClient.GetAsync($"{_options.BaseUrl}/tags?page={page}&pagesize={pageSize}&site=stackoverflow");
-        throw new NotImplementedException();
     }
 }

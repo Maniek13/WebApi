@@ -1,8 +1,8 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
+using Abstractions.ExternalApies;
 using Abstractions.Setup;
 using Application.Interfaces;
-using Configuration.ExternalApies;
 using Infrastructure.Api;
 using Infrastructure.Cache;
 using Infrastructure.HostedServices;
@@ -20,8 +20,9 @@ public class ModuleSetup : IModuleSetup
             builder.Configuration.GetSection("ExternalApies:StackOverFlow"));
 
         builder.Services.AddSingleton<ICacheVersionService, CacheVersionService>();
-        builder.Services.AddScoped<IStackOverFlowDataService, StackOverFlowDataService>();
         builder.Services.AddHttpClient<IStackOverFlowApiClient, StackOverFlowApiClient>();
+        builder.Services.AddScoped<IStackOverFlowDataService, StackOverFlowDataService>();
+        
         builder.Services.AddHostedService<StartupSyncHostedService>();
         builder.Services.AddMemoryCache();
     }

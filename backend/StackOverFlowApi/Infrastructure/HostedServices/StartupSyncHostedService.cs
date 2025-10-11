@@ -16,8 +16,10 @@ public class StartupSyncHostedService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scoped = _serviceProvider.CreateScope();
-        var dataService = _serviceProvider.GetRequiredService<IStackOverFlowDataService>();
-        await dataService.SyncAsync(false, cancellationToken);
+        var dataService = scoped.ServiceProvider.GetRequiredService<IStackOverFlowDataService>();
+
+
+       // await dataService.SyncAsync(false, cancellationToken);
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
