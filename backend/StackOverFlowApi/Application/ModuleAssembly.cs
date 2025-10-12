@@ -2,7 +2,7 @@
 
 namespace Application;
 
-internal class ModuleAssembly
+public class ModuleAssembly
 {
-    internal static Assembly GetExecutionAssembly => typeof(ModuleAssembly).Assembly;
+    public static Assembly GetExecutionAssembly => typeof(ModuleAssembly).Assembly;
 }

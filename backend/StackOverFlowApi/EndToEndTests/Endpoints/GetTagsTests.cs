@@ -1,6 +1,5 @@
 using Contracts.Dtos;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Shared.Pagination;
 using System.Net.Http.Json;
 

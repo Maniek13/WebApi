@@ -37,7 +37,7 @@ public class TagsRepositoryTests
                 Tag.Create(random.Next(0, 1000000000).ToString(), random.Next(0, 1000000000))
             ];
 
-        await repository.SetTagsAsync(tags, new CancellationToken());
+        await repository.SetTagsAsync(tags, CancellationToken.None);
 
         var dbTags = context.tags;
 

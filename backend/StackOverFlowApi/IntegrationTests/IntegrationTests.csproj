@@ -14,7 +14,8 @@
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+	  <PackageReference Include="Testcontainers.MsSql" Version="4.7.0" />
+	  <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,13 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hendlers\" />
-    <Folder Include="ExternalApi\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\WebApi\WebApi.csproj" />
   </ItemGroup>
 
 </Project>
