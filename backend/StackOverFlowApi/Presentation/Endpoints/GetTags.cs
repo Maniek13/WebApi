@@ -26,7 +26,7 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 
     public override async Task HandleAsync(GetTagsRequest req, CancellationToken ct)
     {
-        if (Tag.CheckHavePropertyByName(req.SortBy))
+        if (!Tag.CheckHavePropertyByName(req.SortBy))
             ThrowError($"Property {req.SortBy} doesn't exist in type Tag", 400);
 
         var query = new GetTagsQuery

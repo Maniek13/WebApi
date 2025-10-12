@@ -4,11 +4,11 @@ namespace Domain.Entities;
 
 public class Tag : Entity<Tag>
 {
-    private Tag()
+    private Tag() : base()
     {
     }
 
-    private Tag(string name, long count)
+    private Tag(string name, long count) : base()
     {
         Name = name;
         Count = count;

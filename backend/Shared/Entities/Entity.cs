@@ -12,5 +12,5 @@ public class Entity<T> : IEquatable<T>
     public override int GetHashCode() => HashCode.Combine(Id);
 
     public static bool CheckHavePropertyByName(string propertyName) =>
-        typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(el => el.Name).Any(el => !el.Contains(propertyName, StringComparison.OrdinalIgnoreCase));
+        typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(el => el.Name).Any(el => el.Contains(propertyName, StringComparison.InvariantCultureIgnoreCase));
 }
