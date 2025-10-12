@@ -34,7 +34,7 @@ public class StackOverFlowDataService : IStackOverFlowDataService
         List<Tag> tags = [];
 
         for (int i = 1; i <= 10; ++i)
-            tags.AddRange(_mapper.Map<TagDto[], Tag[]>(await _stackOverFlowApiClient.GetAsync(i, 100)));
+            tags.AddRange(_mapper.Map<TagDto[], Tag[]>(await _stackOverFlowApiClient.GetTagsAsync()));
 
 
         await _tagsRepository.SetTags(tags, cancellationToken);

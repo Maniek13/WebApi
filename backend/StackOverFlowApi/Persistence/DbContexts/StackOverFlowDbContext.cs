@@ -12,7 +12,8 @@ public class StackOverFlowDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "InMemoryDatabase") return;
+        if (Environment.GetEnvironmentVariable("TestsVariable") == "InMemoryDatabase" ||
+            Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
 
         var cfg = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())

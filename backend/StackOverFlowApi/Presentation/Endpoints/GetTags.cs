@@ -6,7 +6,6 @@ using FastEndpoints;
 using MediatR;
 using Presentation.Routes;
 using Shared.Pagination;
-using System.Reflection;
 
 namespace Presentation.Endpoints;
 

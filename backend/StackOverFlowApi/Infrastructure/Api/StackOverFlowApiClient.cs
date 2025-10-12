@@ -18,16 +18,24 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         _options = options.Value;
     }
 
-    public async Task<TagDto[]> GetAsync(int page, int pageSize)
+    public async Task<TagDto[]> GetTagsAsync()
     {
-        var response = await _httpClient.GetAsync($"{_options.BaseUrl}/tags?page={page}&pagesize={pageSize}&site=stackoverflow");
-        var json = await response.Content.ReadAsStringAsync();
+        long tagCount = _options.Data.TagsCount;
 
-        var root = JObject.Parse(json);
-        var itemsToken = root["items"];
+        long pagesCount = tagCount % 100 != 0 ? tagCount / 100 + 1 : tagCount / 100;
 
-        var result = itemsToken?.ToObject<TagDto[]>();
+        List<TagDto> tags = [];
 
-        return result == null ? Array.Empty<TagDto>() : result;
+        for (int i = 1; i <= pagesCount; ++i)
+        {
+            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/tags?page={i}&pagesize={100}&site=stackoverflow");
+            var json = await response.Content.ReadAsStringAsync();
+
+            var root = JObject.Parse(json);
+            var itemsToken = root["items"]!;
+            tags.AddRange(itemsToken.ToObject<List<TagDto>>()!);
+        }
+
+        return tags.ToArray();
     }
 }

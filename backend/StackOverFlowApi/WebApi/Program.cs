@@ -1,6 +1,5 @@
 using Configuration.Extensions;
 using FastEndpoints;
-using Serilog;
 
 using WebApi.StartupTasks;
 
@@ -34,3 +33,5 @@ app.UseHttpsRedirection();
 
 
 app.Run();
+
+public partial class Program { }
