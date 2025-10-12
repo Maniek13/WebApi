@@ -16,7 +16,12 @@ public class StackOverFlowDataService : IStackOverFlowDataService
     private readonly ICacheVersionService _cacheVersionService;
     private readonly IMapper _mapper;
 
-    public StackOverFlowDataService(IStackOverFlowApiClient stackOverFlowApiClient, ITagsRepository tagsRepository, ITagsRepositoryRO tagsRepositoryRO, ICacheVersionService cacheVersionService, IMapper mapper)
+    public StackOverFlowDataService(
+        IStackOverFlowApiClient stackOverFlowApiClient, 
+        ITagsRepository tagsRepository, 
+        ITagsRepositoryRO tagsRepositoryRO, 
+        ICacheVersionService cacheVersionService, 
+        IMapper mapper)
     {
         _stackOverFlowApiClient = stackOverFlowApiClient;
         _tagsRepository = tagsRepository;
@@ -37,7 +42,7 @@ public class StackOverFlowDataService : IStackOverFlowDataService
             tags.AddRange(_mapper.Map<TagDto[], Tag[]>(await _stackOverFlowApiClient.GetTagsAsync()));
 
 
-        await _tagsRepository.SetTags(tags, cancellationToken);
+        await _tagsRepository.SetTagsAsync(tags, cancellationToken);
         _cacheVersionService.Invalidate();
     }
 }

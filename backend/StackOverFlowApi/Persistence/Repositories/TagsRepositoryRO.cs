@@ -13,7 +13,7 @@ public class TagsRepositoryRO : RepositoryROBase<Tag, StackOverFlowDbContextRO>,
     {
     }
 
-    public async Task<PagedList<Tag>> GetTags(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct)
+    public async Task<PagedList<Tag>> GetTagsAsync(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct)
     {
         var totalCount = await _dbContext.Tags.CountAsync(ct);
 

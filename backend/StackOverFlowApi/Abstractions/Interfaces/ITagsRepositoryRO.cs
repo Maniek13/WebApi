@@ -5,5 +5,5 @@ namespace Abstractions.Interfaces;
 
 public interface ITagsRepositoryRO : IRepositoryROBase<Tag>
 {
-    public Task<PagedList<Tag>> GetTags(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct);
+    public Task<PagedList<Tag>> GetTagsAsync(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct);
 }

@@ -39,7 +39,7 @@ public class TagsRepositoryROTests
     [Fact]
     public async Task ShouldGetTenTags()
     {
-        var tags = await _repository.GetTags(1, 10, "Id", false, new CancellationToken());
+        var tags = await _repository.GetTagsAsync(1, 10, "Id", false, new CancellationToken());
 
 
         tags.Items.Should().HaveCount(10);
