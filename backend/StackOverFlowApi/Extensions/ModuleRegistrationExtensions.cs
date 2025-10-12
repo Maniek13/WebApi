@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Extensions;
 
-public static class ModuleRegistration
+public static class ModuleRegistrationExtensions
 {
     public static void SetupModules(this WebApplicationBuilder builder, params Assembly[] assemblies)
     {
