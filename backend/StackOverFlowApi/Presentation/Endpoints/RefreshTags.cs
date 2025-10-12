@@ -1,6 +1,7 @@
 ﻿using Application.Commands;
 using FastEndpoints;
 using MediatR;
+using Presentation.Routes;
 
 namespace Presentation.Endpoints;
 
@@ -14,7 +15,7 @@ internal class RefreshTags : EndpointWithoutRequest
     }
     public override void Configure()
     {
-        Put("/api/tags/refresh");
+        Put(TagsRoutes.Refresh);
         AllowAnonymous();
     }
 

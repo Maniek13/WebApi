@@ -4,6 +4,7 @@ using Contracts.Requests;
 using Domain.Entities;
 using FastEndpoints;
 using MediatR;
+using Presentation.Routes;
 using Shared.Pagination;
 using System.Reflection;
 
@@ -20,7 +21,7 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 
     public override void Configure()
     {
-        Get("/api/tags/get");
+        Get(TagsRoutes.Get);
         AllowAnonymous();
     }
 
