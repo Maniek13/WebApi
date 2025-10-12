@@ -1,7 +1,9 @@
 ﻿using Abstractions.Interfaces;
-using Common.Interfaces;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Common;
 using Persistence.DbContexts;
+using Shared.Pagination;
 
 namespace Persistence.Repositories;
 
@@ -11,8 +13,25 @@ public class TagsRepositoryRO : RepositoryROBase<Tag, StackOverFlowDbContextRO>,
     {
     }
 
-    public async Task<IEnumerable<Tag>> GetTags(int page, int PageSize, string SortBy, bool descanding, CancellationToken ct)
+    public async Task<PagedList<Tag>> GetTags(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var totalCount = await _dbContext.Tags.CountAsync(ct);
+
+
+        var tags = descanding != true ? 
+            await _dbContext.Tags
+            .OrderBy(o => EF.Property<object>(o, sortBy))
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct)
+            :
+             await _dbContext.Tags
+            .OrderByDescending(o => EF.Property<object>(o, sortBy))
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(ct);
+
+
+        return new PagedList<Tag>(page, pageSize, totalCount, tags);
     }
 }

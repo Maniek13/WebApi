@@ -1,12 +1,11 @@
 ﻿using Abstractions.Interfaces;
-using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace Common.Interfaces;
+namespace Persistence.Common;
 
 public abstract class RepositoryROBase<TEntity, TDbContext> : IRepositoryROBase<TEntity>
-    where TDbContext : DbContext 
-    where TEntity : Entity
+    where TDbContext : DbContext
+    where TEntity : class
 {
     protected readonly TDbContext _dbContext;
 

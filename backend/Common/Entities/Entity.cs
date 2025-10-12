@@ -1,4 +1,4 @@
-﻿namespace Domain.Common;
+﻿namespace Common.Entities;
 
 public class Entity
 {

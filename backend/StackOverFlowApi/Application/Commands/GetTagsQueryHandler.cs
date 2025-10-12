@@ -5,10 +5,11 @@ using Domain.Entities;
 using MapsterMapper;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
+using Shared.Pagination;
 
 namespace Application.Commands;
 
-public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, TagDto[]>
+public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, PagedList<TagDto>>
 {
     private readonly IMemoryCache _cache;
     private readonly ICacheVersionService _cacheVersionService;
@@ -22,19 +23,23 @@ public class GetTagsQueryHandler : IRequestHandler<GetTagsQuery, TagDto[]>
         _tagsRepositoryRO = tagsRepositoryRO;
         _mapper = mapper;
     }
-    async Task<TagDto[]> IRequestHandler<GetTagsQuery, TagDto[]>.Handle(GetTagsQuery request, CancellationToken cancellationToken)
+    async Task<PagedList<TagDto>> IRequestHandler<GetTagsQuery, PagedList<TagDto>>.Handle(GetTagsQuery request, CancellationToken cancellationToken)
     {
 
         var version = _cacheVersionService.GetVersion;
         string cacheKey = $"tags-v{version}-page-{request.Page}-pageSize-{request.PageSize}-sort-{request.SortBy}-descanding-{request.Descanding}";
 
-        if (!_cache.TryGetValue(cacheKey, out TagDto[]? req))
+        if (!_cache.TryGetValue(cacheKey, out PagedList<TagDto>? response))
         {
-            req = _mapper.Map<IEnumerable<Tag>, TagDto[]>(await _tagsRepositoryRO.GetTags(request.Page, request.PageSize, request.SortBy, request.Descanding, cancellationToken));
+            var list = await _tagsRepositoryRO.GetTags(request.Page, request.PageSize, request.SortBy, request.Descanding, cancellationToken);
+            var items = _mapper.Map<List<Tag>, List<TagDto>>(list.Items);
 
-            _cache.Set(cacheKey, req, TimeSpan.FromMinutes(10));
+            response = new PagedList<TagDto>(request.Page, request.PageSize, list.TotalCount, items);
+
+            _cache.Set(cacheKey, response, TimeSpan.FromMinutes(10));
         }
 
-        return req != null ? req : [];
+
+        return response != null ? response : new PagedList<TagDto>(0, 0, 0, []);
     }
 }

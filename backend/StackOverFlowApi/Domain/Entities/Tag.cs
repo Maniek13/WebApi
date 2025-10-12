@@ -1,8 +1,8 @@
-﻿using Domain.Common;
+﻿using Shared.Entities;
 
 namespace Domain.Entities;
 
-public class Tag : Entity
+public class Tag : Entity<Tag>
 {
     private Tag()
     {
@@ -19,4 +19,12 @@ public class Tag : Entity
 
     public static Tag Create(string Name, long Count) =>
         new Tag(Name, Count);
+
+
+    new public bool Equals(Tag? other) => 
+        other == null ? 
+            false : 
+            Id.Equals(other.Id) && Name.Equals(other.Name) && Count.Equals(other.Count);
+
+    public override int GetHashCode() => HashCode.Combine(Id, Name, Count);
 }

@@ -12,6 +12,8 @@ public class StackOverFlowDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (Environment.GetEnvironmentVariable("TestsVariable") == "InMemoryDatabase") return;
+
         var cfg = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

@@ -3,10 +3,11 @@ using Contracts.Dtos;
 using Contracts.Requests;
 using FastEndpoints;
 using MediatR;
+using Shared.Pagination;
 
 namespace Presentation.Endpoints;
 
-internal class GetTags : Endpoint<GetTagsRequest,TagDto[]>
+internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 {
     private readonly IMediator _mediator;
 

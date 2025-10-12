@@ -1,9 +1,9 @@
-﻿using Common.Interfaces;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Shared.Pagination;
 
 namespace Abstractions.Interfaces;
 
 public interface ITagsRepositoryRO : IRepositoryROBase<Tag>
 {
-    public Task<IEnumerable<Tag>> GetTags(int page, int PageSize, string SortBy, bool descanding, CancellationToken ct);
+    public Task<PagedList<Tag>> GetTags(int page, int pageSize, string sortBy, bool descanding, CancellationToken ct);
 }

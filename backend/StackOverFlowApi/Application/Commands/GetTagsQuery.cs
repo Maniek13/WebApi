@@ -1,9 +1,10 @@
 ﻿using Contracts.Dtos;
 using MediatR;
+using Shared.Pagination;
 
 namespace Application.Commands;
 
-public record GetTagsQuery : IRequest<TagDto[]>
+public record GetTagsQuery : IRequest<PagedList<TagDto>>
 {
     public int Page {  get; set; } = 1;
     public int PageSize { get; set; } = 100;
