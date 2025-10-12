@@ -3,6 +3,7 @@ using Abstractions.ExternalApies;
 using Contracts.Dtos;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Infrastructure.Api;
 
@@ -29,9 +30,17 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         for (int i = 1; i <= pagesCount; ++i)
         {
             var response = await _httpClient.GetAsync($"{_options.BaseUrl}/tags?page={i}&pagesize={100}&site=stackoverflow");
-            var json = await response.Content.ReadAsStringAsync();
 
+            if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                break;
+
+            var json = await response.Content.ReadAsStringAsync();
             var root = JObject.Parse(json);
+
+            var errorId = root["error_id"];
+            if (errorId != null && errorId.ToObject<int>().Equals(502))
+                break;
+
             var itemsToken = root["items"]!;
             tags.AddRange(itemsToken.ToObject<List<TagDto>>()!);
         }

@@ -36,11 +36,7 @@ public class StackOverFlowDataService : IStackOverFlowDataService
             if (await _tagsRepositoryRO.CheckHaveData(cancellationToken))
                 return;
 
-        List<Tag> tags = [];
-
-        for (int i = 1; i <= 10; ++i)
-            tags.AddRange(_mapper.Map<TagDto[], Tag[]>(await _stackOverFlowApiClient.GetTagsAsync()));
-
+        var tags = _mapper.Map<TagDto[], List<Tag>>(await _stackOverFlowApiClient.GetTagsAsync());
 
         await _tagsRepository.SetTagsAsync(tags, cancellationToken);
         _cacheVersionService.Invalidate();
