@@ -4,8 +4,10 @@ using Contracts.Requests;
 using Domain.Entities;
 using FastEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Presentation.Routes;
 using Shared.Pagination;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Presentation.Endpoints;
 

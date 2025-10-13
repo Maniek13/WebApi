@@ -1,5 +1,6 @@
 using Configuration.Extensions;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 
 using WebApi.StartupTasks;
 
@@ -16,20 +17,19 @@ var app = builder.Build();
 if(app.Environment.IsDevelopment())
     MigrationInitializer.ApplyMigrations(app.Services);
 
-app.UseFastEndpoints()
-    .UseSwagger();
+app.UseFastEndpoints();
 
 app.StartupWebApi(builder.Configuration);
 
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseSwaggerGen();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-
 
 
 app.Run();

@@ -3,6 +3,7 @@ using Abstractions.ExternalApies;
 using Contracts.Dtos;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using System.Net;
 
 namespace Infrastructure.Api;
@@ -32,14 +33,20 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
             var response = await _httpClient.GetAsync($"{_options.BaseUrl}/tags?page={i}&pagesize={100}&site=stackoverflow");
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
+            {
+                Task.Run(() =>Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, response.RequestMessage));
                 break;
+            }
 
             var json = await response.Content.ReadAsStringAsync();
             var root = JObject.Parse(json);
 
             var errorId = root["error_id"];
             if (errorId != null && errorId.ToObject<int>().Equals(502))
+            {
+                Task.Run(() => Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, root["error_message"]?.ToObject<string>()));
                 break;
+            }
 
             var itemsToken = root["items"]!;
             tags.AddRange(itemsToken.ToObject<List<TagDto>>()!);

@@ -2,6 +2,7 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Presentation.Setup;
 
@@ -11,16 +12,15 @@ public class ModuleSetup : IModuleSetup
     {
 
         builder.Services
-            .AddFastEndpoints();
-
-        builder.Services.SwaggerDocument(o =>
-        {
-            o.DocumentSettings = s =>
+            .AddFastEndpoints()
+            .SwaggerDocument(o =>
             {
-                s.Title = "StackOverFlow Api";
-                s.Version = "v1";
-                s.DocumentName = "Data";
-            };
-        });
+                o.DocumentSettings = s =>
+                {
+                    s.Title = "StackOverFlow Api";
+                    s.Version = "v1";
+                    s.DocumentName = "Data";
+                };
+            });
     }
 }
