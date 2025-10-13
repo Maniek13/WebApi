@@ -20,7 +20,7 @@ Endpoints:
 
    - if parametrs not set, endpoint returns first 100 records 
 
-   2. RefresTags baseUrl/StackOverFlow/RefreshData 
+  2. RefresTags baseUrl/StackOverFlow/RefreshData 
 
 Websockets:
 
