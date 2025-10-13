@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence.DbContexts.StackOverFlow;
 
-namespace WebApi.StartupTasks;
+namespace Persistence.StartupTasks;
 
 public class MigrationInitializer
 {

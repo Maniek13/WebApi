@@ -10,7 +10,6 @@ public class ModuleSetup : IModuleSetup
 {
     public void Setup(WebApplicationBuilder builder)
     {
-
         builder.Services
             .AddFastEndpoints()
             .SwaggerDocument(o =>
@@ -23,5 +22,7 @@ public class ModuleSetup : IModuleSetup
                 };
             })
             .AddSwaggerGen();
+
+        builder.Services.AddSignalR();
     }
 }

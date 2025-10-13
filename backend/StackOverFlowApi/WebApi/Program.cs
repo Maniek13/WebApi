@@ -1,6 +1,5 @@
 using Configuration.Extensions;
-
-using WebApi.StartupTasks;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-if(app.Environment.IsDevelopment())
-    MigrationInitializer.ApplyMigrations(app.Services);
+app.UseHangfireDashboard();
 
 app.StartupWebApi(builder.Configuration);
 

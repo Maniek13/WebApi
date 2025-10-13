@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.DbContexts.StackOverFlow;
 using Persistence.Repositories.StackOverFlow;
+using Persistence.StartupTasks;
 
 namespace Persistence.Setup;
 
@@ -21,5 +22,10 @@ public class ModuleSetup : IModuleSetup
 
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
+
+        var serviceProvider = builder.Services.BuildServiceProvider();
+
+        if (builder.Environment.EnvironmentName == "Development")
+            MigrationInitializer.ApplyMigrations(serviceProvider);
     }
 }

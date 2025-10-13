@@ -1,11 +1,23 @@
+version: "3.9"
+
 services:
-  webapi:
-    image: ${DOCKER_REGISTRY-}webapi
+  fronted:
     build:
-      context: .
-      dockerfile: backend/StackOverFlowApi/WebApi/Dockerfile
+      context: ./fronted/sof-data-app
+      dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://webapi:8080
+    depends_on:
+      - webapi  
+
+  webapi:
+    build:
+      context: ./backend/StackOverFlowApi
+      dockerfile: WebApi/Dockerfile
+    ports:
+      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Your_password123;

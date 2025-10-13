@@ -9,8 +9,8 @@ public static class WebApplicationBuilderExtension
     {
         builder.SetupModules(
             typeof(Infrastructure.Setup.ModuleSetup).Assembly,
-            typeof(Application.Setup.ModuleSetup).Assembly,
             typeof(Persistence.Setup.ModuleSetup).Assembly,
+            typeof(Application.Setup.ModuleSetup).Assembly,
             typeof(Presentation.Setup.ModuleSetup).Assembly);
     }
 }

@@ -28,3 +28,12 @@ README.md
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+
+node_modules
+build
+dist
+.git
+.gitignore
+Dockerfile
+.env
+*.log

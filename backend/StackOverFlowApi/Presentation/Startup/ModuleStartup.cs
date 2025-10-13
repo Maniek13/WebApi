@@ -1,6 +1,7 @@
 ﻿using Abstractions.Startup;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Infrastructure.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -19,5 +20,8 @@ public class ModuleStartup : IModuleStartup
             application.UseSwagger();
             application.UseSwaggerUI();
         }
+
+        application.MapHub<ChatHub>("/chat");
+        application.MapHub<LogsHub>("/logs");
     }
 }
