@@ -1,10 +1,10 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.StackOverFlow;
 using FluentAssertions;
-using Infrastructure.HostedServices;
+using Infrastructure.Services.HostedServices;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
-namespace ServiceTests.Services;
+namespace ServiceTests.HostedServices;
 
 public class StartupSyncHostedServiceTests
 {

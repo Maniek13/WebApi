@@ -2,13 +2,14 @@
 using Abstractions.Caches;
 using Abstractions.ExternalApies;
 using Abstractions.Setup;
-using Application.Interfaces;
+using Application.Interfaces.StackOverFlow;
 using Infrastructure.Api;
-using Infrastructure.Cache;
-using Infrastructure.HostedServices;
-using Infrastructure.Services;
+using Infrastructure.Services.CacheServices;
+using Infrastructure.Services.DataServices;
+using Infrastructure.Services.HostedServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Infrastructure.Setup;
 
@@ -16,6 +17,11 @@ public class ModuleSetup : IModuleSetup
 {
     public void Setup(WebApplicationBuilder builder)
     {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom
+            .Configuration(builder.Configuration)
+            .CreateLogger();
+
         builder.Services.Configure<StackOverFlowOptions>(
             builder.Configuration.GetSection("ExternalApies:StackOverFlow"));
 
@@ -25,5 +31,7 @@ public class ModuleSetup : IModuleSetup
         
         builder.Services.AddHostedService<StartupSyncHostedService>();
         builder.Services.AddMemoryCache();
+
+        builder.Host.UseSerilog();
     }
 }

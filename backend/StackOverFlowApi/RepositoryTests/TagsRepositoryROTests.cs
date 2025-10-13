@@ -1,8 +1,8 @@
-using Domain.Entities;
+using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Persistence.DbContexts;
-using Persistence.Repositories;
+using Persistence.DbContexts.StackOverFlow;
+using Persistence.Repositories.StackOverFlow;
 
 namespace ServiceTests;
 

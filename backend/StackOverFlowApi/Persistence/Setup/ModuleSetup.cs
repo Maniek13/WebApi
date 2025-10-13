@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence.DbContexts;
-using Persistence.Repositories;
+using Persistence.DbContexts.StackOverFlow;
+using Persistence.Repositories.StackOverFlow;
 
 namespace Persistence.Setup;
 

@@ -1,4 +1,4 @@
-﻿using Contracts.Dtos;
+﻿using Contracts.Dtos.StackOverFlow;
 
 namespace Abstractions.Api;
 

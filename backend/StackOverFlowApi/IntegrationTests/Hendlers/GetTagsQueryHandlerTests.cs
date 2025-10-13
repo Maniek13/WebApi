@@ -1,18 +1,16 @@
 ﻿using Abstractions.Caches;
 using Abstractions.Interfaces;
-using Application.Commands;
-using Domain.Entities;
+using Application.Commands.StackOverFlow;
+using Domain.Entities.StackOverFlow;
 using FluentAssertions;
-using Infrastructure.Cache;
+using Infrastructure.Services.CacheServices;
 using Mapster;
-using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Persistence.DbContexts;
-using Persistence.Repositories;
+using Persistence.DbContexts.StackOverFlow;
+using Persistence.Repositories.StackOverFlow;
 using Testcontainers.MsSql;
 
 namespace IntegrationTests.Hendlers;

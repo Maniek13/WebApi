@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.StackOverFlow;
 using Shared.Pagination;
 
 namespace Abstractions.Interfaces;

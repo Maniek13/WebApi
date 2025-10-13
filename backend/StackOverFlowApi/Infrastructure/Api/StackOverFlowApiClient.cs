@@ -1,6 +1,6 @@
 ﻿using Abstractions.Api;
 using Abstractions.ExternalApies;
-using Contracts.Dtos;
+using Contracts.Dtos.StackOverFlow;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Serilog;

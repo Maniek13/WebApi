@@ -1,18 +1,10 @@
-﻿using Abstractions.Api;
-using Abstractions.Caches;
-using Abstractions.Interfaces;
-using Contracts.Dtos;
-using Domain.Entities;
-using FluentAssertions;
-using Infrastructure.Cache;
-using Infrastructure.Services;
-using MapsterMapper;
+﻿using FluentAssertions;
+using Infrastructure.Services.CacheServices;
+using MemoryCache.Testing.Moq;
 using Microsoft.Extensions.Caching.Memory;
 using Moq;
-using Newtonsoft.Json.Linq;
-using MemoryCache.Testing.Moq;
 
-namespace ServiceTests.Services;
+namespace ServiceTests.CacheService;
 
 public class CacheVersionServiceTests
 {

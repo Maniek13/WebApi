@@ -2,22 +2,21 @@
 using Abstractions.Caches;
 using Abstractions.ExternalApies;
 using Abstractions.Interfaces;
-using Application.Commands;
-using Application.Interfaces;
-using Domain.Entities;
+using Application.Commands.StackOverFlow;
+using Application.Interfaces.StackOverFlow;
+using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 using Infrastructure.Api;
-using Infrastructure.Cache;
-using Infrastructure.Services;
+using Infrastructure.Services.CacheServices;
+using Infrastructure.Services.DataServices;
 using Mapster;
-using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Persistence.DbContexts;
-using Persistence.Repositories;
+using Persistence.DbContexts.StackOverFlow;
+using Persistence.Repositories.StackOverFlow;
 using Testcontainers.MsSql;
 
 namespace IntegrationTests.Hendlers;
@@ -35,7 +34,16 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
 
         Task.Run(async () => await _dbConteiner.StartAsync()).Wait();
 
+
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.Test.json")
+            .Build();
+
         var service = new ServiceCollection();
+
+        service.Configure<StackOverFlowOptions>(
+            configuration.GetSection("ExternalApies:StackOverFlow"));
 
         service.AddDbContext<StackOverFlowDbContext>(o =>
             o.UseSqlServer(_dbConteiner.GetConnectionString()));
@@ -49,6 +57,7 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
         service.AddScoped<ITagsRepository, TagsRepository>();
         service.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
         service.AddScoped<ICacheVersionService, CacheVersionService>();
+        service.AddMemoryCache();
         service.AddHttpClient();
         service.AddMapster();
         TypeAdapterConfig.GlobalSettings.Scan(Application.ModuleAssembly.GetExecutionAssembly);
@@ -80,7 +89,7 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
         {
         };
 
-        Func<Task> refresh = () => mediator.Send(query);
+        Func<Task> refresh = async () => await mediator.Send(query);
 
         await refresh
             .Should()

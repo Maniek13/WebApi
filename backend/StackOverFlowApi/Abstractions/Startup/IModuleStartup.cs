@@ -5,5 +5,5 @@ namespace Abstractions.Startup;
 
 public interface IModuleStartup
 {
-    public void Startup(WebApplication application, IConfigurationBuilder configuration);
+    public void Startup(WebApplication application, IConfiguration configuration);
 }

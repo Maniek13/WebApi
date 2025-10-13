@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 
 namespace UnitTests.Domain.Entities;

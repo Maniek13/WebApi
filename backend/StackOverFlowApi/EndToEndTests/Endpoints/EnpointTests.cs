@@ -1,3 +1,5 @@
+using EndToEndTests.ApplicationFactory;
+
 namespace EndToEndTests.Endpoints;
 
 public partial class EnpointTests : IClassFixture<WebApiWebAplicationFactory>

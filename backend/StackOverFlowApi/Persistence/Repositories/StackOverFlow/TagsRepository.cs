@@ -1,0 +1,23 @@
+﻿using Abstractions.Interfaces;
+using Domain.Entities.StackOverFlow;
+using Microsoft.EntityFrameworkCore;
+using Persistence.DbContexts.StackOverFlow;
+
+namespace Persistence.Repositories.StackOverFlow;
+
+public class TagsRepository : ITagsRepository
+{
+    private readonly StackOverFlowDbContext _dbContext;
+
+    public TagsRepository(StackOverFlowDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task SetTagsAsync(List<Tag> tags, CancellationToken ct)
+    {
+        await _dbContext.tags.ExecuteDeleteAsync();
+        await _dbContext.tags.AddRangeAsync(tags, ct);
+        await _dbContext.SaveChangesAsync();
+    }
+}

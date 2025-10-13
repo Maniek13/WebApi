@@ -1,6 +1,5 @@
-﻿using Extensions;
+﻿using Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
-using Serilog;
 
 namespace Configuration.Extensions;
 
@@ -8,18 +7,10 @@ public static class WebApplicationBuilderExtension
 {
     public static void SetupWebApi(this WebApplicationBuilder builder)
     {
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom
-            .Configuration(builder.Configuration)
-            .CreateLogger();
-
-
         builder.SetupModules(
             typeof(Infrastructure.Setup.ModuleSetup).Assembly,
             typeof(Application.Setup.ModuleSetup).Assembly,
             typeof(Persistence.Setup.ModuleSetup).Assembly,
             typeof(Presentation.Setup.ModuleSetup).Assembly);
-
-        builder.Host.UseSerilog();
     }
 }
