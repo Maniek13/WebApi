@@ -1,12 +1,12 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
-using Abstractions.ExternalApies;
-using Abstractions.Interfaces;
+using Abstractions.Repositories;
 using Application.Commands.StackOverFlow;
 using Application.Interfaces.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 using Infrastructure.Api;
+using Infrastructure.Api.Options;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
 using Mapster;

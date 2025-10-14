@@ -1,4 +1,4 @@
-﻿using Abstractions.Interfaces;
+﻿using Abstractions.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Common;

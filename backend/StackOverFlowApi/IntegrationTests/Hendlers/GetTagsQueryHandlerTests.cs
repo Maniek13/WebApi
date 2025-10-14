@@ -1,5 +1,5 @@
 ﻿using Abstractions.Caches;
-using Abstractions.Interfaces;
+using Abstractions.Repositories;
 using Application.Commands.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using FluentAssertions;

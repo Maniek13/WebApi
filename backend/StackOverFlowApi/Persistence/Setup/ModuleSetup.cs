@@ -1,4 +1,4 @@
-﻿using Abstractions.Interfaces;
+﻿using Abstractions.Repositories;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

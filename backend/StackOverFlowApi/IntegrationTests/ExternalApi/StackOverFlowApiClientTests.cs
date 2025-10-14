@@ -1,7 +1,7 @@
 ﻿using Abstractions.Api;
-using Abstractions.ExternalApies;
 using FluentAssertions;
 using Infrastructure.Api;
+using Infrastructure.Api.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Helpers;

@@ -1,6 +1,6 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
-using Abstractions.Interfaces;
+using Abstractions.Repositories;
 using Application.Interfaces.StackOverFlow;
 using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;

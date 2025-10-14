@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.StackOverFlow;
 
-namespace Abstractions.Interfaces;
+namespace Abstractions.Repositories;
 
 public interface ITagsRepository
 {

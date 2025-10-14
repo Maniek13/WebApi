@@ -1,4 +1,4 @@
-﻿using Abstractions.Interfaces;
+﻿using Abstractions.Repositories;
 using Domain.Entities.StackOverFlow;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts.StackOverFlow;

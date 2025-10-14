@@ -1,4 +1,4 @@
-﻿namespace Abstractions.ExternalApies;
+﻿namespace Infrastructure.Api.Options;
 
 public class StackOverFlowOptions
 {

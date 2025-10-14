@@ -1,5 +1,5 @@
 ﻿using Abstractions.Caches;
-using Abstractions.Interfaces;
+using Abstractions.Repositories;
 using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using MapsterMapper;

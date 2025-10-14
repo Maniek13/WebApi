@@ -1,4 +1,4 @@
-﻿namespace Abstractions.Interfaces;
+﻿namespace Abstractions.Repositories;
 
 public interface IRepositoryROBase<TEntity>
 {
