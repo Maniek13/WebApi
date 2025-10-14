@@ -14,20 +14,19 @@ namespace EndToEndTests.ApplicationFactory;
 public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private MsSqlContainer _dbConteiner;
-    public class CustomWebApplicationFactory : WebApplicationFactory<ProgramEnti>
+
+    protected override IHost CreateHost(IHostBuilder builder)
     {
-        protected override IHost CreateHost(IHostBuilder builder)
+        builder.ConfigureAppConfiguration((context, configBuilder) =>
         {
-            builder.ConfigureAppConfiguration((context, configBuilder) =>
-            {
-                configBuilder.Sources.Clear();
+            configBuilder.Sources.Clear();
 
-                configBuilder.AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true);
-            });
+            configBuilder.AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true);
+        });
 
-            return base.CreateHost(builder);
-        }
+        return base.CreateHost(builder);
     }
+    
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -40,10 +39,7 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
             services.AddDbContext<StackOverFlowDbContext>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
             services.AddDbContext<StackOverFlowDbContextRO>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
 
-
             var serviceProvider = services.BuildServiceProvider();
-
-
 
             using var scoped = serviceProvider.CreateScope();
 

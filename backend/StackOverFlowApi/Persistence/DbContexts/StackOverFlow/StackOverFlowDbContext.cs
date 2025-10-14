@@ -10,6 +10,8 @@ public class StackOverFlowDbContext : DbContext
     {
 
     }
+
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (Environment.GetEnvironmentVariable("TestsVariable") == "InMemoryDatabase" ||

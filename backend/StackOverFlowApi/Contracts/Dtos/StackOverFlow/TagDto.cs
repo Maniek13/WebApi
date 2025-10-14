@@ -2,5 +2,6 @@
 
 public record TagDto(
             string Name,
-            long Count
+            long Count,
+            double? Participation
     );

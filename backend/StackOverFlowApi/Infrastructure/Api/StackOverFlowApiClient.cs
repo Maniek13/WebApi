@@ -49,8 +49,10 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
             }
 
             var itemsToken = root["items"]!;
-            tags.AddRange(itemsToken.ToObject<List<TagDto>>()!);
+            var listDto = itemsToken.ToObject<List<TagDto>>()!;
+            tags.AddRange(listDto!);
         }
+
 
         return tags.ToArray();
     }

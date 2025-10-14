@@ -6,7 +6,7 @@ ________________________________________________________________________________
 
 Endpoints:
 
-1. GetTags host/StackOverFlow/Tags 
+1. GetTags https://localhostL5000/StackOverFlow/Tags 
 
     Query parameters:
 
@@ -20,11 +20,11 @@ Endpoints:
 
    - if parametrs not set, endpoint returns first 100 records 
 
-  2. RefresTags host/StackOverFlow/RefreshData 
+  2. RefresTags https://localhostL5000/StackOverFlow/RefreshData 
 
 Websockets:
 
-1. Chat wss://host:port/chat 
+1. Chat ws://localhost:5000/chat 
 
     Receiving endpoints: ReceiveMessage
 
@@ -36,7 +36,7 @@ Websockets:
      
      - if receiverId set to null or empty string, messaage will be sended to all users
 
-2. Logs wss://host:port/logs
+2. Logs ws://localhost:5000/logs
 
     Receiving endpoints: ReceiveLog
 
@@ -44,6 +44,9 @@ Websockets:
 
 Jobs:
 
-Hangfire dashbord host/dashbord
+Hangfire dashbord https://localhostL5000/dashbord
+
+Fronted:
+https://localhostL:3000
  
 

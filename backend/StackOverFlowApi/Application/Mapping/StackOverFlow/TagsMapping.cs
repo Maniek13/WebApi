@@ -11,13 +11,23 @@ public class TagsMapping : IRegister
         cfg.NewConfig<Tag, TagDto>()
             .MapWith(el => new TagDto(
                     el.Name,
-                    el.Count
+                    el.Count,
+                    el.Participation
                 ));
 
         cfg.NewConfig<TagDto, Tag>()
            .MapWith(el => Tag.Create(
                    el.Name,
-                   el.Count
+                   el.Count,
+                   el.Participation
+               ));
+
+
+        cfg.NewConfig<(TagDto dto, long totalCount), Tag>()
+           .MapWith(el => Tag.Create(
+                   el.dto.Name,
+                   el.dto.Count,
+                   Math.Round((double)el.dto.Count / el.totalCount * 100, 2)
                ));
 
     }

@@ -26,6 +26,11 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 
     public override async Task HandleAsync(GetTagsRequest req, CancellationToken ct)
     {
+        if(req.Page <= 0)
+            ThrowError($"Page must be greater then 0", 400);
+        if (req.PageSize <= 0)
+            ThrowError($"PageSize must be greater then 0", 400);
+
         if (!Tag.CheckHavePropertyByName(req.SortBy))
             ThrowError($"Property {req.SortBy} doesn't exist in type Tag", 400);
 
@@ -34,7 +39,7 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
             Page = req.Page,
             PageSize = req.PageSize,
             SortBy = req.SortBy,
-            Descanding = req.Descanding,
+            Descending = req.Descending,
         };
 
         var res = await _mediator.Send(query, ct);

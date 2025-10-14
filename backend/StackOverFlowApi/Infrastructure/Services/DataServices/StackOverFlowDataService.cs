@@ -32,11 +32,14 @@ public class StackOverFlowDataService : IStackOverFlowDataService
 
     public async Task SyncAsync(bool forceRefresh = true, CancellationToken cancellationToken = new CancellationToken())
     {
-        if (!forceRefresh)
+       if (!forceRefresh)
             if (await _tagsRepositoryRO.CheckHaveData(cancellationToken))
                 return;
 
-        var tags = _mapper.Map<TagDto[], List<Tag>>(await _stackOverFlowApiClient.GetTagsAsync());
+        var tagsDtos = await _stackOverFlowApiClient.GetTagsAsync();
+        var recordsCount = tagsDtos.Sum(el => el.Count);
+
+        var tags = tagsDtos.Select(el => _mapper.Map<(TagDto, long), Tag>((el, recordsCount))).ToList();
 
         await _tagsRepository.SetTagsAsync(tags, cancellationToken);
         _cacheVersionService.Invalidate();

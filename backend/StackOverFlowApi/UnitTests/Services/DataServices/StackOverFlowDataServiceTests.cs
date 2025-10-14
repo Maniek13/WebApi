@@ -36,16 +36,11 @@ public class StackOverFlowDataServiceTests
             .Setup(p => p.Invalidate());
 
         var mockedMapper = new Mock<IMapper>();
-        mockedMapper
-            .Setup(m => m.Map<TagDto[], Tag[]>(Array.Empty<TagDto>()))
-            .Returns(Array.Empty<Tag>());
-
-
 
         var dataService = new StackOverFlowDataService(
-                mockedIStackOverFlowApiClient.Object, 
-                mockedTagsRepository.Object, 
-                mockedTagsRepositoryRO.Object, 
+                mockedIStackOverFlowApiClient.Object,
+                mockedTagsRepository.Object,
+                mockedTagsRepositoryRO.Object,
                 mockedCacheVersionService.Object,
                 mockedMapper.Object
             );
@@ -55,7 +50,6 @@ public class StackOverFlowDataServiceTests
             .Should()
             .NotThrowAsync();
     }
-
     [Fact]
     public async Task ShouldNotSyncWhenHaveDataAsync()
     {
@@ -80,11 +74,6 @@ public class StackOverFlowDataServiceTests
             .Setup(p => p.Invalidate());
 
         var mockedMapper = new Mock<IMapper>();
-        mockedMapper
-            .Setup(m => m.Map<TagDto[], Tag[]>(Array.Empty<TagDto>()))
-            .Returns(Array.Empty<Tag>());
-
-
 
         var dataService = new StackOverFlowDataService(
                 mockedIStackOverFlowApiClient.Object,

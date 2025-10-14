@@ -29,15 +29,15 @@ public class ModuleStartup : IModuleStartup
             .CreateLogger();
 
 
+        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+
         application.UseHangfireDashboard("/dashbord", new DashboardOptions
         {
             Authorization = new[] { new AuthorizationFilter() }
         });
 
         ConfigureJobs.SetRecurngJobs();
-
     }
-
 }
 
 

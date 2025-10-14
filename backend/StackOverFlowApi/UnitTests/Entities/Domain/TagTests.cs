@@ -5,13 +5,15 @@ namespace UnitTests.Entities.Domain;
 
 public class TagTests
 {
+
     [Fact]
     public async Task ShouldCreateTag()
     {
         string name = "name";
         long count = 1;
+        double parcipitation = 1;
 
-        var tag = Tag.Create(name, count);
+        var tag = Tag.Create(name, count, parcipitation);
 
         tag.Name.Should().Be(name);
         tag.Count.Should().Be(count);
@@ -22,8 +24,9 @@ public class TagTests
     {
         string name = "name";
         long count = 1;
+        double parcipitation = 1;
 
-        var tag = Tag.Create(name, count);
+        var tag = Tag.Create(name, count, parcipitation);
 
         tag.Equals(tag).Should().BeTrue();
     }

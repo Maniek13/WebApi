@@ -36,6 +36,8 @@ public class ModuleSetup : IModuleSetup
 
         builder.Host.UseSerilog();
 
+        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+
         builder.Services.AddHangfire(c =>
         {
             c.UseSqlServerStorage(builder.Configuration.GetConnectionString("Default"));

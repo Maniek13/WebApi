@@ -21,5 +21,8 @@ internal class TagConfiguration : IEntityTypeConfiguration<Tag>
 
         builder.Property(el => el.Count)
             .HasColumnName("Count");
+
+        builder.Property(el => el.Participation)
+            .HasColumnName("Participation");
     }
 }

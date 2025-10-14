@@ -1,19 +1,23 @@
 using Configuration.Extensions;
 using Hangfire;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.SetupWebApi();
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolice",
+        policy => policy
+            .AllowAnyOrigin() 
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
-app.UseHangfireDashboard();
+app.UseCors("CorsPolice");
 
 app.StartupWebApi(builder.Configuration);
-
-app.UseHttpsRedirection();
 
 app.Run();
 
