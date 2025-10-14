@@ -19,7 +19,7 @@ public class ChatHub : Hub
         var msg = $"{senderName}: {message}";
 
         if (string.IsNullOrWhiteSpace(receiverId))
-            await Clients.All.SendAsync(msg);
+            await Clients.All.SendAsync("ReceiveMessage", msg);
         else
             await Clients.User(receiverId!).SendAsync("ReceiveMessage", msg);
     }
