@@ -16,6 +16,8 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
+
         builder.ConfigureAppConfiguration((context, configBuilder) =>
         {
             configBuilder.Sources.Clear();
@@ -38,6 +40,8 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
             services.AddDbContext<StackOverFlowDbContext>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
             services.AddDbContext<StackOverFlowDbContextRO>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
 
+            services.AddSignalR();
+
             var serviceProvider = services.BuildServiceProvider();
 
             using var scoped = serviceProvider.CreateScope();
@@ -45,6 +49,7 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
             var db = scoped.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
             db.Database.Migrate();
         });
+
     }
 
     public async Task InitializeAsync()
