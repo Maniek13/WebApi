@@ -22,7 +22,5 @@ public class ModuleSetup : IModuleSetup
                 };
             })
             .AddSwaggerGen();
-
-        builder.Services.AddSignalR();
     }
 }

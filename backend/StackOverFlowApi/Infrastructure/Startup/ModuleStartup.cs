@@ -28,6 +28,8 @@ public class ModuleStartup : IModuleStartup
             .WriteTo.Sink(new SignalRSink(hubContext))
             .CreateLogger();
 
+        application.MapHub<ChatHub>("/chat");
+        application.MapHub<LogsHub>("/logs");
 
         if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
 

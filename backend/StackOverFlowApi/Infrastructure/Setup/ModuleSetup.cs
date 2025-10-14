@@ -35,6 +35,7 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddMemoryCache();
 
         builder.Host.UseSerilog();
+        builder.Services.AddSignalR();
 
         if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
 
