@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 
-namespace UnitTests.Domain.Entities;
+namespace UnitTests.Entities.Domain;
 
 public class TagTests
 {

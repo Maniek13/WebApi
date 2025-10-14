@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 
-namespace UnitTests.Shared.Entities;
+namespace UnitTests.Entities.Shared;
 
 public class EntityTests
 {

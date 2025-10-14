@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Persistence.DbContexts.StackOverFlow;
 using Testcontainers.MsSql;
 
@@ -13,7 +14,7 @@ namespace EndToEndTests.ApplicationFactory;
 public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private MsSqlContainer _dbConteiner;
-    public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+    public class CustomWebApplicationFactory : WebApplicationFactory<ProgramEnti>
     {
         protected override IHost CreateHost(IHostBuilder builder)
         {
