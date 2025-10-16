@@ -22,6 +22,24 @@ Endpoints:
 
   2. RefresTags https://localhostL5000/StackOverFlow/RefreshData 
 
+  3. Register http://localhost:5000/App/Users/Register
+
+   Query parameters:
+
+     name string
+
+     password string
+
+     role string
+  
+  4. Login http://localhost:5000/App/Users/Login
+
+   Query parameters:
+
+     name string
+
+     password string
+
 Websockets:
 
 1. Chat ws://localhost:5000/chat 
