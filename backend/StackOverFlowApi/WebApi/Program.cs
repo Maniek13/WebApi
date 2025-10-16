@@ -1,5 +1,4 @@
 using Configuration.Extensions;
-using Hangfire;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.SetupWebApi();

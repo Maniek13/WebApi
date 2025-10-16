@@ -1,9 +1,11 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.DbContext;
+using Abstractions.Repositories;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
 using Persistence.Repositories.StackOverFlow;
 using Persistence.StartupTasks;
@@ -20,6 +22,9 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
+        builder.Services.AddDbContext<AbstractAppDbContext, AppDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
 
@@ -27,5 +32,6 @@ public class ModuleSetup : IModuleSetup
 
         if (builder.Environment.EnvironmentName == "Development")
             MigrationInitializer.ApplyMigrations(serviceProvider);
+
     }
 }

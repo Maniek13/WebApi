@@ -13,5 +13,6 @@ public class ModuleSetup : IModuleSetup
         TypeAdapterConfig.GlobalSettings.Scan(typeof(ModuleAssembly).Assembly);
 
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(ModuleAssembly).Assembly));
+
     }
 }

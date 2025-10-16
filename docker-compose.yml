@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  fronted:
+  frontend:
     build:
-      context: ./fronted/sof-data-app
+      context: ./frontend/sof-data-app
       dockerfile: Dockerfile
     ports:
       - "3000:80"
@@ -11,7 +11,7 @@ services:
       - REACT_APP_API_URL=http://webapi:8080
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./frontend:/app
+      - ./frontend/sof-data-app:/app
     depends_on:
       - webapi  
 

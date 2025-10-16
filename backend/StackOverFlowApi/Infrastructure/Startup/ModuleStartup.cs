@@ -20,6 +20,9 @@ public class ModuleStartup : IModuleStartup
 
         application.UseMiddleware<ErrorLoggingMiddleware>();
 
+        application.UseAuthentication();
+        application.UseAuthorization();
+
         var hubContext = application.Services.GetRequiredService<IHubContext<LogsHub>>();
 
         Log.Logger = new LoggerConfiguration()
@@ -27,6 +30,7 @@ public class ModuleStartup : IModuleStartup
             .Configuration(application.Configuration)
             .WriteTo.Sink(new SignalRSink(hubContext))
             .CreateLogger();
+
 
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");

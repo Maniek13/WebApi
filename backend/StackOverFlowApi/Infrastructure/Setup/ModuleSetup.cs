@@ -5,6 +5,7 @@ using Application.Interfaces.StackOverFlow;
 using Hangfire;
 using Infrastructure.Api;
 using Infrastructure.Api.Options;
+using Infrastructure.Identity;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
 using Infrastructure.Services.HostedServices;
@@ -44,5 +45,7 @@ public class ModuleSetup : IModuleSetup
             c.UseSqlServerStorage(builder.Configuration.GetConnectionString("Default"));
         });
         builder.Services.AddHangfireServer();
+
+        builder.Services.AddIdentityWithJwt(builder.Configuration);
     }
 }
