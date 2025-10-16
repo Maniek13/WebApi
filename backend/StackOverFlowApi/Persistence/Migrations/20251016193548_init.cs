@@ -17,7 +17,8 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Count = table.Column<long>(type: "bigint", nullable: false)
+                    Count = table.Column<long>(type: "bigint", nullable: false),
+                    Participation = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {

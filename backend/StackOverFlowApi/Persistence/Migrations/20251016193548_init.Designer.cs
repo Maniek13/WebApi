@@ -11,7 +11,7 @@ using Persistence.DbContexts.StackOverFlow;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(StackOverFlowDbContext))]
-    [Migration("20251013024325_init")]
+    [Migration("20251016193548_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Tag", b =>
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,6 +41,10 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("Name");
+
+                    b.Property<double?>("Participation")
+                        .HasColumnType("float")
+                        .HasColumnName("Participation");
 
                     b.HasKey("Id");
 

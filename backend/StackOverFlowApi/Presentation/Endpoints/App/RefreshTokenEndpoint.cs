@@ -6,31 +6,31 @@ using Presentation.Routes.App;
 
 namespace Presentation.Endpoints.App;
 
-internal class LoginEndpoint : Endpoint<LoginRequest, LoginResult>
+internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, LoginResult>
 {
     private readonly IAuthService _authService;
 
-    public LoginEndpoint(IAuthService authService)
+    public RefreshTokenEndpoint(IAuthService authService)
     {
         _authService = authService;
     }
 
     public override void Configure()
     {
-        Post(UserRoutes.Login);
+        Post(UserRoutes.Refresh);
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
+    public override async Task HandleAsync(RefreshTokenRequest req, CancellationToken ct)
     {
         (string accesToken, string refreshToken) tokens = new();
         try
         {
-            tokens = await _authService.LoginAsync(req.Name, req.Password, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
+            tokens = await _authService.RefreshToken(req.RefreshToken, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
         }
-        catch (ArgumentException ex)
+        catch (UnauthorizedAccessException ex)
         {
-            ThrowError(ex.Message, 400);
+            ThrowError(ex.Message, 401);
         }
 
         await Send.OkAsync(new LoginResult(tokens.accesToken, tokens.refreshToken), ct);

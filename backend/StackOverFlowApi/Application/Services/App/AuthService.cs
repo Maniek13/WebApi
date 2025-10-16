@@ -1,20 +1,23 @@
 ﻿using Application.Interfaces.App;
+using Domain.Entities.App;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 public class AuthService : IAuthService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _config;
 
     public AuthService(
-        UserManager<IdentityUser> userManager,
+        UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager,
         IConfiguration config)
     {
@@ -25,7 +28,7 @@ public class AuthService : IAuthService
 
     public async Task CreateUserAsync(string login, string password, string role = "User")
     {
-        var user = new IdentityUser { UserName = login};
+        var user = new ApplicationUser { UserName = login};
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
@@ -39,7 +42,35 @@ public class AuthService : IAuthService
 
         await _userManager.AddToRoleAsync(user, role);
     }
-    public async Task<string?> LoginAsync(string login, string password)
+
+    public async Task<(string accesToken, string refreshToken)> RefreshToken(string refreshToken, string ipAddress)
+    {
+        var user = await _userManager.Users
+           .Include(u => u.RefreshTokens)
+           .FirstOrDefaultAsync(u => u.RefreshTokens.Any(rt => rt.Token == refreshToken));
+
+        if (user == null)
+            throw new UnauthorizedAccessException("Invalid refresh token");
+
+        var token = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+
+        if (token == null || token.IsExpired)
+            throw new UnauthorizedAccessException("Invalid or expired refresh token");
+
+        user.RefreshTokens.Remove(token);
+        user.RefreshTokens.RemoveAll(x => x.IsExpired);
+
+        var newRefreshToken = GenerateRefreshToken(ipAddress);
+
+        user.RefreshTokens.Add(newRefreshToken);
+        await _userManager.UpdateAsync(user);
+
+        var newAccessToken = await GenerateJwtTokenAsync(user);
+
+        return (await GenerateJwtTokenAsync(user), newRefreshToken.Token);
+    }
+
+    public async Task<(string accesToken, string refreshToken)> LoginAsync(string login, string password, string ipAddress)
     {
         var user = await _userManager.FindByNameAsync(login);
 
@@ -49,15 +80,21 @@ public class AuthService : IAuthService
         if (!await _userManager.CheckPasswordAsync(user, password))
             throw new ArgumentException("Wrong password");
 
-        return await GenerateJwtTokenAsync(user);
+        var refreshToken = GenerateRefreshToken(ipAddress);
+
+        user.RefreshTokens.Add(refreshToken);
+        await _userManager.UpdateAsync(user);
+
+        return (await GenerateJwtTokenAsync(user), refreshToken.Token);
     }
 
     private string GetJwtKey() => _config["Jwt:Key"]!;
     private string GetIssuer() => _config["Jwt:Issuer"]!;
     private string GetAudience() => _config["Jwt:Audience"]!;
     private int GetExpiryInHours() => int.Parse(_config["Jwt:ExpiryInHours"] ?? "1");
+    private int GetRefreshTokenExpiryInDays() => int.Parse(_config["Jwt:RefreshTokenExpiryInDays"] ?? "1");
 
-    private async Task<string> GenerateJwtTokenAsync(IdentityUser user)
+    private async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
     {
         var claims = new List<Claim>
         {
@@ -86,4 +123,19 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    private RefreshToken GenerateRefreshToken(string ipAddress)
+    {
+        var randomBytes = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+
+        return new RefreshToken
+        {
+            Token = Convert.ToBase64String(randomBytes),
+            Expires = DateTime.UtcNow.AddDays(GetRefreshTokenExpiryInDays()),
+            CreatedByIp = ipAddress
+        };
+    }
+
 }

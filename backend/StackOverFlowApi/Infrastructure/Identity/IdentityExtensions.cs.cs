@@ -1,5 +1,6 @@
 ﻿using Abstractions.DbContext;
 using Application.Interfaces.App;
+using Domain.Entities.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +14,7 @@ internal static class IdentityExtensions
 {
     public static IServiceCollection AddIdentityWithJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<AbstractAppDbContext>()
             .AddDefaultTokenProviders();
 
