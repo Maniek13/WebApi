@@ -1,14 +1,6 @@
-﻿using Application.Jobs;
-using EndToEndTests.ApplicationFactory;
-using FastEndpoints;
+﻿using EndToEndTests.ApplicationFactory;
 using FluentAssertions;
 using Hangfire;
-using Hangfire.MemoryStorage;
-using Hangfire.MemoryStorage.Dto;
-using Hangfire.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Writers;
-using System;
 using System.Diagnostics;
 
 namespace EndToEndTests.Hangfire;
