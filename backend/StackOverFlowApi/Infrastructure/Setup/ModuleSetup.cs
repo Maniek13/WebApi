@@ -38,14 +38,13 @@ public class ModuleSetup : IModuleSetup
         builder.Host.UseSerilog();
         builder.Services.AddSignalR();
 
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+        builder.Services.AddIdentityWithJwt(builder.Configuration);
 
         builder.Services.AddHangfire(c =>
         {
             c.UseSqlServerStorage(builder.Configuration.GetConnectionString("Default"));
         });
-        builder.Services.AddHangfireServer();
 
-        builder.Services.AddIdentityWithJwt(builder.Configuration);
+        builder.Services.AddHangfireServer();
     }
 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Application.Jobs;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using Infrastructure.Jobs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +17,7 @@ namespace EndToEndTests.ApplicationFactory;
 public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private MsSqlContainer _dbConteiner;
-
+    
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
@@ -48,8 +52,9 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
 
             var db = scoped.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
             db.Database.Migrate();
-        });
 
+            services.AddHangfire(c => c.UseMemoryStorage());
+        });
     }
 
     public async Task InitializeAsync()

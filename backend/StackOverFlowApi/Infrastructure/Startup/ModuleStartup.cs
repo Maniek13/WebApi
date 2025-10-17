@@ -34,8 +34,7 @@ public class ModuleStartup : IModuleStartup
 
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");
-
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+   
 
         application.UseHangfireDashboard("/dashbord", new DashboardOptions
         {
