@@ -43,7 +43,7 @@ public class AuthService : IAuthService
         await _userManager.AddToRoleAsync(user, role);
     }
 
-    public async Task<(string accesToken, string refreshToken)> RefreshToken(string refreshToken, string ipAddress)
+    public async Task<(string accesToken, string refreshToken)> RefreshTokenAsync(string refreshToken, string ipAddress)
     {
         var user = await _userManager.Users
            .Include(u => u.RefreshTokens)

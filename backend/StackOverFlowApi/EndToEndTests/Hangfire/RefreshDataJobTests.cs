@@ -3,20 +3,12 @@ using FluentAssertions;
 using Hangfire;
 using System.Diagnostics;
 
-namespace EndToEndTests.Hangfire;
-
-public class RefreshDataJobTests : IClassFixture<WebApiWebAplicationFactory>
+namespace EndToEndTests.Endpoints;
+public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplicationFactory>
 {
-    private readonly WebApiWebAplicationFactory _factory;
-
-    public RefreshDataJobTests(WebApiWebAplicationFactory factory)
-    {
-        factory.CreateClient();
-        _factory = factory;
-    }
 
     [Fact]
-    public async Task ShouldRefreshTags()
+    public async Task Hangfire_ShouldRefreshTags()
     {
         var jobId = RecurringJob.TriggerJob("RefreshDataJob");
         var connection = JobStorage.Current.GetConnection();

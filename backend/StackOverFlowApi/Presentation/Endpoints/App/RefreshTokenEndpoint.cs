@@ -26,7 +26,7 @@ internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, LoginResult>
         (string accesToken, string refreshToken) tokens = new();
         try
         {
-            tokens = await _authService.RefreshToken(req.RefreshToken, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
+            tokens = await _authService.RefreshTokenAsync(req.RefreshToken, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
         }
         catch (UnauthorizedAccessException ex)
         {

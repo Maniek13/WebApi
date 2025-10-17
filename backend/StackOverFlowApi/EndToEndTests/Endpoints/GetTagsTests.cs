@@ -6,11 +6,11 @@ using System.Net.Http.Json;
 using Presentation.Routes.StackOverFlow;
 
 namespace EndToEndTests.Endpoints;
-public partial class EnpointTests : IClassFixture<WebApiWebAplicationFactory>
+public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplicationFactory>
 {
    
     [Fact]
-    public async Task ShouldGetTenWhenHaveData()
+    public async Task Endpoints_ShouldGetTenWhenHaveData()
     {
         var result = await _httpClient.GetAsync($"/{TagsRoutes.Get}");
         result.EnsureSuccessStatusCode();

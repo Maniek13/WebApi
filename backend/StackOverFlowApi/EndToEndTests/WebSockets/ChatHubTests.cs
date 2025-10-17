@@ -3,11 +3,11 @@ using FluentAssertions;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace EndToEndTests.Endpoints;
-public partial class EnpointTests : IClassFixture<WebApiWebAplicationFactory>
+public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplicationFactory>
 {
-   
+
     [Fact]
-    public async Task ShouldSendMessage()
+    public async Task WebSockets_ShouldSendMessage()
     {
         var connection = new HubConnectionBuilder()
         .WithUrl($"{_httpClient.BaseAddress}chat", options =>

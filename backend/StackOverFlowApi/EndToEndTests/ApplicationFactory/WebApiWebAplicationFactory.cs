@@ -1,14 +1,20 @@
-﻿using Application.Jobs;
+﻿using Abstractions.DbContext;
+using Application.Interfaces.App;
+using Application.Jobs;
+using Domain.Entities.App;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using Hangfire.Storage;
 using Infrastructure.Jobs;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
 using Testcontainers.MsSql;
 
@@ -40,20 +46,29 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
         builder.ConfigureServices(services => {
             services.RemoveAll(typeof(StackOverFlowDbContext));
             services.RemoveAll(typeof(StackOverFlowDbContextRO));
+            services.RemoveAll(typeof(AbstractAppDbContext));
+
 
             services.AddDbContext<StackOverFlowDbContext>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
             services.AddDbContext<StackOverFlowDbContextRO>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
 
+            services.AddDbContext<AbstractAppDbContext, AppDbContext>(o =>
+                o.UseSqlServer(_dbConteiner.GetConnectionString()));
+
+
             services.AddSignalR();
 
             var serviceProvider = services.BuildServiceProvider();
+            ;
+            using var scope = serviceProvider.CreateScope();
 
-            using var scoped = serviceProvider.CreateScope();
-
-            var db = scoped.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
+            var db = scope.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
             db.Database.Migrate();
 
-            services.AddHangfire(c => c.UseMemoryStorage());
+            var appDbContext = scope.ServiceProvider.GetRequiredService<AbstractAppDbContext>();
+            appDbContext.Database.Migrate();
+
+            services.AddHangfire(c => c.UseMemoryStorage()); 
         });
     }
 
