@@ -1,4 +1,4 @@
-﻿using Abstractions.DbContext;
+﻿using Abstractions.DbContexts;
 using Application.Interfaces.App;
 using Domain.Entities.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -73,7 +73,7 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
         List<Tag> tags = [];
 
         for (int i = 0; i < 100; ++i)
-            db.tags.Add(Tag.Create(_random.Next(0, 10000000).ToString(), _random.Next(0, 10000000)));
+            db.Tags.Add(Tag.Create(_random.Next(0, 10000000).ToString(), _random.Next(0, 10000000)));
 
         db.SaveChanges();
 

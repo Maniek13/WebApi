@@ -1,13 +1,7 @@
-﻿using Abstractions.DbContext;
-using Application.Interfaces.App;
-using Application.Jobs;
-using Domain.Entities.App;
+﻿using Abstractions.DbContexts;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using Hangfire.Storage;
-using Infrastructure.Jobs;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

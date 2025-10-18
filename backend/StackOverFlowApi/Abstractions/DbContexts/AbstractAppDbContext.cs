@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Abstractions.DbContext;
+namespace Abstractions.DbContexts;
 
 public abstract class AbstractAppDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
 {

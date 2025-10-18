@@ -4,6 +4,9 @@ Application run from docker:
 
 __________________________________________________________________________________________________________________________
 
+Backend:
+
+
 Endpoints:
 
 1. GetTags https://localhostL5000/StackOverFlow/Tags 
@@ -62,9 +65,19 @@ Websockets:
 
 Jobs:
 
-Hangfire dashbord https://localhostL5000/dashbord
+WebApi Hangfire dashbord https://localhostL5000/dashbord
+
+ETL Hangfire dashbord https://localhostL5100/dashbord
+
+Rabbit:
+
+http://localhost:15672
+
+Login: guest
+Password: guest
 
 Fronted:
+
 https://localhostL:3000
  
 

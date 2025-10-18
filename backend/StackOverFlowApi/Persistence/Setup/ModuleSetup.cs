@@ -1,4 +1,4 @@
-﻿using Abstractions.DbContext;
+﻿using Abstractions.DbContexts;
 using Abstractions.Repositories;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +16,7 @@ public class ModuleSetup : IModuleSetup
 {
     public void Setup(WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<StackOverFlowDbContext>(options =>
+        builder.Services.AddDbContext<AbstractSOFDbContext, StackOverFlowDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
@@ -27,6 +27,7 @@ public class ModuleSetup : IModuleSetup
 
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
+        builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 
         var serviceProvider = builder.Services.BuildServiceProvider();
 

@@ -24,9 +24,32 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Your_password123;
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Your_password123; 
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=user
+      - RabbitMq__Password=password
     depends_on:
       - db
+      - rabbitmq
+ 
+  etl:
+    build:
+      context: ./backend/ETL
+      dockerfile: ETL/Dockerfile
+    ports:
+      - "5100:8100"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:8100
+      - ConnectionStrings__DefaultConnection=Server=db;Database=ETL;User=sa;Password=Your_password123;      
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=user
+      - RabbitMq__Password=password
+    depends_on:
+      - db
+      - rabbitmq
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -38,6 +61,16 @@ services:
       - "1433:1433"
     volumes:
       - sqlvolume:/var/opt/mssql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   sqlvolume:

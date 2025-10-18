@@ -1,4 +1,4 @@
-﻿using Abstractions.DbContext;
+﻿using Abstractions.DbContexts;
 using Domain.Entities.App;
 using Microsoft.EntityFrameworkCore;
 
