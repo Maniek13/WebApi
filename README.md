@@ -9,7 +9,7 @@ Backend:
 
 Endpoints:
 
-1. GetTags https://localhostL5000/StackOverFlow/Tags 
+1. GetTags http://localhostL5000/StackOverFlow/Tags 
 
     Query parameters:
 
@@ -23,7 +23,7 @@ Endpoints:
 
    - if parametrs not set, endpoint returns first 100 records 
 
-  2. RefresTags https://localhostL5000/StackOverFlow/RefreshData 
+  2. RefresTags http://localhostL5000/StackOverFlow/RefreshData 
 
   3. Register http://localhost:5000/App/Users/Register
 
@@ -65,9 +65,9 @@ Websockets:
 
 Jobs:
 
-WebApi Hangfire dashbord https://localhostL5000/dashbord
+WebApi Hangfire dashbord http://localhostL5000/dashbord
 
-ETL Hangfire dashbord https://localhostL5100/dashbord
+ETL Hangfire dashbord http://localhostL5100/dashbord
 
 Rabbit:
 
@@ -78,6 +78,6 @@ Password: guest
 
 Fronted:
 
-https://localhostL:3000
+http://localhostL:3000
  
 
