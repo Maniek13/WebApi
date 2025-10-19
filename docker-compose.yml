@@ -43,7 +43,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:8080
-      - ConnectionStrings__Default=Data Source=host.docker.internal,1433;Initial Catalog=StackOverFlow;User ID=sa;Password=Your_password123;Trust Server Certificate=True; 
       - RabbitMq__Host=rabbitmq
       - RabbitMq__Username=user
       - RabbitMq__Password=password
@@ -60,8 +59,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:8100
-      - ConnectionStrings__Default=Data Source=host.docker.internal,1433;Initial Catalog=ETL;User ID=sa;Password=Your_password123;Trust Server Certificate=True;   
+      - ASPNETCORE_URLS=http://0.0.0.0:8100 
       - RabbitMq__Host=rabbitmq
       - RabbitMq__Username=user
       - RabbitMq__Password=password
