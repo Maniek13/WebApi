@@ -1,3 +1,37 @@
+Api hosten by Azure:
+
+
+Fronted: 
+
+http://4.210.65.98:3000/
+
+Endpoints
+
+http://4.210.65.98:5000/StackOverFlow/Tags 
+
+http://4.210.65.98:5000/StackOverFlow/RefreshData 
+
+http://4.210.65.98:5000/App/Users/Register
+
+http://4.210.65.98:5000/App/Users/Login
+
+Websockets:
+
+ws://4.210.65.98:5000/chat 
+
+ws://4.210.65.98:5000/logs
+
+RabbitMq: 
+
+http://4.210.65.98:15672/
+
+Hangfire dashbords:
+
+http://4.210.65.98:5000/dashbord
+
+http://4.210.65.98:5200/dashbord
+
+
 Application run from docker:
 
  start command: docker-compose up
