@@ -19,4 +19,5 @@ public class StackOverFlowDbContextRO : DbContext
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => throw new NotImplementedException();
     
     public IQueryable<Tag> Tags => Set<Tag>().AsNoTracking();
+    public IQueryable<Question> Questions => Set<Question>().AsNoTracking();
 }

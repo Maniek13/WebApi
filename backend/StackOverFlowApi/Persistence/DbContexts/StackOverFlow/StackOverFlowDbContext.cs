@@ -1,10 +1,11 @@
-﻿using Domain.Entities.StackOverFlow;
+﻿using Abstractions.DbContexts;
+using Domain.Entities.StackOverFlow;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Persistence.DbContexts.StackOverFlow;
 
-public class StackOverFlowDbContext : DbContext
+public class StackOverFlowDbContext : AbstractSOFDbContext
 {
     public StackOverFlowDbContext(DbContextOptions<StackOverFlowDbContext> options) : base(options)
     {
@@ -30,5 +31,6 @@ public class StackOverFlowDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(ModuleAssembly.GetExecutionAssembly);
     }
 
-    public DbSet<Tag> tags => Set<Tag>();
+    public DbSet<Tag> Tags => Set<Tag>();
+    public DbSet<Question> Questions => Set<Question>();
 }

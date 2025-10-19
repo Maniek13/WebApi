@@ -16,8 +16,8 @@ public class TagsRepository : ITagsRepository
 
     public async Task SetTagsAsync(List<Tag> tags, CancellationToken ct)
     {
-        await _dbContext.tags.ExecuteDeleteAsync();
-        await _dbContext.tags.AddRangeAsync(tags, ct);
+        await _dbContext.Tags.ExecuteDeleteAsync();
+        await _dbContext.Tags.AddRangeAsync(tags, ct);
         await _dbContext.SaveChangesAsync();
     }
 }

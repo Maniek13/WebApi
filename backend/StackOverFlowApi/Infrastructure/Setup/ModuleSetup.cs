@@ -1,13 +1,17 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
+using Abstractions.DbContexts;
 using Abstractions.Setup;
+using Application.Consumers;
 using Application.Interfaces.StackOverFlow;
 using Hangfire;
 using Infrastructure.Api;
 using Infrastructure.Api.Options;
+using Infrastructure.Identity;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
 using Infrastructure.Services.HostedServices;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,12 +41,41 @@ public class ModuleSetup : IModuleSetup
         builder.Host.UseSerilog();
         builder.Services.AddSignalR();
 
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+        builder.Services.AddIdentityWithJwt(builder.Configuration);
 
         builder.Services.AddHangfire(c =>
         {
             c.UseSqlServerStorage(builder.Configuration.GetConnectionString("Default"));
         });
+
         builder.Services.AddHangfireServer();
+
+        builder.Services.AddMassTransit(cfg =>
+        {
+            cfg.AddConsumer<QuestionsConsumer>();
+
+            cfg.AddEntityFrameworkOutbox<AbstractSOFDbContext>(o =>
+            {
+                o.UseSqlServer();
+                o.QueryDelay = TimeSpan.FromSeconds(5);
+                o.DisableInboxCleanupService();
+            });
+
+            cfg.UsingRabbitMq((context, c) =>
+            {
+                c.Host("rabbitmq", "/", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+
+
+                c.ReceiveEndpoint("Questions", e =>
+                {
+                    e.ConfigureConsumer<QuestionsConsumer>(context);
+                });
+            });
+        });
+
     }
 }

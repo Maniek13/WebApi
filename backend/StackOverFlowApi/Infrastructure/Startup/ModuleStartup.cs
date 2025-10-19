@@ -20,6 +20,9 @@ public class ModuleStartup : IModuleStartup
 
         application.UseMiddleware<ErrorLoggingMiddleware>();
 
+        application.UseAuthentication();
+        application.UseAuthorization();
+
         var hubContext = application.Services.GetRequiredService<IHubContext<LogsHub>>();
 
         Log.Logger = new LoggerConfiguration()
@@ -28,10 +31,10 @@ public class ModuleStartup : IModuleStartup
             .WriteTo.Sink(new SignalRSink(hubContext))
             .CreateLogger();
 
+
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");
-
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory") return;
+   
 
         application.UseHangfireDashboard("/dashbord", new DashboardOptions
         {
@@ -41,5 +44,4 @@ public class ModuleStartup : IModuleStartup
         ConfigureJobs.SetRecurngJobs();
     }
 }
-
 

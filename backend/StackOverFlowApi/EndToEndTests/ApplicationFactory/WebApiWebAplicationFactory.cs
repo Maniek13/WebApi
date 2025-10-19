@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Abstractions.DbContexts;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
 using Testcontainers.MsSql;
 
@@ -13,7 +17,7 @@ namespace EndToEndTests.ApplicationFactory;
 public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private MsSqlContainer _dbConteiner;
-
+    
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
@@ -36,20 +40,30 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
         builder.ConfigureServices(services => {
             services.RemoveAll(typeof(StackOverFlowDbContext));
             services.RemoveAll(typeof(StackOverFlowDbContextRO));
+            services.RemoveAll(typeof(AbstractAppDbContext));
+
 
             services.AddDbContext<StackOverFlowDbContext>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
             services.AddDbContext<StackOverFlowDbContextRO>(o => o.UseSqlServer(_dbConteiner.GetConnectionString()));
 
+            services.AddDbContext<AbstractAppDbContext, AppDbContext>(o =>
+                o.UseSqlServer(_dbConteiner.GetConnectionString()));
+
+
             services.AddSignalR();
 
             var serviceProvider = services.BuildServiceProvider();
+            ;
+            using var scope = serviceProvider.CreateScope();
 
-            using var scoped = serviceProvider.CreateScope();
-
-            var db = scoped.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
+            var db = scope.ServiceProvider.GetRequiredService<StackOverFlowDbContext>();
             db.Database.Migrate();
-        });
 
+            var appDbContext = scope.ServiceProvider.GetRequiredService<AbstractAppDbContext>();
+            appDbContext.Database.Migrate();
+
+            services.AddHangfire(c => c.UseMemoryStorage()); 
+        });
     }
 
     public async Task InitializeAsync()

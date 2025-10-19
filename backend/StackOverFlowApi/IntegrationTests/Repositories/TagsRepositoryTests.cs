@@ -39,7 +39,7 @@ public class TagsRepositoryTests
 
         await repository.SetTagsAsync(tags, CancellationToken.None);
 
-        var dbTags = context.tags;
+        var dbTags = context.Tags;
 
         dbTags.Should().HaveCount(tags.Count);
 

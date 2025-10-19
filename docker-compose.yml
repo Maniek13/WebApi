@@ -1,9 +1,27 @@
-version: "3.9"
+services: 
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
 
-services:
-  fronted:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"   
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+  
+  frontend:
     build:
-      context: ./fronted/sof-data-app
+      context: ./frontend/sof-data-app
       dockerfile: Dockerfile
     ports:
       - "3000:80"
@@ -11,7 +29,7 @@ services:
       - REACT_APP_API_URL=http://webapi:8080
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - ./frontend:/app
+      - ./frontend/sof-data-app:/app
     depends_on:
       - webapi  
 
@@ -24,20 +42,30 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=sa;Password=Your_password123;
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=user
+      - RabbitMq__Password=password
     depends_on:
       - db
-
-  db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    environment:
-      SA_PASSWORD: "Your_password123"
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: "Express"
+      - rabbitmq
+ 
+  etl:
+    build:
+      context: ./backend/ETL
+      dockerfile: ETL/Dockerfile
     ports:
-      - "1433:1433"
-    volumes:
-      - sqlvolume:/var/opt/mssql
+      - "5100:8100"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:8100 
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Username=user
+      - RabbitMq__Password=password
+    depends_on:
+      - db
+      - rabbitmq
 
 volumes:
   sqlvolume:
