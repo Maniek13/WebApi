@@ -22,7 +22,8 @@ public static class Instalation
         if (builder.Environment.EnvironmentName == "Development")
         {
             using var scope = serviceProvider.CreateScope();
-            scope.ServiceProvider.GetRequiredService<AbstractSOFDbContext>().Database.Migrate();
+            var ctx = scope.ServiceProvider.GetRequiredService<AbstractSOFDbContext>();
+            ctx.Database.EnsureCreated();
         }
     }
 }
