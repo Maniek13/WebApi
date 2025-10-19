@@ -15,7 +15,7 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
     public StackOverFlowApiClient(HttpClient httpClient, IOptions<StackOverFlowOptions> options)
     {
         _httpClient = httpClient;
-        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("EksploratorBot/1.0 (+https://twojastrona.pl)");
+        httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Etl");
         _options = options.Value;
     }
 
