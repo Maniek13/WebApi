@@ -1,4 +1,4 @@
-﻿namespace Contracts.Dtos.StackOverFlow;
+﻿namespace Domain.Dtos.StackOverFlow;
 
 public record QuestionDto(
             string Title,

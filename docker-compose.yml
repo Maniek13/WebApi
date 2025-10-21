@@ -67,5 +67,13 @@ services:
       - db
       - rabbitmq
 
+  grpc:
+    build:
+      context: ./backend/GrpcService
+      dockerfile:   GrpcService/Dockerfile
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
 volumes:
   sqlvolume:

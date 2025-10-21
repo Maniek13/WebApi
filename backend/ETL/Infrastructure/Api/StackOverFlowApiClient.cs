@@ -46,6 +46,6 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         }
 
 
-        return tags.ToArray();
+        return tags.DistinctBy(el => el.Title).ToArray();
     }
 }

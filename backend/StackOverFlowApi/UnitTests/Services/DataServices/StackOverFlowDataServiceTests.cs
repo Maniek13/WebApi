@@ -1,7 +1,7 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
 using Abstractions.Repositories;
-using Contracts.Dtos.StackOverFlow;
+using Domain.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 using Infrastructure.Services.DataServices;

@@ -25,7 +25,7 @@ public class Question  : Entity<Question>
     public static Question Create(string title, string[] tags, string link, long createDateTimeStamp) =>
         new Question(title, tags, link, createDateTimeStamp);
 
-    public override int GetHashCode() => HashCode.Combine(Id, Title, Tags.Aggregate(0, (current, str) => HashCode.Combine(current, str)), Link, Create);
+    public override int GetHashCode() => HashCode.Combine(Id, Title, Tags.Aggregate(0, (current, str) => HashCode.Combine(current, str)), Link, CreateDateTimeStamp);
 
     public void Update(string[] tags, string link)
     {

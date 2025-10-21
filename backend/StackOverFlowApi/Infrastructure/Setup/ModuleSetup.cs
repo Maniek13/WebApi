@@ -53,6 +53,7 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddMassTransit(cfg =>
         {
             cfg.AddConsumer<QuestionsConsumer>();
+            cfg.AddConsumer<UsersConsumer>();
 
             cfg.AddEntityFrameworkOutbox<AbstractSOFDbContext>(o =>
             {
@@ -73,6 +74,11 @@ public class ModuleSetup : IModuleSetup
                 c.ReceiveEndpoint("Questions", e =>
                 {
                     e.ConfigureConsumer<QuestionsConsumer>(context);
+                });
+
+                c.ReceiveEndpoint("Users", e =>
+                {
+                    e.ConfigureConsumer<UsersConsumer>(context);
                 });
             });
         });

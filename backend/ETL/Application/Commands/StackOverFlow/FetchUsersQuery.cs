@@ -2,6 +2,6 @@
 
 namespace Application.Commands.StackOverFlow;
 
-public class FetchDataQuery : IRequest
+public class FetchUsersQuery : IRequest
 {
 }

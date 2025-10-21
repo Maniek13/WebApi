@@ -18,12 +18,12 @@ public static class Instalation
         var serviceProvider = builder.Services.BuildServiceProvider();
 
         builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         if (builder.Environment.EnvironmentName == "Development")
         {
             using var scope = serviceProvider.CreateScope();
-            var ctx = scope.ServiceProvider.GetRequiredService<AbstractSOFDbContext>();
-            ctx.Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<StackOverFlowDbContext>().Database.Migrate();
         }
     }
 }

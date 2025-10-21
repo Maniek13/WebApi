@@ -1,21 +1,26 @@
 ﻿using Application.Commands.StackOverFlow;
-using Contracts.Dtos.StackOverFlow;
 using Contracts.Requests.StackOverFlow;
+using Contracts.Responses;
+using Domain.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using FastEndpoints;
 using MediatR;
 using Presentation.Routes.StackOverFlow;
 using Shared.Pagination;
+using IMapper = MapsterMapper.IMapper;
 
 namespace Presentation.Endpoints.StackOverFlow;
 
-internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
+internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagResponse>>
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
-    public GetTags(IMediator mediator)
+    public GetTags(IMediator mediator, IMapper mapper)
     {
+        _mapper = mapper;
         _mediator = mediator;
+
     }
 
     public override void Configure()
@@ -44,6 +49,8 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 
         var res = await _mediator.Send(query, ct);
 
-        await Send.OkAsync(res);
+        var result = new PagedList<TagResponse>(res.PageNumber, res.PageSize, res.TotalCount, _mapper.Map<List<TagDto>, List<TagResponse>>(res.Items));
+
+        await Send.OkAsync(result);
     }
 }

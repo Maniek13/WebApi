@@ -2,7 +2,7 @@
 using Abstractions.Caches;
 using Abstractions.Repositories;
 using Application.Interfaces.StackOverFlow;
-using Contracts.Dtos.StackOverFlow;
+using Domain.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using MapsterMapper;
 

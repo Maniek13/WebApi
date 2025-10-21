@@ -85,6 +85,35 @@ namespace Persistence.Migrations
 
                     b.ToTable("Tags", (string)null);
                 });
+
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("AccountId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("AccountId");
+
+                    b.Property<long>("CreatedAt")
+                        .HasColumnType("bigint")
+                        .HasColumnName("CreatedAt");
+
+                    b.Property<string>("DispalaName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("DispalaName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.ToTable("Users", (string)null);
+                });
 #pragma warning restore 612, 618
         }
     }
