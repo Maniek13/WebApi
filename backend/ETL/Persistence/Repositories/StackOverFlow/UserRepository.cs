@@ -14,21 +14,25 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
-    public async Task AddOrUpdateUsersAsync(List<User> questions, CancellationToken ct)
+    public async Task AddOrUpdateUsersAsync(List<User> users, CancellationToken ct)
     {
-        for (int i = 0; i < questions.Count; ++i)
+        for (int i = 0; i < users.Count; ++i)
         {
-            var question = await _dbContext.Users.FirstOrDefaultAsync(el => el.AccountId.Equals(questions[i].AccountId));
+            var question = await _dbContext.Users.FirstOrDefaultAsync(el => el.UserId.Equals(users[i].UserId));
 
             if (question == null)
-                await _dbContext.Users.AddAsync(questions[i]!, ct);
+                await _dbContext.Users.AddAsync(users[i]!, ct);
             else
             {
-                question.Update(questions[i].DispalaName);
+                question.Update(users[i].DisplayName);
                 _dbContext.Users.Update(question);
             }
         }
 
         await _dbContext.SaveChangesAsync(ct);
     }
+
+    public bool CheckUserExist(long userId, CancellationToken ct) =>
+        _dbContext.Users.FirstOrDefault(el => el.UserId == userId) == null ? false : true;
+
 }

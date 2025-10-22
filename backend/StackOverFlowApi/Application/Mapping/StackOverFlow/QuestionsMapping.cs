@@ -1,4 +1,4 @@
-﻿using Domain.Dtos.StackOverFlow;
+﻿using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using Mapster;
 
@@ -10,6 +10,7 @@ public class QuestionsMapping : IRegister
     {
         cfg.NewConfig<QuestionDto, Question>()
            .MapWith(el => Question.Create(
+                   el.Member.UserId,
                    el.Title,
                    el.Tags,
                    el.Link,

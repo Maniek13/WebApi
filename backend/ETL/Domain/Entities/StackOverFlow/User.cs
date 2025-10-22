@@ -2,31 +2,32 @@
 
 public class User  : Entity<User>
 {
-    public User(long accountId, string dispalaName, long createdAt)
+    public User(long userId, string dispalaName, long createdAt) : base()
     {
-        AccountId = accountId;
-        DispalaName = dispalaName;
+        DisplayName = dispalaName;
         CreatedAt = createdAt;
+        UserId = userId;
     }
 
     private User() : base()
     {
     }
-
-    public long AccountId { get; private set; }
-    public string DispalaName { get; private set; }
+    public long UserId { get; private set; }
+    public string DisplayName { get; private set; }
     public long CreatedAt { get; private set; }
+
+    public ICollection<Question> Questions { get; private set; } = new List<Question>();
 
     public DateTime CreatedDate => DateTimeOffset.FromUnixTimeMilliseconds(CreatedAt).UtcDateTime;
 
-    public static User Create(long accountId, string dispalaName, long createdAt) =>
-        new User(accountId, dispalaName, createdAt);
+    public static User Create(long userId, string dispalaName, long createdAt) =>
+        new User(userId, dispalaName, createdAt);
 
-    public override int GetHashCode() => HashCode.Combine(Id, AccountId, DispalaName, CreatedAt);
+    public override int GetHashCode() => HashCode.Combine(Id, UserId, DisplayName, CreatedAt);
 
     public void Update(string dispalaName)
     {
-        DispalaName = dispalaName;
+        DisplayName = dispalaName;
     }
 
 }

@@ -1,10 +1,9 @@
+using Domain.Dtos.StackOverFlow;
 using EndToEndTests.ApplicationFactory;
 using FluentAssertions;
+using Presentation.Routes.StackOverFlow;
 using Shared.Pagination;
 using System.Net.Http.Json;
-using Presentation.Routes.StackOverFlow;
-using Domain.Dtos.StackOverFlow;
-using Contracts.Responses;
 
 namespace EndToEndTests.Endpoints;
 public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplicationFactory>
@@ -16,7 +15,7 @@ public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplication
         var result = await _httpClient.GetAsync($"/{TagsRoutes.Get}");
         result.EnsureSuccessStatusCode();
 
-        var content = await result.Content.ReadFromJsonAsync<PagedList<TagResponse>>();
+        var content = await result.Content.ReadFromJsonAsync<PagedList<TagDto>>();
 
         content?.Items.Should().HaveCount(100);
     }

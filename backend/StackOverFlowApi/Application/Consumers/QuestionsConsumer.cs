@@ -1,11 +1,11 @@
 ﻿using Application.Commands.StackOverFlow;
-using Domain.Dtos.StackOverFlow;
+using Contracts.Dtos.StackOverFlow;
 using MassTransit;
 using MediatR;
 
 namespace Application.Consumers;
 
-public class QuestionsConsumer : IConsumer<QuestionDto[]>
+public class QuestionsConsumer : IConsumer<FechQuestionDto>
 {
     private readonly IMediator _mediator;
 
@@ -14,8 +14,8 @@ public class QuestionsConsumer : IConsumer<QuestionDto[]>
         _mediator = mediator;
     }
 
-    public async Task Consume(ConsumeContext<QuestionDto[]> context)
+    public async Task Consume(ConsumeContext<FechQuestionDto> context)
     {
-        await _mediator.Send(new AddOrUpdateQuestionsQuery { Questions = context.Message });
+        await _mediator.Send(new AddOrUpdateQuestionsQuery { QuestionsWithNotExistedUsers = context.Message });
     }
 }

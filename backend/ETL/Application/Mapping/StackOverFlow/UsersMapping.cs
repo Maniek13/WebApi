@@ -10,9 +10,16 @@ public class UsersMapping : IRegister
     {
         cfg.NewConfig<UserDto, User>()
            .MapWith(el => User.Create(
-                   el.AccountId,
-                   el.DispalaName,
-                   el.CreatedAt
+                    el.UserId,
+                    el.DisplayName,
+                    el.CreatedAt
+               ));
+
+        cfg.NewConfig<User, UserDto>()
+           .MapWith(el => new UserDto(
+                    el.UserId,
+                    el.DisplayName,
+                    el.CreatedAt
                ));
 
     }

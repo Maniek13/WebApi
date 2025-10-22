@@ -18,9 +18,9 @@ public class UsersService : Users.UsersBase
         _mapper = mapper;
     }
 
-    public override async Task<GetUsersReply> GetUsers(GetUsersRequest request, ServerCallContext context)
+    public override async Task<GetUsersReply> GetUsers(GetUsersRequest req, ServerCallContext context)
     {
-        var users = await _mediator.Send(new GetUsersQuery(), context.CancellationToken);
+        var users = await _mediator.Send(new FetchUsersQuery(), context.CancellationToken);
 
 
         var reply = new GetUsersReply();
@@ -29,5 +29,18 @@ public class UsersService : Users.UsersBase
         reply.Users.AddRange(usersResponse);
 
         return reply;
+    }
+
+    public override async Task<GetUserReply> GetUser(GetUserRequest req, ServerCallContext context)
+    {
+        var user = await _mediator.Send(new GetUserQuery { UserId = req.UserId }, context.CancellationToken);
+
+        return user == null ? 
+            new GetUserReply() { User = null }
+            : 
+            new GetUserReply()
+            {
+                User = _mapper.Map<UserDto, User>(user)
+            };
     }
 }

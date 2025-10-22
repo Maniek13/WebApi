@@ -1,6 +1,7 @@
 ﻿using Abstractions.DbContexts;
 using Application.Interfaces.App;
 using Domain.Entities.App;
+using Infrastructure.Security.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Infrastructure.Identity;
+namespace Infrastructure.Security.Identity;
 
 internal static class IdentityExtensions
 {
@@ -39,9 +40,23 @@ internal static class IdentityExtensions
 
         services.AddScoped<IAuthService, AuthService>();
 
+        var policies = configuration
+                    .GetSection("AuthorizationPolicies")
+                    .Get<List<AuthorizationPolicyConfig>>() ?? [];
+
+
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("Users", policy => policy.RequireRole("User"));
+            foreach (var policy in policies)
+            {
+                options.AddPolicy(policy.Name, policyBuilder =>
+                {
+                    if (policy.RequiredRoles?.Any() == true)
+                    {
+                        policyBuilder.RequireRole(policy.RequiredRoles);
+                    }
+                });
+            }
         });
 
         return services;

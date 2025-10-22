@@ -24,7 +24,7 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         long itemsCount = _options.Data.QuestionsCount;
         long pagesCount = itemsCount % 100 != 0 ? itemsCount / 100 + 1 : itemsCount / 100;
 
-        List<QuestionDto> tags = [];
+        List<QuestionDto> questions = [];
 
         for (int i = 1; i <= pagesCount; ++i)
         {
@@ -42,10 +42,9 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
 
             var itemsToken = root["items"]!;
             var listDto = itemsToken.ToObject<List<QuestionDto>>()!;
-            tags.AddRange(listDto!);
+            questions.AddRange(listDto!);
         }
 
-
-        return tags.DistinctBy(el => el.Title).ToArray();
+        return questions.DistinctBy(el => el.Title).ToArray();
     }
 }

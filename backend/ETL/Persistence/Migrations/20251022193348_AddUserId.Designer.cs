@@ -12,8 +12,8 @@ using Persistence.DbContexts.StackOverFlow;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(StackOverFlowDbContext))]
-    [Migration("20251021015329_AddUsers")]
-    partial class AddUsers
+    [Migration("20251022193348_AddUserId")]
+    partial class AddUserId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,10 +52,17 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("Title");
 
+                    b.Property<long>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Title")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Questions", (string)null);
                 });
@@ -77,13 +84,20 @@ namespace Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("CreatedAt");
 
-                    b.Property<string>("DispalaName")
+                    b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DispalaName");
+                        .HasColumnName("DisplayName");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
@@ -166,6 +180,21 @@ namespace Persistence.Migrations
                     b.HasIndex("Created");
 
                     b.ToTable("OutboxState");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.Question", b =>
+                {
+                    b.HasOne("Domain.Entities.StackOverFlow.User", "User")
+                        .WithMany("Questions")
+                        .HasForeignKey("UserId")
+                        .HasPrincipalKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.User", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

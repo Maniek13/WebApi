@@ -12,6 +12,5 @@ public static class Instalation
         TypeAdapterConfig.GlobalSettings.Scan(ModuleAssembly.GetExecutionAssembly);
 
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(ModuleAssembly.GetExecutionAssembly));
-
     }
 }

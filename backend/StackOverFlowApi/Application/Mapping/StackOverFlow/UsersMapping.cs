@@ -1,4 +1,4 @@
-﻿using Domain.Dtos.StackOverFlow;
+﻿using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using Mapster;
 
@@ -10,8 +10,8 @@ public class UsersMapping : IRegister
     {
         cfg.NewConfig<UserDto, User>()
            .MapWith(el => User.Create(
-                   el.AccountId,
-                   el.DispalaName,
+                   el.UserId,
+                   el.DisplayName,
                    el.CreatedAt
                ));
 

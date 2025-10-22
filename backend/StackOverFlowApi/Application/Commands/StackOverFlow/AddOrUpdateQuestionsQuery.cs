@@ -1,11 +1,11 @@
-﻿using Domain.Dtos.StackOverFlow;
+﻿using Contracts.Dtos.StackOverFlow;
 using MediatR;
 
 namespace Application.Commands.StackOverFlow
 {
     public class AddOrUpdateQuestionsQuery : IRequest
     {
-        public QuestionDto[] Questions { get; set; } = [];
+        public FechQuestionDto QuestionsWithNotExistedUsers { get; set; }
     }
 
 }

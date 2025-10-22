@@ -4,5 +4,6 @@ namespace Abstractions.Repositories;
 
 public interface IUserRepository
 {
-    public Task AddOrUpdateUsersAsync(List<User> questions, CancellationToken ct);
+    public Task AddOrUpdateUsersAsync(List<User> users, CancellationToken ct);
+    public bool CheckUserExist(long userId, CancellationToken ct);
 }

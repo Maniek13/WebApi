@@ -4,9 +4,9 @@ using Persistence.Instalation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.PersistenceSetup();
 builder.InfrastructoreSetup();
 builder.ApplicationSetup();
-builder.PersistenceSetup();
 
 var app = builder.Build();
 

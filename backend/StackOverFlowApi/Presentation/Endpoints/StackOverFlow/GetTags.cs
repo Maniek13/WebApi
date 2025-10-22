@@ -1,6 +1,5 @@
 ﻿using Application.Commands.StackOverFlow;
 using Contracts.Requests.StackOverFlow;
-using Contracts.Responses;
 using Domain.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using FastEndpoints;
@@ -11,7 +10,7 @@ using IMapper = MapsterMapper.IMapper;
 
 namespace Presentation.Endpoints.StackOverFlow;
 
-internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagResponse>>
+internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -48,9 +47,6 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagResponse>>
         };
 
         var res = await _mediator.Send(query, ct);
-
-        var result = new PagedList<TagResponse>(res.PageNumber, res.PageSize, res.TotalCount, _mapper.Map<List<TagDto>, List<TagResponse>>(res.Items));
-
-        await Send.OkAsync(result);
+        await Send.OkAsync(res);
     }
 }

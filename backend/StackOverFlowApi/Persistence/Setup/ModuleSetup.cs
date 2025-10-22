@@ -28,6 +28,8 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
         builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+        builder.Services.AddScoped<IQuestionsRepositoryRO, QuestionsRepositoryRO>();
+        builder.Services.AddScoped<IUsersRepositoryRO, UsersRepositoryRO>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         var serviceProvider = builder.Services.BuildServiceProvider();

@@ -48,10 +48,16 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("Title");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Title")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Questions", (string)null);
                 });
@@ -95,24 +101,39 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("AccountId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("AccountId");
-
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint")
                         .HasColumnName("CreatedAt");
 
-                    b.Property<string>("DispalaName")
+                    b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DispalaName");
+                        .HasColumnName("DisplayName");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.Question", b =>
+                {
+                    b.HasOne("Domain.Entities.StackOverFlow.User", "User")
+                        .WithMany("Questions")
+                        .HasForeignKey("UserId")
+                        .HasPrincipalKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.StackOverFlow.User", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

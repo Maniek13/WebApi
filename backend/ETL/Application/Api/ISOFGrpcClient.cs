@@ -5,4 +5,5 @@ namespace Infrastructure.Api;
 public interface ISOFGrpcClient
 {
     public Task<UserDto[]> GetUsersAsync(CancellationToken ct);
+    public Task<UserDto> GetUserAsync(long userId, CancellationToken ct);
 }

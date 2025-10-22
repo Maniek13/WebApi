@@ -18,13 +18,13 @@ public class UserRepository : IUserRepository
     {
         for (int i = 0; i < questions.Count; ++i)
         {
-            var question = await _dbContext.Users.FirstOrDefaultAsync(el => el.AccountId.Equals(questions[i].AccountId));
+            var question = await _dbContext.Users.FirstOrDefaultAsync(el => el.UserId.Equals(questions[i].UserId));
 
             if (question == null)
                 await _dbContext.Users.AddAsync(questions[i]!, ct);
             else
             {
-                question.Update(questions[i].DispalaName);
+                question.Update(questions[i].DisplayName);
                 _dbContext.Users.Update(question);
             }
         }

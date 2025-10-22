@@ -5,9 +5,11 @@ using Abstractions.Setup;
 using Application.Consumers;
 using Application.Interfaces.StackOverFlow;
 using Hangfire;
+using Infrastructure.Adapters;
+using Infrastructure.Adapters.Types;
 using Infrastructure.Api;
 using Infrastructure.Api.Options;
-using Infrastructure.Identity;
+using Infrastructure.Security.Identity;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
 using Infrastructure.Services.HostedServices;
@@ -42,6 +44,18 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddSignalR();
 
         builder.Services.AddIdentityWithJwt(builder.Configuration);
+
+        builder.Services.AddScoped<Query>();
+
+        builder.Services
+            .AddGraphQLServer()
+            .AddQueryType<Query>()
+            .AddType<UserType>()
+            .AddType<QuestionType>()
+            .AddType<TagType>()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting();
 
         builder.Services.AddHangfire(c =>
         {
@@ -83,5 +97,13 @@ public class ModuleSetup : IModuleSetup
             });
         });
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolice",
+                policy => policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+        });
     }
 }

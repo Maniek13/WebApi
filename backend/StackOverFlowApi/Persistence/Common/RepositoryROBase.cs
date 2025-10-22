@@ -19,4 +19,9 @@ public abstract class RepositoryROBase<TEntity, TDbContext> : IRepositoryROBase<
         var entities = _dbContext.Set<TEntity>();
         return await entities.AnyAsync(ct);
     }
+
+    public IQueryable<TEntity> GetAll()
+    {
+        return _dbContext.Set<TEntity>();
+    }
 }
