@@ -27,8 +27,4 @@ public class User  : Entity<User>
     {
         DispalaName = dispalaName;
     }
-
-    public static void Crate(long userId, string dispalaName, long createdAt) =>
-        new User(userId, dispalaName, createdAt);
-
 }

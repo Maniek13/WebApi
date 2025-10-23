@@ -5,6 +5,7 @@ option csharp_namespace = "Contracts.Messages";
 package sofdata.users;
 
 service Users {
+  rpc GetUsersByIds (GetUsersByIdsRequest) returns (GetUsersByIdsReply);
   rpc GetUsers (GetUsersRequest) returns (GetUsersReply);
   rpc GetUser (GetUserRequest) returns (GetUserReply);
 }
@@ -22,6 +23,14 @@ message GetUserRequest {
 
 message GetUserReply {
 	User user = 1;
+}
+
+message GetUsersByIdsRequest {
+	repeated int64 user_ids = 1;
+}
+
+message GetUsersByIdsReply {
+	repeated User users = 1;
 }
 
 

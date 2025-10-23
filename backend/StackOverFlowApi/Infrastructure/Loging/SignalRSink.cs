@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -18,9 +19,17 @@ public class SignalRSink : ILogEventSink
     {
         string message = $"[LOG][{logEvent.Level.ToString()}] {logEvent.RenderMessage()}";
 
-        _ = _hubContext.Clients.All.SendAsync("ReceiveLog", message)
-            .ContinueWith(task =>
+
+        _ = Task.Run(async () =>
+        {
+            try
             {
-            });
+                await _hubContext.Clients.All.SendAsync("ReceiveLog", message);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Błąd przy wysyłaniu wiadomości do SignalR");
+            }
+        });
     }
 }

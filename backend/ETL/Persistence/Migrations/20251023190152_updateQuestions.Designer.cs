@@ -12,8 +12,8 @@ using Persistence.DbContexts.StackOverFlow;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(StackOverFlowDbContext))]
-    [Migration("20251022101246_AddUsers")]
-    partial class AddUsers
+    [Migration("20251023190152_updateQuestions")]
+    partial class updateQuestions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,6 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long?>("AccountId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("CreateDateTimeStamp")
                         .HasColumnType("bigint");
 
@@ -45,6 +42,10 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Link");
 
+                    b.Property<long>("QuestionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("QuestionId");
+
                     b.Property<string>("Tags")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -52,15 +53,19 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Title");
+
+                    b.Property<long?>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("Title")
+                    b.HasIndex("QuestionId")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Questions", (string)null);
                 });
@@ -74,10 +79,6 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("AccountId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("AccountId");
-
                     b.Property<long>("CreatedAt")
                         .HasColumnType("bigint")
                         .HasColumnName("CreatedAt");
@@ -86,9 +87,13 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("DisplayName");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("UserId");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Users", (string)null);
@@ -177,8 +182,8 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Domain.Entities.StackOverFlow.User", "User")
                         .WithMany("Questions")
-                        .HasForeignKey("AccountId")
-                        .HasPrincipalKey("AccountId");
+                        .HasForeignKey("UserId")
+                        .HasPrincipalKey("UserId");
 
                     b.Navigation("User");
                 });

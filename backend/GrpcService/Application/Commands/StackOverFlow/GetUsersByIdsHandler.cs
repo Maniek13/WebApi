@@ -1,21 +1,20 @@
 ﻿using Abstarction.Repositories;
 using Application.Api;
 using Domain.Dtos;
-using Domain.Entities.StackOverFlow;
 using MapsterMapper;
 using MediatR;
 using NHibernate;
 
 namespace Application.Commands.StackOverFlow;
 
-public class FetchDataHandler : IRequestHandler<FetchUsersQuery, UserDto[]>
+public class GetUsersByIdsHandler : IRequestHandler<GetUsersByIdsQuery, UserDto[]>
 {
     private readonly IStackOverFlowApiClient _stackOverFlowApiClient;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ISession _session;
 
-    public FetchDataHandler(IMapper mapper,
+    public GetUsersByIdsHandler(IMapper mapper,
         IStackOverFlowApiClient stackOverFlowApiClient,
         IUserRepository userRepository,
         ISession session)
@@ -26,12 +25,12 @@ public class FetchDataHandler : IRequestHandler<FetchUsersQuery, UserDto[]>
         _session = session;
     }
 
-    public async Task<UserDto[]> Handle(FetchUsersQuery request, CancellationToken cancellationToken)
+    public async Task<UserDto[]> Handle(GetUsersByIdsQuery request, CancellationToken cancellationToken)
     {
-        var users = await _stackOverFlowApiClient.GetUsersAsync(cancellationToken);
+        var users = await _stackOverFlowApiClient.GetUsersByIdsAsync(request.UserIds.ToList(), cancellationToken);
 
-        await _userRepository.AddOrUpdate(_mapper.Map<UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
-        
+        await _userRepository.AddOrUpdate(_mapper.Map <UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
+    
         return users;
     }
 }

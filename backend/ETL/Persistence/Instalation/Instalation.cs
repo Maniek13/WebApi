@@ -14,7 +14,7 @@ public static class Instalation
     public static void PersistenceSetup(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<AbstractSOFDbContext, StackOverFlowDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
         var serviceProvider = builder.Services.BuildServiceProvider();
 
         builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();

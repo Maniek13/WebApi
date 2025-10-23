@@ -1,62 +1,63 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.DbContexts;
+using Abstractions.Repositories;
 using Application.Api;
 using Contracts.Dtos.StackOverFlow;
+using Contracts.Evetnts;
 using Domain.Entities.StackOverFlow;
 using Infrastructure.Api;
 using MapsterMapper;
 using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Application.Commands.StackOverFlow;
 
 public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
 {
-    private readonly IMediator _mediator;
     private readonly IStackOverFlowApiClient _StackOverFlowApiClient;
     private readonly IBus _bus;
     private readonly IQuestionRepository _questionRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ISOFGrpcClient _sOFGrpcClient;
+    private readonly AbstractSOFDbContext _dbContext;
 
-    public FetchQuestionsHandler(IMediator mediator, IStackOverFlowApiClient stackOverFlowApiClient, IBus bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient)
+    public FetchQuestionsHandler(IStackOverFlowApiClient stackOverFlowApiClient, IBus bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient, AbstractSOFDbContext dbContext)
     {
-        _mediator = mediator;
         _StackOverFlowApiClient = stackOverFlowApiClient;
         _bus = bus;
         _questionRepository = questionRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _sOFGrpcClient = sOFGrpcClient;
+        _dbContext = dbContext;
     }
 
     public async Task Handle(FetchQuestionsQuery request, CancellationToken cancellationToken)
     {
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
         var questions = (await _StackOverFlowApiClient.GetquestionsAsync(cancellationToken)).ToList();
 
-        var questionsWithoutUsers = questions.Where(el => !_userRepository.CheckUserExist(el.Member.UserId, cancellationToken)).ToArray();
+        var questionsWithoutUsers = questions.Where(el => !_userRepository.CheckUserExist(el.Member.UserId)).ToArray();
 
-        List<User> usersToAdd = new List<User>();
+        long[] userIds = questionsWithoutUsers.Select(el => el.Member.UserId).ToArray();
+        var users = await _sOFGrpcClient.GetUsersByIdsAsync(userIds, cancellationToken);
 
-        for(int i = 0; i < questionsWithoutUsers.Length; ++i)
-        {
-            var userId = questionsWithoutUsers[i].Member.UserId;
-            var user = await _sOFGrpcClient.GetUserAsync(userId, cancellationToken);
+        await _userRepository.AddOrUpdateUsersAsync(_mapper.Map<UserDto[], List<User>>(users), cancellationToken);
 
-            if (user == null)
-                continue;
+        List<Question> questionsToAddOrUpdate = [];
 
-            usersToAdd.Add(_mapper.Map<UserDto, User>(await _sOFGrpcClient.GetUserAsync(userId, cancellationToken)));
-            questions.Remove(questions.First(el => el.Member.UserId == userId));
-        }
+        List<QuestionDto> questionsToUpdate = questions.Where(el => _userRepository.CheckUserExist(el.Member.UserId)).ToList();
+        questionsToAddOrUpdate.AddRange(_mapper.Map<List<QuestionDto>, List<Question>>(questionsToUpdate));
 
-        await _userRepository.AddOrUpdateUsersAsync(usersToAdd, cancellationToken);
+        List<QuestionDto> questionsWithDeleteUser = questions.Where(el => !questionsToUpdate.Any(item => item.QuestionId == el.QuestionId)).ToList();
+        questionsToAddOrUpdate.AddRange(_mapper.Map<(List<QuestionDto>, long? userId), List<Question>>((questionsWithDeleteUser, null)));
 
-        await _questionRepository.AddOrUpdateQuestionsAsync(_mapper.Map<List<QuestionDto>, List<Question>>(questions), cancellationToken);
+        await _questionRepository.AddOrUpdateQuestionsAsync(questionsToAddOrUpdate, cancellationToken);
 
         var endpoint = await _bus.GetSendEndpoint(new Uri("queue:Questions"));
+        await endpoint.Send(new QuestionEvent { Users = users, Questions = [.. questionsToUpdate.Concat(questionsWithDeleteUser)] }, cancellationToken);
 
-        await endpoint.Send(new FechQuestionDto(_mapper.Map<List<User>, UserDto[]>(usersToAdd), questions.ToArray()), cancellationToken);
+        await transaction.CommitAsync();
     }
 }

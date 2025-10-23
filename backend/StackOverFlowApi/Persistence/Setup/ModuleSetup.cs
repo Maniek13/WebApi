@@ -17,13 +17,13 @@ public class ModuleSetup : IModuleSetup
     public void Setup(WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<AbstractSOFDbContext, StackOverFlowDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<AbstractAppDbContext, AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
 
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();

@@ -43,4 +43,16 @@ public class UsersService : Users.UsersBase
                 User = _mapper.Map<UserDto, User>(user)
             };
     }
+
+    public override async Task<GetUsersByIdsReply> GetUsersByIds(GetUsersByIdsRequest req, ServerCallContext context)
+    {
+        var users = await _mediator.Send(new GetUsersByIdsQuery { UserIds = req.UserIds.ToArray() }, context.CancellationToken);
+
+        var res = _mapper.Map<UserDto[], User[]>(users);
+        return
+            new GetUsersByIdsReply()
+            {
+                Users = { res }
+            };
+    }
 }

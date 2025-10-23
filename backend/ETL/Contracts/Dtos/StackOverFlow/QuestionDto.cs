@@ -3,6 +3,8 @@
 namespace Contracts.Dtos.StackOverFlow;
 
 public record QuestionDto(
+            [JsonProperty("question_id")]
+            long QuestionId,
             string Title,
             [JsonProperty("owner")]
             MemberDto Member,

@@ -25,14 +25,14 @@ public class UserRepository : IUserRepository
             else
             {
                 question.Update(users[i].DisplayName);
-                _dbContext.Users.Update(question);
             }
         }
 
         await _dbContext.SaveChangesAsync(ct);
     }
 
-    public bool CheckUserExist(long userId, CancellationToken ct) =>
+    public bool CheckUserExist(long userId) =>
         _dbContext.Users.FirstOrDefault(el => el.UserId == userId) == null ? false : true;
+
 
 }

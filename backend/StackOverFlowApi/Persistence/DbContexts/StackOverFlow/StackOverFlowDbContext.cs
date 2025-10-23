@@ -1,5 +1,6 @@
 ﻿using Abstractions.DbContexts;
 using Domain.Entities.StackOverFlow;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -29,6 +30,7 @@ public class StackOverFlowDbContext : AbstractSOFDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(ModuleAssembly.GetExecutionAssembly);
+
     }
 
     public DbSet<Tag> Tags => Set<Tag>();

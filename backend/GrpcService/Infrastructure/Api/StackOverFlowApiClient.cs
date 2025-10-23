@@ -28,7 +28,7 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
 
         for (int i = 1; i <= pagesCount; ++i)
         {
-            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow", ct);
+            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 break;
@@ -46,20 +46,44 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         }
 
 
-
-        return users.DistinctBy(u => u.UserId).ToArray();
+        return users
+                .GroupBy(x => x.UserId)
+                .Select(g => g.Last())
+                .ToArray();
     }
 
     public async Task<UserDto?> GetUserAsync(long userId, CancellationToken ct)
     {
-        long itemsCount = _options.Data.UsersCount;
-        long pagesCount = itemsCount % 100 != 0 ? itemsCount / 100 + 1 : itemsCount / 100;
-
         List<UserDto> users = [];
 
-        for (int i = 1; i <= pagesCount; ++i)
+        var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users/{userId}?site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
+        
+        if (response.StatusCode == HttpStatusCode.TooManyRequests)
+            throw new HttpRequestException("Too Many Requests");
+
+        var json = await response.Content.ReadAsStringAsync(ct);
+        var root = JObject.Parse(json);
+
+        var errorId = root["error_id"];
+        if (errorId != null && errorId.ToObject<int>().Equals(502))
+            throw new HttpRequestException("Too Many Requests");
+
+        var itemsToken = root["items"]!;
+        var listDto = itemsToken.ToObject<List<UserDto>>()!;
+        users.AddRange(listDto!);
+
+
+        return users.FirstOrDefault();
+    }
+
+    public async Task<UserDto[]> GetUsersByIdsAsync(List<long> usersIds, CancellationToken ct)
+    {
+        List<UserDto> users = [];
+
+        foreach (var chunk in usersIds.Chunk(100))
         {
-            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users?{userId}&site=stackoverflow", ct);
+            var ids = string.Join(";", chunk);
+            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users/{ids}?site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 break;
@@ -76,9 +100,6 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
             users.AddRange(listDto!);
         }
 
-        if(users == null || users.Count == 0 )
-            throw new ArgumentException("User doesn't exist");
-
-        return users.FirstOrDefault();
+        return users.ToArray();
     }
 }

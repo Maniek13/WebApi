@@ -1,6 +1,5 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
-using Abstractions.DbContexts;
 using Abstractions.Setup;
 using Application.Consumers;
 using Application.Interfaces.StackOverFlow;
@@ -15,6 +14,7 @@ using Infrastructure.Services.DataServices;
 using Infrastructure.Services.HostedServices;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -55,11 +55,19 @@ public class ModuleSetup : IModuleSetup
             .AddType<TagType>()
             .AddProjections()
             .AddFiltering()
-            .AddSorting();
+            .AddSorting()
+            .AddProjections()
+            .ModifyCostOptions(opt =>
+            {
+                opt.EnforceCostLimits = false;
+            });
+
+
+        var connectionString = builder.Configuration.GetConnectionString("Default");
 
         builder.Services.AddHangfire(c =>
         {
-            c.UseSqlServerStorage(builder.Configuration.GetConnectionString("Default"));
+            c.UseSqlServerStorage(connectionString);
         });
 
         builder.Services.AddHangfireServer();
@@ -68,13 +76,6 @@ public class ModuleSetup : IModuleSetup
         {
             cfg.AddConsumer<QuestionsConsumer>();
             cfg.AddConsumer<UsersConsumer>();
-
-            cfg.AddEntityFrameworkOutbox<AbstractSOFDbContext>(o =>
-            {
-                o.UseSqlServer();
-                o.QueryDelay = TimeSpan.FromSeconds(5);
-                o.DisableInboxCleanupService();
-            });
 
             cfg.UsingRabbitMq((context, c) =>
             {
@@ -88,11 +89,13 @@ public class ModuleSetup : IModuleSetup
                 c.ReceiveEndpoint("Questions", e =>
                 {
                     e.ConfigureConsumer<QuestionsConsumer>(context);
+                    e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(10)));
                 });
 
                 c.ReceiveEndpoint("Users", e =>
                 {
                     e.ConfigureConsumer<UsersConsumer>(context);
+                    e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(10)));
                 });
             });
         });

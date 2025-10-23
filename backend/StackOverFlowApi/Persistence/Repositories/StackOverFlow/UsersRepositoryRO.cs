@@ -10,4 +10,6 @@ public class UsersRepositoryRO : RepositoryROBase<User, StackOverFlowDbContextRO
     public UsersRepositoryRO(StackOverFlowDbContextRO dbContexts) : base(dbContexts)
     {
     }
+    public bool CheckIfUserExistByUserId(long userId) =>
+        _dbContext.Users.FirstOrDefault(u => u.UserId == userId) == null ? false : true;
 }

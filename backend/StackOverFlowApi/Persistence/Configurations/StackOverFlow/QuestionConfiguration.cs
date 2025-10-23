@@ -12,14 +12,18 @@ internal class QuestionConfiguration : IEntityTypeConfiguration<Question>
     {
         builder.ToTable("Questions");
         builder.HasKey(el => el.Id);
-        builder.HasIndex(el => el.Title).IsUnique();
+        builder.HasIndex(el => el.QuestionId).IsUnique();
 
         builder.Property(el => el.Id)
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 
+        builder.Property(el => el.QuestionId)
+            .HasColumnName("QuestionId");
+
         builder.Property(el => el.UserId)
-            .HasColumnName("UserId");
+            .HasColumnName("UserId")
+            .IsRequired(false);
 
         builder.Property(el => el.Title)
             .HasColumnName("Title");

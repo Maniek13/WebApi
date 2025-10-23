@@ -25,7 +25,6 @@ public class UserRepository : IUserRepository
             else
             {
                 question.Update(questions[i].DisplayName);
-                _dbContext.Users.Update(question);
             }
         }
 

@@ -3,12 +3,11 @@
 namespace Contracts.Dtos.StackOverFlow;
 
 public record QuestionDto(
+            long QuestionId,
             string Title,
-            [JsonProperty("owner")]
             MemberDto Member,
             string[] Tags,
             string Link,
-            [JsonProperty("creation_date")]
             long CreateDateTimeStamp
     );
 
