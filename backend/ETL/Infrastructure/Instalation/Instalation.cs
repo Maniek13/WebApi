@@ -5,7 +5,9 @@ using Infrastructure.Api;
 using Infrastructure.Api.Options;
 using Infrastructure.Filters;
 using Infrastructure.Jobs;
+using Infrastructure.Middleware;
 using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ public static class Instalation
 
         builder.Services.AddHttpClient<IStackOverFlowApiClient, StackOverFlowApiClient>();
         builder.Services.AddScoped<ISOFGrpcClient, SOFGrpcClient>();
+        builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
 
         builder.Services.AddHangfire(c =>
         {
@@ -37,6 +40,7 @@ public static class Instalation
                 o.UseSqlServer();
                 o.QueryDelay = TimeSpan.FromSeconds(5);
                 o.DisableInboxCleanupService();
+                o.UseBusOutbox();
             });
 
             cfg.UsingRabbitMq((context, c) =>

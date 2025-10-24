@@ -27,8 +27,6 @@ public class UserRepository : IUserRepository
                 question.Update(users[i].DisplayName);
             }
         }
-
-        await _dbContext.SaveChangesAsync(ct);
     }
 
     public bool CheckUserExist(long userId) =>

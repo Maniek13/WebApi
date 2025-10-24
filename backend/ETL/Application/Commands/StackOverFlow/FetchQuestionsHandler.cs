@@ -1,5 +1,4 @@
-﻿using Abstractions.DbContexts;
-using Abstractions.Repositories;
+﻿using Abstractions.Repositories;
 using Application.Api;
 using Contracts.Dtos.StackOverFlow;
 using Contracts.Evetnts;
@@ -14,14 +13,13 @@ namespace Application.Commands.StackOverFlow;
 public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
 {
     private readonly IStackOverFlowApiClient _StackOverFlowApiClient;
-    private readonly IBus _bus;
+    private readonly ISendEndpointProvider  _bus;
     private readonly IQuestionRepository _questionRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ISOFGrpcClient _sOFGrpcClient;
-    private readonly AbstractSOFDbContext _dbContext;
 
-    public FetchQuestionsHandler(IStackOverFlowApiClient stackOverFlowApiClient, IBus bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient, AbstractSOFDbContext dbContext)
+    public FetchQuestionsHandler(IStackOverFlowApiClient stackOverFlowApiClient, ISendEndpointProvider bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient)
     {
         _StackOverFlowApiClient = stackOverFlowApiClient;
         _bus = bus;
@@ -29,13 +27,10 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
         _userRepository = userRepository;
         _mapper = mapper;
         _sOFGrpcClient = sOFGrpcClient;
-        _dbContext = dbContext;
     }
 
     public async Task Handle(FetchQuestionsQuery request, CancellationToken cancellationToken)
     {
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
-
         var questions = (await _StackOverFlowApiClient.GetquestionsAsync(cancellationToken)).ToList();
 
         var questionsWithoutUsers = questions.Where(el => !_userRepository.CheckUserExist(el.Member.UserId)).ToArray();
@@ -57,7 +52,5 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
 
         var endpoint = await _bus.GetSendEndpoint(new Uri("queue:Questions"));
         await endpoint.Send(new QuestionEvent { Users = users, Questions = [.. questionsToUpdate.Concat(questionsWithDeleteUser)] }, cancellationToken);
-
-        await transaction.CommitAsync();
     }
 }

@@ -29,7 +29,5 @@ public class QuestionRepository : IQuestionRepository
                 question.Update(questions[i].Tags, questions[i].Link, questions[i].Title);
             }
         }
-
-        await _dbContext.SaveChangesAsync(ct);
     }
 }
