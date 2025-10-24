@@ -19,19 +19,32 @@ public class TransactionBehavior<TReq, TRes> : IPipelineBehavior<TReq, TRes>
     {
         var attr = typeof(TReq).GetCustomAttribute<DbContextAtribute>();
 
-        DbContext? dbContext = null;
-
+       
         if (attr != null)
         {
             var contextType = attr.ContextType;
-            dbContext = (DbContext)_serviceProvider.GetRequiredService(contextType)!;
- 
-        }
-        var response = await next();
-        
-        if(dbContext != null)
-            await dbContext.SaveChangesAsync(cancellationToken);
+            var dbContext = (DbContext)_serviceProvider.GetRequiredService(contextType)!;
 
-        return response;
+            using var transaction = dbContext.Database.BeginTransaction();
+
+            try
+            {
+                var response = await next();
+
+                await dbContext.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
+        else
+        {
+            return await next();
+        }
     }
 }

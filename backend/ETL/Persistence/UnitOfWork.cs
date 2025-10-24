@@ -5,13 +5,12 @@ namespace Persistence;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly AbstractSOFDbContext _dbContext;
-
+    public AbstractSOFDbContext Context { get; }
     public UnitOfWork(AbstractSOFDbContext dbContext)
     {
-        _dbContext = dbContext;
+        Context = dbContext;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default) =>
-       await  _dbContext.SaveChangesAsync(cancellationToken);
+       await  Context.SaveChangesAsync(cancellationToken);
 }
