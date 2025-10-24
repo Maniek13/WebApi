@@ -10,7 +10,7 @@ Endpoints
 
 http://4.210.65.98:5000/StackOverFlow/Tags 
 
-http://4.210.65.98:5000/StackOverFlow/RefreshData 
+http://4.210.65.98:5000/StackOverFlow/Tags/RefreshData
 
 http://4.210.65.98:5000/App/Users/Register
 
@@ -61,7 +61,7 @@ Endpoints:
 
    - if parametrs not set, endpoint returns first 100 records 
 
-  2. RefresTags http://localhost:5000/StackOverFlow/RefreshData 
+  2. RefresTags http://localhost:5000/StackOverFlow/Tags/RefreshData 
 
   3. Register http://localhost:5000/App/Users/Register
 
