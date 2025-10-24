@@ -1,11 +1,12 @@
 ﻿using Contracts.Dtos.StackOverFlow;
+using Contracts.Evetnts;
 using MediatR;
 
 namespace Application.Commands.StackOverFlow
 {
     public class AddOrUpdateQuestionsQuery : IRequest
     {
-        public QuestionDto[] Questions { get; set; } = [];
+        public QuestionEvent QuestionsWithNotExistedUsers { get; set; }
     }
 
 }

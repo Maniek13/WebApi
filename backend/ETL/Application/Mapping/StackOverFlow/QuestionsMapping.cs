@@ -10,10 +10,21 @@ public class QuestionsMapping : IRegister
     {
         cfg.NewConfig<QuestionDto, Question>()
            .MapWith(el => Question.Create(
+                   el.QuestionId,
+                   el.Member.UserId,
                    el.Title,
                    el.Tags,
                    el.Link,
                    el.CreateDateTimeStamp
+               ));
+        cfg.NewConfig<(QuestionDto dto, long? userId), Question>()
+           .MapWith(el => Question.Create(
+                   el.dto.QuestionId,
+                   el.userId,
+                   el.dto.Title,
+                   el.dto.Tags,
+                   el.dto.Link,
+                   el.dto.CreateDateTimeStamp
                ));
 
     }

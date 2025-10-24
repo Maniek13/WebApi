@@ -1,5 +1,5 @@
 ﻿using Abstractions.Api;
-using Contracts.Dtos.StackOverFlow;
+using Domain.Dtos.StackOverFlow;
 using Infrastructure.Api.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -54,6 +54,6 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         }
 
 
-        return tags.ToArray();
+        return tags.DistinctBy(el => el.Name).ToArray();
     }
 }

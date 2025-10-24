@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+option csharp_namespace = "Contracts.Messages";
+
+package sofdata.users;
+
+service Users {
+  rpc GetUsersByIds (GetUsersByIdsRequest) returns (GetUsersByIdsReply);
+  rpc GetUsers (GetUsersRequest) returns (GetUsersReply);
+  rpc GetUser (GetUserRequest) returns (GetUserReply);
+}
+
+message GetUsersRequest {
+}
+
+message GetUsersReply {
+	repeated User users = 1;
+}
+
+message GetUserRequest {
+	int64 user_id = 1;
+}
+
+message GetUserReply {
+	User user = 1;
+}
+
+message GetUsersByIdsRequest {
+	repeated int64 user_ids = 1;
+}
+
+message GetUsersByIdsReply {
+	repeated User users = 1;
+}
+
+
+message User{
+	int64 user_id = 1;
+	string display_name = 3;
+	int64 creation_date = 4;
+
+}

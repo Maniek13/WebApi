@@ -1,4 +1,4 @@
-﻿using Contracts.Dtos.StackOverFlow;
+﻿using Domain.Dtos.StackOverFlow;
 using MediatR;
 using Shared.Pagination;
 

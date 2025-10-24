@@ -17,11 +17,16 @@ public class ModuleStartup : IModuleStartup
 {
     public void Startup(WebApplication application, IConfiguration configuration)
     {
+        application.UseCors("CorsPolice");
 
         application.UseMiddleware<ErrorLoggingMiddleware>();
 
+        application.UseRouting();
         application.UseAuthentication();
         application.UseAuthorization();
+
+
+        application.MapGraphQL("/graphql");
 
         var hubContext = application.Services.GetRequiredService<IHubContext<LogsHub>>();
 
@@ -34,6 +39,7 @@ public class ModuleStartup : IModuleStartup
 
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");
+
    
 
         application.UseHangfireDashboard("/dashbord", new DashboardOptions

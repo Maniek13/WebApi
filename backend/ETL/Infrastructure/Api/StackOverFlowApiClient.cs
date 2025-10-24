@@ -1,5 +1,6 @@
 ﻿using Application.Api;
 using Contracts.Dtos.StackOverFlow;
+using Contracts.Messages;
 using Infrastructure.Api.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -24,11 +25,15 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         long itemsCount = _options.Data.QuestionsCount;
         long pagesCount = itemsCount % 100 != 0 ? itemsCount / 100 + 1 : itemsCount / 100;
 
-        List<QuestionDto> tags = [];
+        List<QuestionDto> questions = [];
 
         for (int i = 1; i <= pagesCount; ++i)
         {
-            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/questions?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow", ct);
+            var url = $"{_options.BaseUrl}/questions?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow";
+            if (!string.IsNullOrWhiteSpace(_options.Key))
+                url = $"{url}&key={_options.Key}";
+
+            var response = await _httpClient.GetAsync(url, ct);
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 break;
@@ -42,10 +47,12 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
 
             var itemsToken = root["items"]!;
             var listDto = itemsToken.ToObject<List<QuestionDto>>()!;
-            tags.AddRange(listDto!);
+            questions.AddRange(listDto!);
         }
 
-
-        return tags.ToArray();
+        return questions
+            .GroupBy(x => x.QuestionId)
+            .Select(g => g.Last())
+            .ToArray();
     }
 }

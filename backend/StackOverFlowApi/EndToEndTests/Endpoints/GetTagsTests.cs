@@ -1,9 +1,9 @@
-using Contracts.Dtos.StackOverFlow;
+using Domain.Dtos.StackOverFlow;
 using EndToEndTests.ApplicationFactory;
 using FluentAssertions;
+using Presentation.Routes.StackOverFlow;
 using Shared.Pagination;
 using System.Net.Http.Json;
-using Presentation.Routes.StackOverFlow;
 
 namespace EndToEndTests.Endpoints;
 public partial class ApplicationFactoryTests : IClassFixture<WebApiWebAplicationFactory>

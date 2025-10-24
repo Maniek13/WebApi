@@ -2,7 +2,6 @@
 using Domain.Entities.StackOverFlow;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts.StackOverFlow;
-using System.Collections.Immutable;
 
 namespace Persistence.Repositories.StackOverFlow;
 
@@ -17,17 +16,17 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task AddOrUpdateQuestionsAsync(List<Question> questions, CancellationToken ct)
     {
+        Question? question = null;
+
         for (int i = 0; i < questions.Count; ++i)
         {
-            var question = await _dbContext.Questions.FirstOrDefaultAsync(el => el.Title.Equals(questions[i].Title));
+            question = await _dbContext.Questions.FirstOrDefaultAsync(el => el.QuestionId.Equals(questions[i].QuestionId));
 
             if (question == null)
-
                 await _dbContext.Questions.AddAsync(questions[i]!, ct);
             else
             {
-                question.Update(questions[i].Tags, questions[i].Link);
-                _dbContext.Questions.Update(question);
+                question.Update(questions[i].Tags, questions[i].Link, questions[i].Title);
             }
         }
 

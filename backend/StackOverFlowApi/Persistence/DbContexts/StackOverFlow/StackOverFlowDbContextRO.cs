@@ -20,4 +20,5 @@ public class StackOverFlowDbContextRO : DbContext
     
     public IQueryable<Tag> Tags => Set<Tag>().AsNoTracking();
     public IQueryable<Question> Questions => Set<Question>().AsNoTracking();
+    public IQueryable<User> Users => Set<User>().AsNoTracking();
 }

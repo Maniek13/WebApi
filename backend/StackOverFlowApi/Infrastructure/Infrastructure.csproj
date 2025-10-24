@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.11" />
+    <PackageReference Include="HotChocolate.Data" Version="15.1.11" />
+	  <PackageReference Include="HotChocolate.Types" Version="15.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
@@ -15,8 +18,8 @@
 	  <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
 	  <PackageReference Include="Hangfire" Version="1.8.21" />
 	  <PackageReference Include="Hangfire.Core" Version="1.8.21" />
-	  <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.5.4" />
-	  <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
+	  <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.5.5" />
+	  <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.5" />
   </ItemGroup>
 
   <ItemGroup>

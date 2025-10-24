@@ -2,9 +2,9 @@
 using Abstractions.Caches;
 using Abstractions.Repositories;
 using Application.Interfaces.StackOverFlow;
-using Contracts.Dtos.StackOverFlow;
-using Domain.Entities.StackOverFlow;
+using Domain.Dtos.StackOverFlow;
 using MapsterMapper;
+using Tag = Domain.Entities.StackOverFlow.Tag;
 
 namespace Infrastructure.Services.DataServices;
 

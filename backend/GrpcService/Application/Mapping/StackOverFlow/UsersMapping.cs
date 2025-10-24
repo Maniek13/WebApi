@@ -1,0 +1,14 @@
+﻿using Domain.Dtos;
+using Domain.Entities.StackOverFlow;
+using Mapster;
+
+namespace Application.Mapping.StackOverFlow;
+
+public class UsersMapping : IRegister
+{
+    public void Register(TypeAdapterConfig cfg)
+    {
+        cfg.NewConfig<UserDto, User>()
+           .MapWith(el => User.Create(el.UserId, el.DispalaName, el.CreatedAt));
+    }
+}
