@@ -1,8 +1,8 @@
 ﻿namespace Shared.Atributes;
 
-public class DbContextAtribute : Attribute
+public class SaveDbContextAttribute : Attribute
 {
-    public DbContextAtribute(Type contextType)
+    public SaveDbContextAttribute(Type contextType)
     {
         ContextType = contextType;
     }

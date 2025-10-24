@@ -19,7 +19,7 @@ public class TransactionBehavior<TReq, TRes> : IPipelineBehavior<TReq, TRes>
 
     public async Task<TRes> Handle(TReq request, RequestHandlerDelegate<TRes> next, CancellationToken cancellationToken)
     {
-        var attr = typeof(TReq).GetCustomAttribute<DbContextAtribute>();
+        var attr = typeof(TReq).GetCustomAttribute<SaveDbContextAttribute>();
 
         DbContext? dbContext = null;
 

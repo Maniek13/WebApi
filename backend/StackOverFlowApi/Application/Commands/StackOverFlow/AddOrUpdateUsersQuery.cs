@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Commands.StackOverFlow
 {
-    [Shared.Atributes.DbContextAtribute(typeof(AbstractAppDbContext))]
+    [Shared.Atributes.SaveDbContextAttribute(typeof(AbstractAppDbContext))]
     public class AddOrUpdateUsersQuery : IRequest
     {
         public UserDto[] Users { get; set; } = [];
