@@ -20,6 +20,7 @@ public static class Instalation
             builder.Configuration.GetSection("ExternalApies:StackOverFlow"));
 
         builder.Services.AddHttpClient<IStackOverFlowApiClient, StackOverFlowApiClient>();
+        builder.Services.AddScoped<ISOFGrpcClient, SOFGrpcClient>();
 
         builder.Services.AddHangfire(c =>
         {

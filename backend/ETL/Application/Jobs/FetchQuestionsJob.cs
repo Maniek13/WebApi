@@ -13,5 +13,5 @@ public class FetchQuestionsJob
     }
 
     public async Task RunAsync(CancellationToken cancellationToken) =>
-       await _mediator.Send(new FetchDataQuery(), cancellationToken);
+       await _mediator.Send(new FetchQuestionsQuery(), cancellationToken);
 }

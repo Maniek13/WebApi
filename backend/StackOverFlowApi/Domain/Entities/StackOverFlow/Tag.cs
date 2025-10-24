@@ -18,6 +18,8 @@ public class Tag : Entity<Tag>
     public long Count { get; private set; }
     public double? Participation { get; private set; }
 
+    public List<Question>? Questions { get; private set; } = [];
+
     public static Tag Create(string Name, long Count, double? participation = null) =>
         new Tag(Name, Count, participation);
 

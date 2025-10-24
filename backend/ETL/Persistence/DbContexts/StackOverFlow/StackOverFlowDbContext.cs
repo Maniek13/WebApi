@@ -29,4 +29,5 @@ public class StackOverFlowDbContext : AbstractSOFDbContext
     }
 
     public DbSet<Question> Questions => Set<Question>();
+    public DbSet<User> Users => Set<User>();
 }

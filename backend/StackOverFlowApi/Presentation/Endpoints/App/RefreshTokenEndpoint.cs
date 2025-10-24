@@ -1,12 +1,12 @@
 ﻿using Application.Interfaces.App;
 using Contracts.Requests.App;
-using Contracts.Results;
+using Contracts.Responses;
 using FastEndpoints;
 using Presentation.Routes.App;
 
 namespace Presentation.Endpoints.App;
 
-internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, LoginResult>
+internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, TokenResponse>
 {
     private readonly IAuthService _authService;
 
@@ -33,6 +33,6 @@ internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, LoginResult>
             ThrowError(ex.Message, 401);
         }
 
-        await Send.OkAsync(new LoginResult(tokens.accesToken, tokens.refreshToken), ct);
+        await Send.OkAsync(new TokenResponse(tokens.accesToken, tokens.refreshToken), ct);
     }
 }

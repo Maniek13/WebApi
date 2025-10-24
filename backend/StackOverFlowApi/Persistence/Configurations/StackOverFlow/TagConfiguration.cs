@@ -12,6 +12,8 @@ internal class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.HasKey(el => el.Id);
         builder.HasIndex(el => el.Name).IsUnique();
 
+        builder.Ignore(el => el.Questions);
+
         builder.Property(el => el.Id)
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");

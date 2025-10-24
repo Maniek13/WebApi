@@ -17,6 +17,9 @@ http://4.210.65.98:5000/App/Users/Register
 http://4.210.65.98:5000/App/Users/Login
 
 
+GraphQl:
+http://4.210.65.98:5000/graphql
+
 Websockets:
 
 ws://4.210.65.98:5000/chat 
@@ -117,5 +120,8 @@ Password: guest
 Fronted:
 
 http://localhost:3000
+
+GraphQl:
+http://localhost/graphql/
  
 

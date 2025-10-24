@@ -9,10 +9,11 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="MassTransit.EntityFrameworkCore" Version="8.5.5" />
     <PackageReference Include="MediatR" Version="13.0.0" />
 	  <PackageReference Include="Hangfire" Version="1.8.21" />
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
-	  <PackageReference Include="MassTransit" Version="8.5.4" />
+	  <PackageReference Include="MassTransit" Version="8.5.5" />
   </ItemGroup>
 
   <ItemGroup>

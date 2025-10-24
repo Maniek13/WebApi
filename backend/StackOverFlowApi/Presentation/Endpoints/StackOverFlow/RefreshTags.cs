@@ -16,7 +16,7 @@ internal class RefreshTags : EndpointWithoutRequest
     public override void Configure()
     {
         Put(TagsRoutes.Refresh);
-        Policies("Users");
+        Policies("IsUser");
     }
 
     public override async Task HandleAsync(CancellationToken ct)
