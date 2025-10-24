@@ -29,6 +29,7 @@ public class StackOverFlowDbContext : AbstractSOFDbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.AddTransactionalOutboxEntities();
         modelBuilder.ApplyConfigurationsFromAssembly(ModuleAssembly.GetExecutionAssembly);
 
     }

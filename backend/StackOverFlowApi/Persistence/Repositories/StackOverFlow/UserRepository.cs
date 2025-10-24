@@ -27,7 +27,5 @@ public class UserRepository : IUserRepository
                 question.Update(questions[i].DisplayName);
             }
         }
-
-        await _dbContext.SaveChangesAsync(ct);
     }
 }

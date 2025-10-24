@@ -18,6 +18,5 @@ public class TagsRepository : ITagsRepository
     {
         await _dbContext.Tags.ExecuteDeleteAsync();
         await _dbContext.Tags.AddRangeAsync(tags, ct);
-        await _dbContext.SaveChangesAsync();
     }
 }
