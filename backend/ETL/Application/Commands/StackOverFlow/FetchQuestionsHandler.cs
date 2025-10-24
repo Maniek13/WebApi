@@ -1,4 +1,5 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.Interfaces;
+using Abstractions.Repositories;
 using Application.Api;
 using Contracts.Dtos.StackOverFlow;
 using Contracts.Evetnts;
@@ -18,8 +19,9 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly ISOFGrpcClient _sOFGrpcClient;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public FetchQuestionsHandler(IStackOverFlowApiClient stackOverFlowApiClient, ISendEndpointProvider bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient)
+    public FetchQuestionsHandler(IStackOverFlowApiClient stackOverFlowApiClient, ISendEndpointProvider bus, IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISOFGrpcClient sOFGrpcClient, IUnitOfWork unitOfWork)
     {
         _StackOverFlowApiClient = stackOverFlowApiClient;
         _bus = bus;
@@ -27,26 +29,30 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
         _userRepository = userRepository;
         _mapper = mapper;
         _sOFGrpcClient = sOFGrpcClient;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(FetchQuestionsQuery request, CancellationToken cancellationToken)
     {
         var questions = (await _StackOverFlowApiClient.GetquestionsAsync(cancellationToken)).ToList();
 
-        var questionsWithoutUsers = questions.Where(el => !_userRepository.CheckUserExist(el.Member.UserId)).ToArray();
+        var questionsWithoutUsers = questions.Where(el => el.Member.UserId != null && !_userRepository.CheckUserExist((long)el.Member.UserId)).ToArray();
 
-        long[] userIds = questionsWithoutUsers.Select(el => el.Member.UserId).ToArray();
+        long[] userIds = questionsWithoutUsers.Select(el => (long)el.Member.UserId!).ToArray();
+
         var users = await _sOFGrpcClient.GetUsersByIdsAsync(userIds, cancellationToken);
 
         await _userRepository.AddOrUpdateUsersAsync(_mapper.Map<UserDto[], List<User>>(users), cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         List<Question> questionsToAddOrUpdate = [];
 
-        List<QuestionDto> questionsToUpdate = questions.Where(el => _userRepository.CheckUserExist(el.Member.UserId)).ToList();
+        List<QuestionDto> questionsToUpdate = questions.Where(el => el.Member.UserId != null && _userRepository.CheckUserExist((long)el.Member.UserId)).ToList();
         questionsToAddOrUpdate.AddRange(_mapper.Map<List<QuestionDto>, List<Question>>(questionsToUpdate));
 
         List<QuestionDto> questionsWithDeleteUser = questions.Where(el => !questionsToUpdate.Any(item => item.QuestionId == el.QuestionId)).ToList();
         questionsToAddOrUpdate.AddRange(_mapper.Map<(List<QuestionDto>, long? userId), List<Question>>((questionsWithDeleteUser, null)));
+        questionsWithDeleteUser = _mapper.Map<(List<QuestionDto>, long? userId), List<QuestionDto>>((questionsWithDeleteUser, null));
 
         await _questionRepository.AddOrUpdateQuestionsAsync(questionsToAddOrUpdate, cancellationToken);
 

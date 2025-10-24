@@ -13,7 +13,8 @@ public class UserRepository : IUserRepository
     {
         _dbContext = dbContext;
     }
-
+    public bool CheckIfUserExistByUserId(long userId) =>
+        _dbContext.Users.FirstOrDefault(u => u.UserId == userId) == null ? false : true;
     public async Task AddOrUpdateUsersAsync(List<User> questions, CancellationToken ct)
     {
         for (int i = 0; i < questions.Count; ++i)
@@ -27,7 +28,5 @@ public class UserRepository : IUserRepository
                 question.Update(questions[i].DisplayName);
             }
         }
-
-        await _dbContext.SaveChangesAsync(ct);
     }
 }

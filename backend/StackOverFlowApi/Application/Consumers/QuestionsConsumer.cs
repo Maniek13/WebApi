@@ -10,7 +10,7 @@ public class QuestionsConsumer : IConsumer<QuestionEvent>
 {
     private readonly IMediator _mediator;
 
-    public QuestionsConsumer(IMediator mediator) 
+    public QuestionsConsumer(IMediator mediator)
     {
         _mediator = mediator;
     }

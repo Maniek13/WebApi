@@ -16,11 +16,6 @@ public class QuestionRepository : IQuestionRepository
 
     public async Task AddOrUpdateQuestionsAsync(List<Question> questions, CancellationToken ct)
     {
-        questions = questions
-            .GroupBy(x => x.QuestionId)
-            .Select(el => el.Last())
-            .ToList();
-
         for (int i = 0; i < questions.Count; ++i)
         {
             var question = await _dbContext.Questions.FirstOrDefaultAsync(el => el.QuestionId == questions[i].QuestionId);
@@ -32,8 +27,5 @@ public class QuestionRepository : IQuestionRepository
                 question.Update(questions[i].Tags, questions[i].Link, questions[i].Title);
             }
         }
-
-        
-        await _dbContext.SaveChangesAsync(ct);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Commands.StackOverFlow;
-using Contracts.Dtos.StackOverFlow;
 using Contracts.Evetnts;
 using MassTransit;
 using MediatR;

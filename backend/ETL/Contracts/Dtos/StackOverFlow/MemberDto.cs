@@ -5,5 +5,5 @@ namespace Contracts.Dtos.StackOverFlow;
 public record MemberDto
 (
     [JsonProperty("user_id")]
-    long UserId
+    long? UserId
 );

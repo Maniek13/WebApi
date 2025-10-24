@@ -4,9 +4,9 @@ namespace Abstarction.Repositories;
 
 public interface IUserRepository
 {
-    public void Add(User user);
+    public Task AddOrUpdateAsync(User user, CancellationToken cancellationToken = default);
 
-    public Task AddOrUpdate(List<User> users);
+    public Task AddOrUpdateAsync(List<User> users);
 
 
 }
