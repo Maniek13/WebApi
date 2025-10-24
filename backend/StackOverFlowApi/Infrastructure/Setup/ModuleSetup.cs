@@ -82,9 +82,8 @@ public class ModuleSetup : IModuleSetup
         {
             cfg.AddConsumer<QuestionsConsumer>();
             cfg.AddConsumer<UsersConsumer>();
-            cfg.AddConsumer<TestConsumer>();
 
-            cfg.AddEntityFrameworkOutbox<AbstractAppDbContext>(o =>
+            cfg.AddEntityFrameworkOutbox<AbstractSOFDbContext>(o =>
             {
                 o.UseSqlServer();
                 o.UseBusOutbox();
@@ -99,20 +98,17 @@ public class ModuleSetup : IModuleSetup
                     h.Password("guest");
                 });
 
-                c.ReceiveEndpoint("Test", e =>
-                {
-                    e.ConfigureConsumer<TestConsumer>(context);
-                    e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(10)));
-                });
 
                 c.ReceiveEndpoint("Questions", e =>
                 {
+                    e.UseEntityFrameworkOutbox<AbstractSOFDbContext>(context);
                     e.ConfigureConsumer<QuestionsConsumer>(context);
                     e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(10)));
                 });
 
                 c.ReceiveEndpoint("Users", e =>
                 {
+                    e.UseEntityFrameworkOutbox<AbstractSOFDbContext>(context);
                     e.ConfigureConsumer<UsersConsumer>(context);
                     e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(10)));
                 });

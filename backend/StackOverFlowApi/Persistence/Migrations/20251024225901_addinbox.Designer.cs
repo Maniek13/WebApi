@@ -12,7 +12,7 @@ using Persistence.DbContexts.StackOverFlow;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(StackOverFlowDbContext))]
-    [Migration("20251024194315_addinbox")]
+    [Migration("20251024225901_addinbox")]
     partial class addinbox
     {
         /// <inheritdoc />

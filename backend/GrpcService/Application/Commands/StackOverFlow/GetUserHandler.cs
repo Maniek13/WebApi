@@ -31,7 +31,7 @@ public class GetUserHandler : IRequestHandler<GetUserQuery, UserDto?>
         var user = await _stackOverFlowApiClient.GetUserAsync(request.UserId, cancellationToken);
 
         if(user != null)
-            _userRepository.Add(_mapper.Map<UserDto, User>(user!));
+            await _userRepository.AddOrUpdateAsync(_mapper.Map<UserDto, User>(user!), cancellationToken);
         
         return user;
     }

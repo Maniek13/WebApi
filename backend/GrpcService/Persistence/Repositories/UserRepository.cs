@@ -14,12 +14,25 @@ internal class UserRepository : IUserRepository
         _session = session;
     }
 
-    public void Add(User user)
+    public async Task AddOrUpdateAsync(User user, CancellationToken cancellationToken = default)
     {
-        _session.Save(user);
+        using (var transaction = _session.BeginTransaction())
+        {
+            var tempUser = _session.Query<User>()
+               .Where(u => u.UserId == user.UserId)
+               .FirstOrDefault();
+
+            if (tempUser == null)
+                    _session.Save(tempUser);
+            else
+                tempUser.Update(user.DispalaName);
+
+            await _session.FlushAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+        }
     }
 
-    public async Task AddOrUpdate(List<User> users)
+    public async Task AddOrUpdateAsync(List<User> users)
     {
         try
         {
@@ -27,7 +40,6 @@ internal class UserRepository : IUserRepository
             using (var transaction = _session.BeginTransaction())
             {
                 var userIds = users.Select(u => u.UserId).ToList();
-                var x = _session.Query<User>().ToArray();
 
                 User[] toUpdate = Array.Empty<User>();
                 if (userIds.Any())

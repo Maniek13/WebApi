@@ -29,7 +29,7 @@ public class GetUsersByIdsHandler : IRequestHandler<GetUsersByIdsQuery, UserDto[
     {
         var users = await _stackOverFlowApiClient.GetUsersByIdsAsync(request.UserIds.ToList(), cancellationToken);
 
-        await _userRepository.AddOrUpdate(_mapper.Map <UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
+        await _userRepository.AddOrUpdateAsync(_mapper.Map <UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
     
         return users;
     }

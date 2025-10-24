@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Abstractions.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Atributes;
@@ -9,6 +10,7 @@ namespace Infrastructure.Middleware;
 public class TransactionBehavior<TReq, TRes> : IPipelineBehavior<TReq, TRes>
     where TReq : notnull
 {
+
     private readonly IServiceProvider _serviceProvider;
     public TransactionBehavior(IServiceProvider serviceProvider)
     {
@@ -19,32 +21,19 @@ public class TransactionBehavior<TReq, TRes> : IPipelineBehavior<TReq, TRes>
     {
         var attr = typeof(TReq).GetCustomAttribute<DbContextAtribute>();
 
-       
+        DbContext? dbContext = null;
+
         if (attr != null)
         {
             var contextType = attr.ContextType;
-            var dbContext = (DbContext)_serviceProvider.GetRequiredService(contextType)!;
-
-            using var transaction = dbContext.Database.BeginTransaction();
-
-            try
-            {
-                var response = await next();
-
-                await dbContext.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            dbContext = (DbContext)_serviceProvider.GetRequiredService(contextType)!;
         }
-        else
-        {
-            return await next();
-        }
+
+        var response = await next();
+        
+        if(dbContext != null)
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+        return response;
     }
 }

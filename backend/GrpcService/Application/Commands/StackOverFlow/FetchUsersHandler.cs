@@ -30,7 +30,7 @@ public class FetchDataHandler : IRequestHandler<FetchUsersQuery, UserDto[]>
     {
         var users = await _stackOverFlowApiClient.GetUsersAsync(cancellationToken);
 
-        await _userRepository.AddOrUpdate(_mapper.Map<UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
+        await _userRepository.AddOrUpdateAsync(_mapper.Map<UserDto[], List<Domain.Entities.StackOverFlow.User>>(users));
         
         return users;
     }

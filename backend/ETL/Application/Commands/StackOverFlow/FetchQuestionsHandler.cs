@@ -36,9 +36,10 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
     {
         var questions = (await _StackOverFlowApiClient.GetquestionsAsync(cancellationToken)).ToList();
 
-        var questionsWithoutUsers = questions.Where(el => !_userRepository.CheckUserExist(el.Member.UserId)).ToArray();
+        var questionsWithoutUsers = questions.Where(el => el.Member.UserId != null && !_userRepository.CheckUserExist((long)el.Member.UserId)).ToArray();
 
-        long[] userIds = questionsWithoutUsers.Select(el => el.Member.UserId).ToArray();
+        long[] userIds = questionsWithoutUsers.Select(el => (long)el.Member.UserId!).ToArray();
+
         var users = await _sOFGrpcClient.GetUsersByIdsAsync(userIds, cancellationToken);
 
         await _userRepository.AddOrUpdateUsersAsync(_mapper.Map<UserDto[], List<User>>(users), cancellationToken);
@@ -46,11 +47,12 @@ public class FetchQuestionsHandler : IRequestHandler<FetchQuestionsQuery>
 
         List<Question> questionsToAddOrUpdate = [];
 
-        List<QuestionDto> questionsToUpdate = questions.Where(el => _userRepository.CheckUserExist(el.Member.UserId)).ToList();
+        List<QuestionDto> questionsToUpdate = questions.Where(el => el.Member.UserId != null && _userRepository.CheckUserExist((long)el.Member.UserId)).ToList();
         questionsToAddOrUpdate.AddRange(_mapper.Map<List<QuestionDto>, List<Question>>(questionsToUpdate));
 
         List<QuestionDto> questionsWithDeleteUser = questions.Where(el => !questionsToUpdate.Any(item => item.QuestionId == el.QuestionId)).ToList();
         questionsToAddOrUpdate.AddRange(_mapper.Map<(List<QuestionDto>, long? userId), List<Question>>((questionsWithDeleteUser, null)));
+        questionsWithDeleteUser = _mapper.Map<(List<QuestionDto>, long? userId), List<QuestionDto>>((questionsWithDeleteUser, null));
 
         await _questionRepository.AddOrUpdateQuestionsAsync(questionsToAddOrUpdate, cancellationToken);
 

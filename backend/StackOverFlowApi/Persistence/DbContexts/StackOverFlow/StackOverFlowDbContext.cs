@@ -31,7 +31,6 @@ public class StackOverFlowDbContext : AbstractSOFDbContext
     {
         modelBuilder.AddTransactionalOutboxEntities();
         modelBuilder.ApplyConfigurationsFromAssembly(ModuleAssembly.GetExecutionAssembly);
-
     }
 
     public DbSet<Tag> Tags => Set<Tag>();
