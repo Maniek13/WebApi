@@ -28,7 +28,12 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
 
         for (int i = 1; i <= pagesCount; ++i)
         {
-            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
+            var url = $"{_options.BaseUrl}/users?page={i}&pagesize={100}&order=desc&sort=creation&site=stackoverflow";
+
+            if (!string.IsNullOrWhiteSpace(_options.Key))
+                url = $"{url}&key={_options.Key}";
+
+            var response = await _httpClient.GetAsync(url, ct);
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 break;
@@ -56,7 +61,12 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
     {
         List<UserDto> users = [];
 
-        var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users/{userId}?site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
+        var url = $"{_options.BaseUrl}/users/{userId}?site=stackoverflow";
+
+        if (!string.IsNullOrWhiteSpace(_options.Key))
+            url = $"{url}&key={_options.Key}";
+
+        var response = await _httpClient.GetAsync(url ,ct);
         
         if (response.StatusCode == HttpStatusCode.TooManyRequests)
             throw new HttpRequestException("Too Many Requests");
@@ -83,7 +93,11 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
         foreach (var chunk in usersIds.Chunk(100))
         {
             var ids = string.Join(";", chunk);
-            var response = await _httpClient.GetAsync($"{_options.BaseUrl}/users/{ids}?site=stackoverflow&key=rl_3dENRPL4TX6Yjw9rN6zoDjTFU", ct);
+            var url = $"{_options.BaseUrl}/users/{ids}?site=stackoverflow";
+            if (!string.IsNullOrWhiteSpace(_options.Key))
+                url = $"{url}&key={_options.Key}";
+
+            var response = await _httpClient.GetAsync(url, ct);
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
                 break;
