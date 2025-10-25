@@ -1,5 +1,5 @@
 ﻿using Abstractions.DbContexts;
-using Abstractions.Persistence;
+using Abstractions.Interfaces;
 using Abstractions.Repositories;
 using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
@@ -13,9 +13,9 @@ public class AddOrUpdateQuestionsHandler : IRequestHandler<AddOrUpdateQuestionsQ
     private readonly IQuestionRepository _questionRepository;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    private readonly ISofUnitOfWork<AbstractSOFDbContext> _sofUnitOfWork;
+    private readonly IUnitOfWork<AbstractSOFDbContext> _sofUnitOfWork;
 
-    public AddOrUpdateQuestionsHandler(IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, ISofUnitOfWork<AbstractSOFDbContext> sofUnitOfWork)
+    public AddOrUpdateQuestionsHandler(IQuestionRepository questionRepository, IUserRepository userRepository, IMapper mapper, IUnitOfWork<AbstractSOFDbContext> sofUnitOfWork)
     {
         _questionRepository = questionRepository;
         _userRepository = userRepository;

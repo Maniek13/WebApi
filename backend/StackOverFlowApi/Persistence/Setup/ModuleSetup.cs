@@ -1,6 +1,5 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Persistence;
 using Abstractions.Repositories;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
@@ -32,8 +31,8 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddScoped<AbstractSOFDbContext>(s => s.GetRequiredService<StackOverFlowDbContext>());
         builder.Services.AddScoped<AbstractAppDbContext>(s => s.GetRequiredService<AppDbContext>());
 
-        builder.Services.AddScoped<ISofUnitOfWork<AbstractSOFDbContext>, SofUnitOfWork>();
-        builder.Services.AddScoped<IApiUnitOfWork<AbstractAppDbContext>, AppUnitOfWork>();
+        builder.Services.AddScoped<IUnitOfWork<AbstractSOFDbContext>, SofUnitOfWork>();
+        builder.Services.AddScoped<IUnitOfWork<AbstractAppDbContext>, AppUnitOfWork>();
 
         builder.Services.AddScoped<ITagsRepository, TagsRepository>();
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();

@@ -1,3 +1,5 @@
+using Abstractions.DbContexts;
+using Abstractions.Interfaces;
 using Domain.Entities.StackOverFlow;
 using FluentAssertions;
 using Microsoft.Data.Sqlite;
@@ -38,6 +40,8 @@ public class TagsRepositoryTests
             ];
 
         await repository.SetTagsAsync(tags, CancellationToken.None);
+
+        await context.SaveChangesAsync();
 
         var dbTags = context.Tags;
 

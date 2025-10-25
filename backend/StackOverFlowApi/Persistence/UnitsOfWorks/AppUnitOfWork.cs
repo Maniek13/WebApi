@@ -1,9 +1,9 @@
 ﻿using Abstractions.DbContexts;
-using Abstractions.Persistence;
+using Abstractions.Interfaces;
 
 namespace Persistence.UnitsOfWorks;
 
-public sealed class AppUnitOfWork : IApiUnitOfWork<AbstractAppDbContext>
+public sealed class AppUnitOfWork : IUnitOfWork<AbstractAppDbContext>
 {
     public AbstractAppDbContext Context { get; }
 

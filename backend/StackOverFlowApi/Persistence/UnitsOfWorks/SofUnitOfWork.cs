@@ -1,9 +1,9 @@
 ﻿using Abstractions.DbContexts;
-using Abstractions.Persistence;
+using Abstractions.Interfaces;
 
 namespace Persistence.UnitsOfWorks;
 
-public sealed class SofUnitOfWork : ISofUnitOfWork<AbstractSOFDbContext>
+public sealed class SofUnitOfWork : IUnitOfWork<AbstractSOFDbContext>
 {
     public AbstractSOFDbContext Context { get; }
 
