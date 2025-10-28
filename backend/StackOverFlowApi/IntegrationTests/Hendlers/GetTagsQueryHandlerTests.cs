@@ -24,8 +24,6 @@ public class GetTagsQueryHandlerTests : IAsyncLifetime
 
     public GetTagsQueryHandlerTests()
     {
-        Environment.SetEnvironmentVariable("TestsVariable", "IntegrationTests");
-
         Task.Run(async () => await _dbConteiner.StartAsync()).Wait();
         var service = new ServiceCollection();
 

@@ -1,5 +1,7 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
+using Abstractions.DbContexts;
+using Abstractions.Interfaces;
 using Abstractions.Repositories;
 using Application.Commands.StackOverFlow;
 using Application.Interfaces.StackOverFlow;
@@ -15,8 +17,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
 using Persistence.Repositories.StackOverFlow;
+using Persistence.UnitsOfWorks;
 using Testcontainers.MsSql;
 
 namespace IntegrationTests.Hendlers;
@@ -30,8 +34,6 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
 
     public RefreshTagsQueryHandlerTests()
     {
-        Environment.SetEnvironmentVariable("TestsVariable", "IntegrationTests");
-
         Task.Run(async () => await _dbConteiner.StartAsync()).Wait();
 
 
@@ -51,6 +53,11 @@ public class RefreshTagsQueryHandlerTests : IAsyncLifetime
         service.AddDbContext<StackOverFlowDbContextRO>(o =>
             o.UseSqlServer(_dbConteiner.GetConnectionString()));
 
+
+        service.AddScoped<AbstractSOFDbContext>(s => s.GetRequiredService<StackOverFlowDbContext>());
+
+        service.AddScoped<IUnitOfWork<AbstractSOFDbContext>, SofUnitOfWork>();
+        service.AddScoped<IUnitOfWork<AbstractAppDbContext>, AppUnitOfWork>();
         service.AddScoped<ILoggerFactory, LoggerFactory>();
         service.AddScoped<IStackOverFlowDataService, StackOverFlowDataService>();
         service.AddScoped<IStackOverFlowApiClient, StackOverFlowApiClient>();

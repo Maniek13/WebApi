@@ -21,8 +21,6 @@ public class AuthServiceTests
 
     public AuthServiceTests()
     {
-        Environment.SetEnvironmentVariable("TestsVariable", "IntegrationTests");
-
         Task.Run(async () => await _dbConteiner.StartAsync()).Wait();
         var service = new ServiceCollection();
 

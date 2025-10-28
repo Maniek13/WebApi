@@ -35,8 +35,6 @@ public class WebApiWebAplicationFactory : WebApplicationFactory<Program>, IAsync
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable("TestsVariable", "WebApplicationFactory");
-
         builder.ConfigureServices(services => {
             services.RemoveAll(typeof(StackOverFlowDbContext));
             services.RemoveAll(typeof(StackOverFlowDbContextRO));

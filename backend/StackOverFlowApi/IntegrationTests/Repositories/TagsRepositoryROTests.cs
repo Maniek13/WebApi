@@ -13,7 +13,6 @@ public class TagsRepositoryROTests
 
     public TagsRepositoryROTests()
     {
-        Environment.SetEnvironmentVariable("TestsVariable", "InMemoryDatabase");
 
         string dbName = Guid.NewGuid().ToString();
    

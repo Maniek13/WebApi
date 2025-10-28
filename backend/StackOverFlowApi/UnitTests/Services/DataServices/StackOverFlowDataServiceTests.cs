@@ -1,5 +1,7 @@
 ﻿using Abstractions.Api;
 using Abstractions.Caches;
+using Abstractions.DbContexts;
+using Abstractions.Interfaces;
 using Abstractions.Repositories;
 using Domain.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
@@ -37,12 +39,18 @@ public class StackOverFlowDataServiceTests
 
         var mockedMapper = new Mock<IMapper>();
 
+
+        var uow = new Mock<IUnitOfWork<AbstractSOFDbContext>>();
+        uow
+            .Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
+
         var dataService = new StackOverFlowDataService(
                 mockedIStackOverFlowApiClient.Object,
                 mockedTagsRepository.Object,
                 mockedTagsRepositoryRO.Object,
                 mockedCacheVersionService.Object,
-                mockedMapper.Object
+                mockedMapper.Object,
+                uow.Object
             );
 
         Func<Task> startAsync = () => dataService.SyncAsync(true, CancellationToken.None);
@@ -75,12 +83,19 @@ public class StackOverFlowDataServiceTests
 
         var mockedMapper = new Mock<IMapper>();
 
+
+        var uow = new Mock<IUnitOfWork<AbstractSOFDbContext>>();
+        uow
+            .Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
+
+
         var dataService = new StackOverFlowDataService(
                 mockedIStackOverFlowApiClient.Object,
                 mockedTagsRepository.Object,
                 mockedTagsRepositoryRO.Object,
                 mockedCacheVersionService.Object,
-                mockedMapper.Object
+                mockedMapper.Object,
+                uow.Object
             );
 
       

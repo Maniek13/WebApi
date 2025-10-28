@@ -11,10 +11,6 @@ namespace IntegrationTests.Repositories;
 
 public class TagsRepositoryTests
 {
-    public TagsRepositoryTests()
-    {
-        Environment.SetEnvironmentVariable("TestsVariable", "InMemoryDatabase");
-    }
 
     [Fact]
     public async Task ShouldSetTagsWhenGetDate()

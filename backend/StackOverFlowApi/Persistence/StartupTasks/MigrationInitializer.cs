@@ -9,9 +9,6 @@ public class MigrationInitializer
 {
     public static void ApplyMigrations(IServiceProvider service)
     {
-        if (Environment.GetEnvironmentVariable("TestsVariable") == "WebApplicationFactory")
-            return;
-
         using var scope = service.CreateScope();
 
         scope.ServiceProvider.GetRequiredService<StackOverFlowDbContext>().Database.Migrate();

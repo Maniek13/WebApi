@@ -34,7 +34,7 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
 
             if (response.StatusCode == HttpStatusCode.TooManyRequests)
             {
-                Task.Run(() =>Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, response.RequestMessage));
+                Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, response.RequestMessage);
                 break;
             }
 
@@ -44,7 +44,7 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
             var errorId = root["error_id"];
             if (errorId != null && errorId.ToObject<int>().Equals(502))
             {
-                Task.Run(() => Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, root["error_message"]?.ToObject<string>()));
+                Log.Error("Data could not be loaded because there were too many requests to the Stack Overflow API. Please refresh data. Error code: {errorCode}, error message: {errorMessage}", (int)response.StatusCode, root["error_message"]?.ToObject<string>());
                 break;
             }
 
