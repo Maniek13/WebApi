@@ -1,12 +1,15 @@
-Api hosten by Azure:
+Projekt oparty na DDD z rozdzieleniem warstw (Persistence, CQRS — osobne repozytoria, SaveAsync poza domeną). Struktura została celowo rozbudowana, by pokazać dobre praktyki architektoniczne, mimo że przy tej skali byłaby nieopłacalna w realnym wdrożeniu.  
 
+Model nie zawiera Value Objectów — ich zastosowanie byłoby zasadne pod kątem spójności i enkapsulacji, ale przy obecnym zakresie funkcjonalności ich implementacja byłaby nieproporcjonalnie pracochłonna.
+
+podgląd api w platformie Azure:
 
 Fronted: 
 
 http://4.210.65.98:3000/
 
 
-Endpoints
+Endpointy:
 
 http://4.210.65.98:5000/StackOverFlow/Tags 
 
@@ -20,7 +23,7 @@ http://4.210.65.98:5000/App/Users/Login
 GraphQl:
 http://4.210.65.98:5000/graphql
 
-Websockets:
+Websokety:
 
 ws://4.210.65.98:5000/chat 
 
@@ -32,27 +35,25 @@ RabbitMq:
 http://4.210.65.98:15672/
 
 
-Hangfire dashbords:
+Hangfire:
 
 http://4.210.65.98:5000/dashbord
 
 http://4.210.65.98:5100/dashbord
 
 
-Application run from docker:
-
- start command: docker-compose up
+Applikacje można uruchomić poprzez docker conpose za pomocą polecenia: docker-compose up
 
 __________________________________________________________________________________________________________________________
 
 Backend:
 
 
-Endpoints:
+Endpointy:
 
 1. GetTags http://localhost:5000/StackOverFlow/Tags 
 
-    Query parameters:
+    Query:
 
      page int
 
@@ -62,13 +63,13 @@ Endpoints:
 
      descanding bool
 
-   - if parametrs not set, endpoint returns first 100 records 
+   - jeżeli nie ustawiono parametrów,zwracane jest pierwsze 100 rekordów, sortowanych po Id
 
   2. RefresTags http://localhost:5000/StackOverFlow/Tags/RefreshData 
 
   3. Register http://localhost:5000/App/Users/Register
 
-   Query parameters:
+   Query:
 
      name string
 
@@ -78,33 +79,31 @@ Endpoints:
   
   4. Login http://localhost:5000/App/Users/Login
 
-   Query parameters:
+   Query:
 
      name string
 
      password string
 
-Websockets:
+Websokety:
 
 1. Chat ws://localhost:5000/chat 
 
-    Receiving endpoints: ReceiveMessage
+    Endpoiny do odbioru:
+   ReceiveMessage, zwraca wiadomość string
 
-     returns string
+   Metody:
 
-   Methods:
-
-     1.SendMessage(string senderName, string message, string? receiverId) !Preview, personal message not working
+     1.SendMessage(string senderName, string message, string? receiverId) !Nie zaimplementowano wiadomości do konkretnego uzytkownika
      
-     - if receiverId set to null or empty string, messaage will be sended to all users
+     - jeżeli nie podano receiver Id, wiadomość wysłana jest do wszystkich aktualnie zalogowanyvh użytkowników 
 
-2. Logs ws://localhost:5000/logs
+3. Logs ws://localhost:5000/logs
 
-    Receiving endpoints: ReceiveLog
+    Endpointy do odbioru:
+     ReceiveLog, zwraca wiadomość string
 
-     returns string
-
-Jobs:
+Zadania hangfire:
 
 WebApi Hangfire dashbord http://localhost:5000/dashbord
 
@@ -115,7 +114,7 @@ Rabbit:
 http://localhost:15672
 
 Login: guest
-Password: guest
+Hasło: guest
 
 Fronted:
 
