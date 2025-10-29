@@ -2,7 +2,7 @@ Projekt oparty na DDD z rozdzieleniem warstw (Persistence, CQRS — osobne repoz
 
 Model nie zawiera Value Objectów — ich zastosowanie byłoby zasadne pod kątem spójności i enkapsulacji, ale przy obecnym zakresie funkcjonalności ich implementacja byłaby nieproporcjonalnie pracochłonna.
 
-podgląd api w platformie Azure:
+Podgląd api w platformie Azure:
 
 Fronted: 
 
