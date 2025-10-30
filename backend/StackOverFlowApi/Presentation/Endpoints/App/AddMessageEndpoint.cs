@@ -1,7 +1,5 @@
 ﻿using Application.Commands.Api;
-using Application.Interfaces.App;
 using Contracts.Requests.App;
-using Contracts.Responses;
 using FastEndpoints;
 using MediatR;
 using Presentation.Routes.App;
@@ -9,31 +7,29 @@ using System.Security.Claims;
 
 namespace Presentation.Endpoints.App;
 
-internal class SetAddressEndpoint : Endpoint<AddressRequest>
+internal class AddMessageEndpoint : Endpoint<AddMessageRequest>
 {
     private readonly IMediator _mediator;
 
-    public SetAddressEndpoint(IMediator mediator)
+    public AddMessageEndpoint(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     public override void Configure()
     {
-        Post(UserRoutes.SetAddress);
+        Post(UserRoutes.AddMessage);
         Policies("IsUser");
     }
 
-    public override async Task HandleAsync(AddressRequest req, CancellationToken ct)
+    public override async Task HandleAsync(AddMessageRequest req, CancellationToken ct)
     {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        var query = new SetUserAddressCommand
+        var query = new MessageCommand
         {
             UserId = userId!,
-            City = req.City,
-            Street = req.Street,
-            ZipCode = req.ZipCode,
+            Message = req.Message,
         };
 
         await _mediator.Send(query);  

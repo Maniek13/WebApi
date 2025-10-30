@@ -1,9 +1,11 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
+using Abstractions.Repositories.Api;
 using Abstractions.Repositories.SOF;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.DbContexts.App;
@@ -38,8 +40,10 @@ public class ModuleSetup : IModuleSetup
         builder.Services.AddScoped<ITagsRepositoryRO, TagsRepositoryRO>();
         builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
         builder.Services.AddScoped<IQuestionsRepositoryRO, QuestionsRepositoryRO>();
-        builder.Services.AddScoped<IUsersRepositoryRO, UsersRepositoryRO>();
-        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<Abstractions.Repositories.SOF.IUsersRepositoryRO, UsersRepositoryRO>();
+        builder.Services.AddScoped<Abstractions.Repositories.SOF.IUserRepository, UserRepository>();
+        builder.Services.AddScoped<Abstractions.Repositories.Api.IUserRepository, Repositories.Api.UserRepository>();
+        builder.Services.AddScoped<Abstractions.Repositories.Api.IUsersRepositoryRO, Repositories.Api.UsersRepositoryRO>();
 
         var serviceProvider = builder.Services.BuildServiceProvider();
 

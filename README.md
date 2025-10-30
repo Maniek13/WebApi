@@ -122,4 +122,68 @@ http://localhost:3000
 GraphQl:
 http://localhost/graphql/
  
+Przykłady zapytań:
 
+query {
+  appUsers(first: 100) {
+    nodes {
+      userAddress{
+        zipCode,
+        city,
+        street
+      },
+      userName,
+      messages{
+        message
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+query {
+  users(first: 100, minQuestionCount: 2) {
+    nodes {
+      userId
+      displayName
+      createdDate
+      questions {
+        title
+        link
+        createdDate
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+query {
+  questions(first: 100) {
+    nodes {
+      questionId
+      userId
+      title
+      createdDate
+      tags
+      tagsInfo(first: 1){
+        nodes{
+          name,
+          count
+        }
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

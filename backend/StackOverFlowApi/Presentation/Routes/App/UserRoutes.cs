@@ -7,4 +7,5 @@ public class UserRoutes
     public const string Register = $"{BaseRoute}/Register";
     public const string Refresh = $"{BaseRoute}/Refresh";
     public const string SetAddress = $"{BaseRoute}/SetAddress";
+    public const string AddMessage = $"{BaseRoute}/AddMessage";
 }

@@ -8,7 +8,7 @@ public class ApplicationUser : IdentityUser
     {
     }
 
-    public ApplicationUser(UserAddress userAddress, List<Messages> messages, List<RefreshToken> refreshTokens)
+    public ApplicationUser(UserAddress userAddress, List<UserMessage> messages, List<RefreshToken> refreshTokens)
     {
         UserAddress = userAddress;
         Messages = messages;
@@ -16,12 +16,15 @@ public class ApplicationUser : IdentityUser
     }
 
     public UserAddress? UserAddress { get; private set; }
-    public List<Messages> Messages { get; init; } = [];
+    public List<UserMessage> Messages { get; init; } = [];
     public List<RefreshToken> RefreshTokens { get; set; } = [];
 
     public void UpdateAddress(UserAddress? userAddress)
     {
         UserAddress = userAddress;
     }
-
+    public void AddMessage(UserMessage message)
+    {
+        Messages.Add(message);
+    }
 }

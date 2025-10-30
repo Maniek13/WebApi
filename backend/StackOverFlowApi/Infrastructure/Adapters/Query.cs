@@ -1,7 +1,7 @@
 ﻿using Abstractions.Repositories.SOF;
+using Domain.Entities.App;
 using Domain.Entities.StackOverFlow;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Tag = Domain.Entities.StackOverFlow.Tag;
 
 namespace Infrastructure.Adapters;
@@ -33,4 +33,10 @@ public class Query
     [UseFiltering]
     [UseSorting]
     public IQueryable<Tag> GetTags(ITagsRepositoryRO tagsRepository) => tagsRepository.GetAll();
+
+    [UsePaging(IncludeTotalCount = true, MaxPageSize = 100)]
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<ApplicationUser> GetAppUsers(Abstractions.Repositories.Api.IUsersRepositoryRO userRepository) => userRepository.GetAll();
 }

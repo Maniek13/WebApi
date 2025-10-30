@@ -5,12 +5,17 @@ namespace Domain.Entities.App.ValueObjects;
 public class UserAddress : ValueObject<UserAddress>
 {
     public const int ZipCodeMaxLenght = 6;
+
+    private UserAddress()
+    {
+    }
+
     public UserAddress(string? city, string? street, string? zipCode)
     {
         City = city;
         Street = street;
 
-        if(string.IsNullOrWhiteSpace(zipCode) || (zipCode.Length != ZipCodeMaxLenght && zipCode.IndexOf('-') != 2)) 
+        if(!string.IsNullOrWhiteSpace(zipCode) || (zipCode.Length == ZipCodeMaxLenght && zipCode.IndexOf('-') == 2)) 
             throw new ArgumentException("Zip code must be empty or in format 00-000");
             
         ZipCode = zipCode;

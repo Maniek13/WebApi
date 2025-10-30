@@ -22,4 +22,14 @@ public class UserRepository : IUserRepository
 
         user.UpdateAddress(address);
     }
+
+    public async Task AddMessage(string userId, UserMessage message, CancellationToken ct)
+    {
+        if (!(await _dbContext.Users.AnyAsync(el => el.Id == userId, ct)))
+            throw new ArgumentOutOfRangeException("User doesn't exist");
+
+        var user = await _dbContext.Users.FirstAsync(el => el.Id == userId, ct);
+
+        user.AddMessage(message);
+    }
 }

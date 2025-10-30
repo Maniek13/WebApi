@@ -44,6 +44,7 @@ public class AppDbContext : AbstractAppDbContext
                     .HasForeignKey("UserId");
 
                 mb.Property(el => el.Message)
+                    .HasMaxLength(UserMessage.MaxMessageLenght)
                     .HasColumnName("Message");
 
                 mb.ToTable("Messages");
