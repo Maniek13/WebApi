@@ -1,6 +1,6 @@
 ﻿using Shared.Domain;
 
-namespace Domain.Entities.StackOverFlow.ValueObjects;
+namespace Domain.Entities.StackOverFlow.EntityIds;
 
 public class UserId : EntityId<UserId, int>
 {

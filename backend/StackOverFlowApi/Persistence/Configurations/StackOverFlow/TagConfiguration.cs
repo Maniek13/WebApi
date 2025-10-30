@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.StackOverFlow;
-using Domain.Entities.StackOverFlow.ValueObjects;
+using Domain.Entities.StackOverFlow.EntityIds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,4 +1,4 @@
-﻿using Domain.Entities.StackOverFlow.ValueObjects;
+﻿using Domain.Entities.StackOverFlow.EntityIds;
 using Shared.Domain;
 
 namespace Domain.Entities.StackOverFlow;

@@ -1,4 +1,5 @@
-﻿using Domain.Entities.StackOverFlow.ValueObjects;
+﻿using Domain.Entities.StackOverFlow.EntityIds;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Shared.Domain;
 
 namespace Domain.Entities.StackOverFlow;
