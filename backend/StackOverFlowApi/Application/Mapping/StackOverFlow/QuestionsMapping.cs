@@ -1,5 +1,6 @@
 ﻿using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Mapster;
 
 namespace Application.Mapping.StackOverFlow;
@@ -10,8 +11,8 @@ public class QuestionsMapping : IRegister
     {
         cfg.NewConfig<QuestionDto, Question>()
            .MapWith(el => Question.Create(
-                   el.QuestionId,
-                   el.Member.UserId,
+                   (QuestionNumber)el.QuestionId,
+                   (UserNumber)el.Member.UserId,
                    el.Title,
                    el.Tags,
                    el.Link,

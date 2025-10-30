@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.StackOverFlow;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,20 +11,28 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
         builder.HasKey(el => el.Id);
-        builder.HasIndex(el => el.UserId).IsUnique();
+        builder.HasIndex(el => el.UserNumber).IsUnique();
 
         builder
             .HasMany(el => el.Questions)
             .WithOne(el => el.User)
-            .HasForeignKey(el => el.UserId)
-            .HasPrincipalKey(el => el.UserId)
+            .HasForeignKey(el => el.UserNumber)
+            .HasPrincipalKey(el => el.UserNumber)
             .IsRequired(false);
 
         builder.Property(el => el.Id)
+            .HasConversion(
+                el => el.Id,
+                value => new UserId(value)
+            )
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 
-        builder.Property(el => el.UserId)
+        builder.Property(el => el.UserNumber)
+            .HasConversion(
+                el => el.Value,
+                value => new UserNumber(value!)
+            )
             .HasColumnName("UserId");
 
         builder.Property(el => el.DisplayName)

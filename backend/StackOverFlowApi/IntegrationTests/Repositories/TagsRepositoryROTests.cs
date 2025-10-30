@@ -1,5 +1,6 @@
 using Domain.Entities.StackOverFlow;
 using FluentAssertions;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts.StackOverFlow;
 using Persistence.Repositories.StackOverFlow;
@@ -13,20 +14,21 @@ public class TagsRepositoryROTests
 
     public TagsRepositoryROTests()
     {
-
-        string dbName = Guid.NewGuid().ToString();
+        var connection = new SqliteConnection("DataSource=:memory:"); 
+        connection.Open();
    
         StackOverFlowDbContext context = new(new DbContextOptionsBuilder<StackOverFlowDbContext>()
-            .UseInMemoryDatabase(dbName)
+            .UseSqlite(connection)
             .Options);
 
+        context.Database.EnsureCreated();
         for (int i = 0; i < 100; ++i)
             context.Add(Tag.Create(_random.Next(0, 1000000000).ToString(), _random.Next(0, 1000000000)));
 
         context.SaveChanges();
 
         StackOverFlowDbContextRO contextRO = new(new DbContextOptionsBuilder<StackOverFlowDbContextRO>()
-            .UseInMemoryDatabase(dbName)
+            .UseSqlite(connection)
             .Options);
 
         _repository = new TagsRepositoryRO(contextRO);

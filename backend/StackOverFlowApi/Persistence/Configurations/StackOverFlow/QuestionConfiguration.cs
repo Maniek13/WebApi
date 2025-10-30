@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.StackOverFlow;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,17 +13,29 @@ internal class QuestionConfiguration : IEntityTypeConfiguration<Question>
     {
         builder.ToTable("Questions");
         builder.HasKey(el => el.Id);
-        builder.HasIndex(el => el.QuestionId).IsUnique();
+        builder.HasIndex(el => el.QuestionNumber).IsUnique();
 
         builder.Property(el => el.Id)
+            .HasConversion(
+                el => el.Id,
+                value => new QuestionId(value)
+            )
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 
-        builder.Property(el => el.QuestionId)
+        builder.Property(el => el.QuestionNumber)
+            .HasConversion(
+                el => el.Value,
+                value => new QuestionNumber(value!)
+            )
             .HasColumnName("QuestionId");
 
-        builder.Property(el => el.UserId)
-            .HasColumnName("UserId")
+        builder.Property(el => el.UserNumber)
+            .HasConversion(
+                el => el.Value,
+                value => new UserNumber(value)
+            )
+            .HasColumnName("UserNumber")
             .IsRequired(false);
 
         builder.Property(el => el.Title)

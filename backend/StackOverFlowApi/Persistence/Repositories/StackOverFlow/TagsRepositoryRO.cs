@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Common;
 using Persistence.DbContexts.StackOverFlow;
 using Shared.Pagination;
+using System.Linq.Expressions;
 
 namespace Persistence.Repositories.StackOverFlow;
 
@@ -18,20 +19,12 @@ public class TagsRepositoryRO : RepositoryROBase<Tag, StackOverFlowDbContextRO>,
         var totalCount = await _dbContext.Tags.CountAsync(ct);
 
 
-        var tags = descanding != true ? 
-            await _dbContext.Tags
-            .OrderBy(o => EF.Property<object>(o, sortBy))
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync(ct)
-            :
-             await _dbContext.Tags
-            .OrderByDescending(o => EF.Property<object>(o, sortBy))
+        var tag1 = await _dbContext.Tags
+            .OrderByDynamic(sortBy, descanding)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);
 
-
-        return new PagedList<Tag>(page, pageSize, totalCount, tags);
+        return new PagedList<Tag>(page, pageSize, totalCount, tag1);
     }
 }

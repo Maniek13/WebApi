@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.StackOverFlow;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,6 +16,10 @@ internal class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.Ignore(el => el.Questions);
 
         builder.Property(el => el.Id)
+             .HasConversion(
+                el => el.Id,
+                value => new TagId(value)
+            )
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 

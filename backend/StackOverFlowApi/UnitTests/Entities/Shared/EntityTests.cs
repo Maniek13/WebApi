@@ -13,9 +13,9 @@ public class EntityTests
 
         var tag = Tag.Create(name, count);
 
-        Tag.CheckHavePropertyByName("Id").Should().BeTrue();
-        Tag.CheckHavePropertyByName("Name").Should().BeTrue();
-        Tag.CheckHavePropertyByName("Count").Should().BeTrue();
+        Tag.CheckHavePropertyByName<Tag>("Id").Should().BeTrue();
+        Tag.CheckHavePropertyByName<Tag>("Name").Should().BeTrue();
+        Tag.CheckHavePropertyByName<Tag>("Count").Should().BeTrue();
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class EntityTests
 
         var tag = Tag.Create(name, count);
 
-        Tag.CheckHavePropertyByName("NotHavedProperty").Should().BeFalse();
+        Tag.CheckHavePropertyByName<Tag>("NotHavedProperty").Should().BeFalse();
     }
 
     [Fact]

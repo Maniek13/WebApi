@@ -1,5 +1,7 @@
 ﻿using Abstractions.DbContexts;
 using Domain.Entities.App;
+using Domain.Entities.App.ValueObjects;
+using Domain.Entities.StackOverFlow.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.DbContexts.App;
@@ -26,6 +28,10 @@ public class AppDbContext : AbstractAppDbContext
 
         builder.Entity<RefreshToken>()
             .Property(el => el.Id)
+            .HasConversion(
+                el => el.Id,
+                value => new RefreshTokenId(value)
+            )
             .ValueGeneratedOnAdd()
             .HasColumnName("Id");
 

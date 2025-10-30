@@ -1,7 +1,5 @@
 Projekt oparty na DDD z rozdzieleniem warstw (Persistence, CQRS — osobne repozytoria, SaveAsync poza domeną). Struktura została celowo rozbudowana, by pokazać dobre praktyki architektoniczne, mimo że przy tej skali byłaby nieopłacalna w realnym wdrożeniu.  
 
-Model nie zawiera Value Objectów — ich zastosowanie byłoby zasadne pod kątem spójności i enkapsulacji, ale przy obecnym zakresie funkcjonalności ich implementacja byłaby nieproporcjonalnie pracochłonna.
-
 Podgląd api w platformie Azure:
 
 Fronted: 

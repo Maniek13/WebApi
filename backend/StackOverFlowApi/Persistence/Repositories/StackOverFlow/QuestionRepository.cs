@@ -18,7 +18,7 @@ public class QuestionRepository : IQuestionRepository
     {
         for (int i = 0; i < questions.Count; ++i)
         {
-            var question = await _dbContext.Questions.FirstOrDefaultAsync(el => el.QuestionId == questions[i].QuestionId);
+            var question = await _dbContext.Questions.FirstOrDefaultAsync(el => el.QuestionNumber == questions[i].QuestionNumber);
 
             if (question == null)
                 await _dbContext.Questions.AddAsync(questions[i]!, ct);

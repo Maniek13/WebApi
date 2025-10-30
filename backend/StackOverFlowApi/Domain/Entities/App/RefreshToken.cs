@@ -1,10 +1,12 @@
-﻿using Domain.Entities.App;
-using Shared.Entities;
+﻿using Domain.Entities.App.ValueObjects;
+using Shared.Domain;
 
 namespace Domain.Entities.App;
 
-public class RefreshToken : Entity<RefreshToken>
+public class RefreshToken : Entity<RefreshTokenId>
 {
+    public RefreshToken() : base() { }
+
     public string Token { get; set; } = Guid.NewGuid().ToString();
     public DateTime Expires { get; set; }
     public bool IsExpired => DateTime.UtcNow >= Expires;
