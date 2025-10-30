@@ -22,7 +22,6 @@ public class User  : Entity<UserId>
     public long CreatedAt { get; private set; }
     public ICollection<Question> Questions { get; private set; } = new List<Question>();
     public DateTime CreatedDate => DateTimeOffset.FromUnixTimeMilliseconds(CreatedAt).UtcDateTime;
-
     public static User Create(UserNumber userNumber, string dispalaName, long createdAt) =>
         new User(userNumber, dispalaName, createdAt);
 

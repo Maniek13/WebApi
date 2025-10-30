@@ -1,5 +1,7 @@
 ﻿using Abstractions.Repositories;
 using Domain.Entities.StackOverFlow;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Tag = Domain.Entities.StackOverFlow.Tag;
 
 namespace Infrastructure.Adapters;
@@ -9,7 +11,15 @@ public class Query
     [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public IQueryable<User> GetUsers(IUsersRepositoryRO userRepository) => userRepository.GetAll();
+    public IQueryable<User> GetUsers(IUsersRepositoryRO userRepository, int? minQuestionCount = null) 
+    {
+        var query = userRepository.GetAll().Include(u => u.Questions).AsQueryable();
+
+        if (minQuestionCount.HasValue)
+            query = query.Where(u => u.Questions.Count >= minQuestionCount.Value);
+
+        return query;
+    }
 
     [UsePaging(IncludeTotalCount = true, MaxPageSize = 100)]
     [UseProjection]

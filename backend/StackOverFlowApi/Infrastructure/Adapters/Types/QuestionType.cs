@@ -1,7 +1,5 @@
-﻿using Contracts.Dtos.StackOverFlow;
-using Domain.Entities.StackOverFlow;
+﻿using Domain.Entities.StackOverFlow;
 using Infrastructure.Adapters.Resolvers;
-using System.Diagnostics.CodeAnalysis;
 using Tag = Domain.Entities.StackOverFlow.Tag;
 
 namespace Infrastructure.Adapters.Types;
