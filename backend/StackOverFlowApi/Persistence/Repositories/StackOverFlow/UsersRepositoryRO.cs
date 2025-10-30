@@ -1,4 +1,4 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.Repositories.SOF;
 using Domain.Entities.StackOverFlow;
 using Persistence.Common;
 using Persistence.DbContexts.StackOverFlow;

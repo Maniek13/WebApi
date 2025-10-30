@@ -6,4 +6,5 @@ public class UserRoutes
     public const string Login = $"{BaseRoute}/Login";
     public const string Register = $"{BaseRoute}/Register";
     public const string Refresh = $"{BaseRoute}/Refresh";
+    public const string SetAddress = $"{BaseRoute}/SetAddress";
 }

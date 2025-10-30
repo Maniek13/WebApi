@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.StackOverFlow;
 
-namespace Abstractions.Repositories;
+namespace Abstractions.Repositories.SOF;
 
 public interface IUserRepository
 {

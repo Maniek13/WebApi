@@ -2,7 +2,7 @@
 using Abstractions.Caches;
 using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Repositories;
+using Abstractions.Repositories.SOF;
 using Application.Interfaces.StackOverFlow;
 using Domain.Dtos.StackOverFlow;
 using MapsterMapper;

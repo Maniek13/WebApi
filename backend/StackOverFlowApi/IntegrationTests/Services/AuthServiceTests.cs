@@ -57,7 +57,7 @@ public class AuthServiceTests
 
         string login = _random.Next(0, 1000000).ToString(), password = "Aa123456!";
 
-        await authService.CreateUserAsync(login, password);
+        await authService.CreateUserAsync(login, password, []);
 
         var user = appDbContext.Users.FirstOrDefault(el => el.UserName == login);
 

@@ -15,8 +15,13 @@ public class ApplicationUser : IdentityUser
         RefreshTokens = refreshTokens;
     }
 
-    public UserAddress? UserAddress { get; init; }
+    public UserAddress? UserAddress { get; private set; }
     public List<Messages> Messages { get; init; } = [];
     public List<RefreshToken> RefreshTokens { get; set; } = [];
+
+    public void UpdateAddress(UserAddress? userAddress)
+    {
+        UserAddress = userAddress;
+    }
 
 }

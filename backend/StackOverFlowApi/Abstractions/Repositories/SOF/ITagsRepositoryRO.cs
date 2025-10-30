@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.StackOverFlow;
 using Shared.Pagination;
 
-namespace Abstractions.Repositories;
+namespace Abstractions.Repositories.SOF;
 
 public interface ITagsRepositoryRO : IRepositoryROBase<Tag>
 {

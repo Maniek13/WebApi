@@ -31,6 +31,11 @@ public class AppDbContext : AbstractAppDbContext
                 uab.Property(el => el.Street)
                     .HasColumnName("Street")
                     .IsRequired(false);
+
+                uab.Property(el => el.ZipCode)
+                    .HasColumnName("ZipCode")
+                    .HasMaxLength(UserAddress.ZipCodeMaxLenght)
+                    .IsRequired(false);
             });
 
             b.OwnsMany(el => el.Messages, mb =>

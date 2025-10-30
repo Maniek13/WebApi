@@ -26,7 +26,7 @@ public class AuthService : IAuthService
         _config = config;
     }
 
-    public async Task CreateUserAsync(string login, string password, string role = "User")
+    public async Task CreateUserAsync(string login, string password, string[] role)
     {
         var user = new ApplicationUser { UserName = login};
         var result = await _userManager.CreateAsync(user, password);
@@ -37,10 +37,24 @@ public class AuthService : IAuthService
             else
                 throw new Exception("Unhandled error");
 
-        if (!await _roleManager.RoleExistsAsync(role))
-                await _roleManager.CreateAsync(new IdentityRole(role));
+        if(role.Length == 0)
+        {
+            if (!await _roleManager.RoleExistsAsync("User"))
+                await _roleManager.CreateAsync(new IdentityRole("User"));
 
-        await _userManager.AddToRoleAsync(user, role);
+            await _userManager.AddToRoleAsync(user, "User");
+
+            return;
+        }
+
+
+        for(int i = 0; i < role.Length; ++i)
+        {
+            if (!await _roleManager.RoleExistsAsync(role[i]))
+                await _roleManager.CreateAsync(new IdentityRole(role[i]));
+
+            await _userManager.AddToRoleAsync(user, role[i]);
+        }
     }
 
     public async Task<(string accesToken, string refreshToken)> RefreshTokenAsync(string refreshToken, string ipAddress)

@@ -1,6 +1,6 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Repositories;
+using Abstractions.Repositories.SOF;
 using Contracts.Dtos.StackOverFlow;
 using Domain.Entities.StackOverFlow;
 using MapsterMapper;

@@ -1,6 +1,6 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Repositories;
+using Abstractions.Repositories.SOF;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿using Abstractions.Repositories;
+﻿using Abstractions.Repositories.SOF;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Common;
