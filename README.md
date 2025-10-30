@@ -1,5 +1,6 @@
 Projekt oparty na DDD z rozdzieleniem warstw (Persistence, CQRS — osobne repozytoria, SaveAsync poza domeną). Struktura została celowo rozbudowana, by pokazać dobre praktyki architektoniczne, mimo że przy tej skali byłaby nieopłacalna w realnym wdrożeniu.  
-Projekty poza StackOverFlowApi nie zawierają Value Objectów — ich zastosowanie byłoby zasadne pod kątem spójności i enkapsulacji, ale przy obecnym zakresie funkcjonalności ich implementacja byłaby nieproporcjonalnie pracochłonna.
+
+Rozwiązania poza StackOverFlowApi nie zawierają Value Objectów — ich zastosowanie byłoby zasadne pod kątem spójności i enkapsulacji, ale przy obecnym zakresie funkcjonalności ich implementacja byłaby nieproporcjonalnie pracochłonna.
 
 Podgląd api w platformie Azure:
 
