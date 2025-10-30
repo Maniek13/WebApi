@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.StackOverFlow.EntityIds;
 
-public class QuestionId : EntityId<QuestionId, int>
+public sealed class QuestionId : EntityId<QuestionId, int>
 {
     public QuestionId(int value) : base(value)
     {

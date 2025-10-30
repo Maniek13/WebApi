@@ -1,9 +1,9 @@
 ﻿namespace Shared.Interfaces;
 
 public interface IValueObject<T> : IEquatable<T>
+    where T : IValueObject<T>
 {
-    IEnumerable<T?> GetEqualityComponents();
-    T? Value { get; }
-    int GetHashCode();
-    string ToString();
+    abstract IEnumerable<object?> GetEqualityComponents();
+    abstract int GetHashCode();
+    abstract string ToString();
 }

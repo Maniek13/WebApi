@@ -4,7 +4,7 @@ using Shared.Domain;
 
 namespace Domain.Entities.StackOverFlow;
 
-public class User  : Entity<UserId>
+public sealed class User  : Entity<UserId>
 {
     private User() : base()
     {

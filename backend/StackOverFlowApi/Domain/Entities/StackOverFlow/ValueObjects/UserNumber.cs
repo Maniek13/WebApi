@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.StackOverFlow.ValueObjects;
 
-public class UserNumber : ValueObject<long?>
+public sealed class UserNumber : SingleValueObject<long?>
 {
     public UserNumber(long? value) : base(value)
     {

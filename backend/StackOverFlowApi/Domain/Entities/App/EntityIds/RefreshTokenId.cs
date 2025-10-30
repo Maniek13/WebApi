@@ -1,6 +1,6 @@
 ﻿using Shared.Domain;
 
-namespace Domain.Entities.App.ValueObjects;
+namespace Domain.Entities.App.EntityIds;
 
 public class RefreshTokenId : EntityId<RefreshTokenId, int>
 {

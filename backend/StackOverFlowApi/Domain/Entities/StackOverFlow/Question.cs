@@ -4,7 +4,7 @@ using Shared.Domain;
 
 namespace Domain.Entities.StackOverFlow;
 
-public class Question : Entity<QuestionId>
+public sealed class Question : Entity<QuestionId>
 {
     private Question() : base() { }
     public Question(QuestionNumber questionNumber, UserNumber userNumber, string title, string[] tags, string link, long createDateTimeStamp) : base()

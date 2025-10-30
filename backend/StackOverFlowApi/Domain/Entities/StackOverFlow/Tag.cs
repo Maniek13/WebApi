@@ -3,7 +3,7 @@ using Shared.Domain;
 
 namespace Domain.Entities.StackOverFlow;
 
-public class Tag : Entity<TagId>
+public sealed class Tag : Entity<TagId>
 {
     private Tag() : base() { }
 

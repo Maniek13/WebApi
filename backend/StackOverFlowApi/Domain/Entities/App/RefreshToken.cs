@@ -1,4 +1,4 @@
-﻿using Domain.Entities.App.ValueObjects;
+﻿using Domain.Entities.App.EntityIds;
 using Shared.Domain;
 
 namespace Domain.Entities.App;
