@@ -15,7 +15,7 @@ public abstract class ValueObject<T> : IValueObject<T>
         => Equals(left, right);
     public static bool operator !=(ValueObject<T>? left, ValueObject<T>? right)
         => !Equals(left, right);
-    public override bool Equals(object? obj)  => obj is T other && Equals(other);
+    public override bool Equals(object? obj)  => obj == null ? false : obj.GetType() != GetType() ? false :  GetEqualityComponents().SequenceEqual(((ValueObject<T>)obj).GetEqualityComponents());
 
     public new string ToString() => Value?.ToString() ?? "";
     public override int GetHashCode() => HashCode.Combine(Value);

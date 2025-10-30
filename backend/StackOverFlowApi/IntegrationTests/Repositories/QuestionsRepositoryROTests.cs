@@ -18,7 +18,7 @@ public class QuestionsRepositoryROTests
     {
         Random random = new Random();
 
-        var connection = new SqliteConnection("Data Source=:memory:");
+        using var connection = new SqliteConnection("Data Source=:memory:");
         await connection.OpenAsync();
 
         var options = new DbContextOptionsBuilder<StackOverFlowDbContext>()
@@ -26,25 +26,31 @@ public class QuestionsRepositoryROTests
             .EnableSensitiveDataLogging()
             .Options;
 
+        StackOverFlowDbContextRO contextRO = new(new DbContextOptionsBuilder<StackOverFlowDbContextRO>()
+            .UseSqlite(connection)
+            .Options);
+
         using StackOverFlowDbContext context = new(options);
         context.Database.EnsureCreated();
 
-        var repository = new TagsRepository(context);
-
         List<Question> questions = [
-                Question.Create((QuestionNumber)1, UserNumber.CreateEmpty(), random.Next(0, 1000000000).ToString(), [], random.Next(0, 1000000000).ToString(), random.Next(0, 1000000000)),
-                Question.Create((QuestionNumber)1, (UserNumber)1,random.Next(0, 1000000000).ToString(), [], random.Next(0, 1000000000).ToString(), random.Next(0, 1000000000)),
+                Question.Create((QuestionNumber)random.Next(0, 10000000), UserNumber.CreateEmpty(), random.Next(0, 1000000000).ToString(), [], random.Next(0, 1000000000).ToString(), random.Next(0, 1000000000)),
+                Question.Create((QuestionNumber)random.Next(), (UserNumber)1,random.Next(0, 1000000000).ToString(), [], random.Next(0, 1000000000).ToString(), random.Next(0, 1000000000)),
             ];
 
+        await context.Users.AddAsync(User.Create(questions[1].UserNumber, "name", 12345));
         await context.Questions.AddRangeAsync(questions, CancellationToken.None);
-
         await context.SaveChangesAsync();
 
-        var dbQuestions = context.Questions;
 
-        dbQuestions.Should().HaveCount(questions.Count);
+
+        var repository = new QuestionsRepositoryRO(contextRO);
+
+        var questionsFromRepository = repository.GetAll().ToList();
+
+        questionsFromRepository.Should().HaveCount(questions.Count);
 
         for (int i = 0; i < questions.Count; ++i)
-            dbQuestions.Where(el => el.Id == questions[i].Id).First().Should().Be(questions[i]);
+            questionsFromRepository.Where(el => el.Id == questions[i].Id).First().Should().Be(questions[i]);
     }
 }
