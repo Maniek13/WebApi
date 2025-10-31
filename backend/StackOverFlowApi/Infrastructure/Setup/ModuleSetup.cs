@@ -14,6 +14,7 @@ using Infrastructure.Security.Identity;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
 using Infrastructure.Services.HostedServices;
+using Infrastructure.Telemetries;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -125,5 +126,7 @@ public class ModuleSetup : IModuleSetup
                     .AllowAnyHeader()
                     .AllowAnyMethod());
         });
+
+        builder.AddOpenTelemetryTelemetry("webapi", "1.0.0");
     }
 }

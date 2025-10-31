@@ -1,11 +1,9 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Repositories.Api;
 using Abstractions.Repositories.SOF;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.DbContexts.App;
@@ -21,13 +19,19 @@ public class ModuleSetup : IModuleSetup
     public void Setup(WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<StackOverFlowDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
 
         builder.Services.AddScoped<AbstractSOFDbContext>(s => s.GetRequiredService<StackOverFlowDbContext>());

@@ -1,15 +1,20 @@
 ﻿using Abstractions.Startup;
 using Hangfire;
+using Hangfire.Common;
+using Hangfire.Server;
 using Infrastructure.Filters;
 using Infrastructure.Hubs;
 using Infrastructure.Jobs;
 using Infrastructure.Loging;
 using Infrastructure.Midlewares;
+using Infrastructure.Telemetries;
+using Infrastructure.Telemetries.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Diagnostics;
 
 namespace Infrastructure.Startup;
 
@@ -17,6 +22,8 @@ public class ModuleStartup : IModuleStartup
 {
     public void Startup(WebApplication application, IConfiguration configuration)
     {
+        Configurator.AddFilters(application);
+
         application.UseCors("CorsPolice");
 
         application.UseMiddleware<ErrorLoggingMiddleware>();
@@ -39,15 +46,18 @@ public class ModuleStartup : IModuleStartup
 
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");
-
+       
    
 
-        application.UseHangfireDashboard("/dashbord", new DashboardOptions
+        application.UseHangfireDashboard("/dashboard", new DashboardOptions
         {
             Authorization = new[] { new AuthorizationFilter() }
         });
 
         ConfigureJobs.SetRecurngJobs();
+
+        application.UseMiddleware<FastEndpointOTELMidleware>();
+
     }
 }
 
