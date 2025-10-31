@@ -22,9 +22,27 @@ public static class Configurator
                 .ConfigureResource(resource => resource.AddService(serviceName, serviceVersion: serviceVersion))
                 .WithTracing(tracing =>
                 {
-                    tracing.AddAspNetCoreInstrumentation();
+                    tracing.AddAspNetCoreInstrumentation(options =>
+                    {
+                        options.Filter = (httpContext) =>
+                        {
+                            var path = httpContext.Request.Path.Value?.ToLowerInvariant() ?? "";
+                            return !path.StartsWith("/dashboard") && !path.StartsWith("/health") && !path.StartsWith("/metrics");
+                         
+                        };
+                    });
                     tracing.AddHttpClientInstrumentation();
                     tracing.AddSource("HangfireJobs");
+                    tracing.AddRabbitMQInstrumentation();
+                    tracing.AddEntityFrameworkCoreInstrumentation(options =>
+                    {
+                        options.Filter = (providerName, command) =>
+                        {
+                            var text = command.CommandText?.ToLowerInvariant() ?? "";
+                            return !text.Contains("hangfire") && !text.Contains("outbox") && !text.Contains("inbox");
+                        };
+                    });
+
 
                     tracing.AddOtlpExporter(otlpOptions =>
                     {

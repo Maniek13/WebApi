@@ -46,15 +46,17 @@ public class ModuleStartup : IModuleStartup
 
         application.MapHub<ChatHub>("/chat");
         application.MapHub<LogsHub>("/logs");
-
+       
    
 
-        application.UseHangfireDashboard("/dashbord", new DashboardOptions
+        application.UseHangfireDashboard("/dashboard", new DashboardOptions
         {
             Authorization = new[] { new AuthorizationFilter() }
         });
 
         ConfigureJobs.SetRecurngJobs();
+
+        application.UseMiddleware<FastEndpointOTELMidleware>();
 
     }
 }

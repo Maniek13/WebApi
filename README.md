@@ -36,9 +36,9 @@ http://4.210.65.98:15672/
 
 Hangfire:
 
-http://4.210.65.98:5000/dashbord
+http://4.210.65.98:5000/dashboard
 
-http://4.210.65.98:5100/dashbord
+http://4.210.65.98:5100/dashboard
 
 
 Applikacje można uruchomić poprzez docker conpose za pomocą polecenia: docker-compose up
@@ -104,9 +104,9 @@ Websokety:
 
 Zadania hangfire:
 
-WebApi Hangfire dashbord http://localhost:5000/dashbord
+WebApi Hangfire dashbord http://localhost:5000/dashboard
 
-ETL Hangfire dashbord http://localhost:5100/dashbord
+ETL Hangfire dashbord http://localhost:5100/dashboard
 
 Rabbit:
 
