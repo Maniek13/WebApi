@@ -8,8 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
+using Persistence.Interceptors;
 using Persistence.Repositories.StackOverFlow;
 using Persistence.StartupTasks;
 using Persistence.UnitsOfWorks;
@@ -21,13 +23,22 @@ public class ModuleSetup : IModuleSetup
     public void Setup(WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<StackOverFlowDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.AddInterceptors(new OpenTelemetryDbInterceptor());
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.AddInterceptors(new OpenTelemetryDbInterceptor());
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("Default")), ServiceLifetime.Scoped);
+        {
+            options.AddInterceptors(new OpenTelemetryDbInterceptor());
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Scoped);
 
 
         builder.Services.AddScoped<AbstractSOFDbContext>(s => s.GetRequiredService<StackOverFlowDbContext>());
