@@ -108,6 +108,10 @@ WebApi Hangfire dashbord http://localhost:5000/dashboard
 
 ETL Hangfire dashbord http://localhost:5100/dashboard
 
+Graphana:
+
+http://localhost:3001
+
 Rabbit:
 
 http://localhost:15672
