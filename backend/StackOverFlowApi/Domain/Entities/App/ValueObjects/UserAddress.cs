@@ -15,7 +15,7 @@ public class UserAddress : ValueObject<UserAddress>
         City = city;
         Street = street;
 
-        if(!string.IsNullOrWhiteSpace(zipCode) || (zipCode.Length == ZipCodeMaxLenght && zipCode.IndexOf('-') == 2)) 
+        if(!string.IsNullOrWhiteSpace(zipCode) && zipCode!.Length != ZipCodeMaxLenght && zipCode.IndexOf('-') != 2) 
             throw new ArgumentException("Zip code must be empty or in format 00-000");
             
         ZipCode = zipCode;
