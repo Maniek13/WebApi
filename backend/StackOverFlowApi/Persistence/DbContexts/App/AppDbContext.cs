@@ -2,8 +2,6 @@
 using Domain.Entities.App;
 using Domain.Entities.App.EntityIds;
 using Domain.Entities.App.ValueObjects;
-using Domain.Entities.StackOverFlow.ValueObjects;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.DbContexts.App;

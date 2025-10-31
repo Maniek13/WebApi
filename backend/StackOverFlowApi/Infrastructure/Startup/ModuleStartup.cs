@@ -7,6 +7,8 @@ using Infrastructure.Hubs;
 using Infrastructure.Jobs;
 using Infrastructure.Loging;
 using Infrastructure.Midlewares;
+using Infrastructure.Telemetries;
+using Infrastructure.Telemetries.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
@@ -15,30 +17,12 @@ using Serilog;
 using System.Diagnostics;
 
 namespace Infrastructure.Startup;
-public class OpenTelemetryHangfireFilter : JobFilterAttribute, IServerFilter
-{
-    private static readonly ActivitySource MyActivitySource = new ActivitySource("HangfireJobs");
 
-    public void OnPerforming(PerformingContext context)
-    {
-        var activity = MyActivitySource.StartActivity(context.BackgroundJob.Job.Type.Name);
-        context.Items["ot_activity"] = activity;
-        activity?.SetTag("job.id", context.BackgroundJob.Id);
-    }
-
-    public void OnPerformed(PerformedContext context)
-    {
-        if (context.Items.TryGetValue("ot_activity", out var obj) && obj is Activity activity)
-        {
-            activity?.Stop();
-        }
-    }
-}
 public class ModuleStartup : IModuleStartup
 {
     public void Startup(WebApplication application, IConfiguration configuration)
     {
-        GlobalJobFilters.Filters.Add(new OpenTelemetryHangfireFilter());
+        Configurator.AddFilters(application);
 
         application.UseCors("CorsPolice");
 

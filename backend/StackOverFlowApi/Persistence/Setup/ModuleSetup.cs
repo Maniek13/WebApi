@@ -1,17 +1,13 @@
 ﻿using Abstractions.DbContexts;
 using Abstractions.Interfaces;
-using Abstractions.Repositories.Api;
 using Abstractions.Repositories.SOF;
 using Abstractions.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Persistence.DbContexts.App;
 using Persistence.DbContexts.StackOverFlow;
-using Persistence.Interceptors;
 using Persistence.Repositories.StackOverFlow;
 using Persistence.StartupTasks;
 using Persistence.UnitsOfWorks;
@@ -24,19 +20,16 @@ public class ModuleSetup : IModuleSetup
     {
         builder.Services.AddDbContext<StackOverFlowDbContext>(options =>
         {
-            options.AddInterceptors(new OpenTelemetryDbInterceptor());
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<StackOverFlowDbContextRO>(options =>
         {
-            options.AddInterceptors(new OpenTelemetryDbInterceptor());
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         }, ServiceLifetime.Scoped);
 
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            options.AddInterceptors(new OpenTelemetryDbInterceptor());
             options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         }, ServiceLifetime.Scoped);
 
