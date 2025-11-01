@@ -13,7 +13,8 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
             .Matches(@"\d").WithMessage("Password must contain at least one number.")
-            .Matches(@"[^a-zA-Z]").WithMessage("Password must contain at least one non-alphabetic character.")
+            .Matches(@"[A-Z]").WithMessage("Password must contain at least one capital letter.")
+            .Matches(@"[^a-zA-Z0-9]").WithMessage("Password must contain at least one non-alphabetic character.")
             .MinimumLength(6).WithMessage("Password must be at least 6 characters.");
 
     }

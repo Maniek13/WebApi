@@ -27,6 +27,8 @@ public class ModuleStartup : IModuleStartup
         application.UseCors("CorsPolice");
 
         application.UseMiddleware<ErrorLoggingMiddleware>();
+        application.UseMiddleware<FastEndpointOTELMidleware>();
+        application.UseMiddleware<GlobalExceptionMiddleware>();
 
         application.UseRouting();
         application.UseAuthentication();
@@ -55,9 +57,6 @@ public class ModuleStartup : IModuleStartup
         });
 
         ConfigureJobs.SetRecurngJobs();
-
-        application.UseMiddleware<FastEndpointOTELMidleware>();
-
     }
 }
 

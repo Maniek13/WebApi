@@ -2,6 +2,7 @@
 using Domain.Entities.App.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DbContexts.App;
+using Shared.Exceptions;
 
 namespace Persistence.Repositories.Api;
 
@@ -16,7 +17,7 @@ public class UserRepository : IUserRepository
     public async Task SetUserAddress(string userId, UserAddress address, CancellationToken ct)
     {
         if (!(await _dbContext.Users.AnyAsync(el => el.Id == userId, ct)))
-            throw new ArgumentOutOfRangeException("User doesn't exist");
+            throw new ValidationExceptions("User doesn't exist");
 
         var user = await _dbContext.Users.FirstAsync(el => el.Id == userId, ct);
 
@@ -26,7 +27,7 @@ public class UserRepository : IUserRepository
     public async Task AddMessage(string userId, UserMessage message, CancellationToken ct)
     {
         if (!(await _dbContext.Users.AnyAsync(el => el.Id == userId, ct)))
-            throw new ArgumentOutOfRangeException("User doesn't exist");
+            throw new ValidationExceptions("User doesn't exist");
 
         var user = await _dbContext.Users.FirstAsync(el => el.Id == userId, ct);
 

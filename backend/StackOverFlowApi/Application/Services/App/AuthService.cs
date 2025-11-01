@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Exceptions;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -33,7 +34,7 @@ public class AuthService : IAuthService
 
         if (!result.Succeeded)
             if (result.Errors.Any())
-                throw new Exception(result.Errors.FirstOrDefault()?.Description);
+                throw new ValidationExceptions(result.Errors.First().Description);
             else
                 throw new Exception("Unhandled error");
 
@@ -89,10 +90,10 @@ public class AuthService : IAuthService
         var user = await _userManager.FindByNameAsync(login);
 
         if (user == null)
-            throw new ArgumentException("User does not exist");
+            throw new ValidationExceptions("User does not exist");
 
         if (!await _userManager.CheckPasswordAsync(user, password))
-            throw new ArgumentException("Wrong password");
+            throw new ValidationExceptions("Wrong password");
 
         var refreshToken = GenerateRefreshToken(ipAddress);
 

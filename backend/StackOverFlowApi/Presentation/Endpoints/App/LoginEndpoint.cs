@@ -24,14 +24,8 @@ internal class LoginEndpoint : Endpoint<LoginRequest, TokenResponse>
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
     {
         (string accesToken, string refreshToken) tokens = new();
-        try
-        {
-            tokens = await _authService.LoginAsync(req.Name, req.Password, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
-        }
-        catch (ArgumentException ex)
-        {
-            ThrowError(ex.Message, 400);
-        }
+
+        tokens = await _authService.LoginAsync(req.Name, req.Password, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
 
         await Send.OkAsync(new TokenResponse(tokens.accesToken, tokens.refreshToken), ct);
     }

@@ -10,6 +10,7 @@ using Infrastructure.Adapters.Types;
 using Infrastructure.Api;
 using Infrastructure.Api.Options;
 using Infrastructure.Middleware;
+using Infrastructure.Midlewares;
 using Infrastructure.Security.Identity;
 using Infrastructure.Services.CacheServices;
 using Infrastructure.Services.DataServices;
@@ -37,6 +38,7 @@ public class ModuleSetup : IModuleSetup
         builder.Services.Configure<StackOverFlowOptions>(
             builder.Configuration.GetSection("ExternalApies:StackOverFlow"));
 
+        builder.Services.AddTransient<GlobalExceptionMiddleware>();
         builder.Services.AddSingleton<ICacheVersionService, CacheVersionService>();
         builder.Services.AddHttpClient<IStackOverFlowApiClient, StackOverFlowApiClient>();
         builder.Services.AddScoped<IStackOverFlowDataService, StackOverFlowDataService>();

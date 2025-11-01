@@ -24,14 +24,8 @@ internal class RefreshTokenEndpoint : Endpoint<RefreshTokenRequest, TokenRespons
     public override async Task HandleAsync(RefreshTokenRequest req, CancellationToken ct)
     {
         (string accesToken, string refreshToken) tokens = new();
-        try
-        {
-            tokens = await _authService.RefreshTokenAsync(req.RefreshToken, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            ThrowError(ex.Message, 401);
-        }
+
+        tokens = await _authService.RefreshTokenAsync(req.RefreshToken, HttpContext.Connection.RemoteIpAddress?.ToString() ?? "");
 
         await Send.OkAsync(new TokenResponse(tokens.accesToken, tokens.refreshToken), ct);
     }
