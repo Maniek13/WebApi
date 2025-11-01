@@ -3,7 +3,6 @@ using FastEndpoints;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace Presentation.Setup;
 
 public class ModuleSetup : IModuleSetup
@@ -11,7 +10,7 @@ public class ModuleSetup : IModuleSetup
     public void Setup(WebApplicationBuilder builder)
     {
         builder.Services
-            .AddFastEndpoints()
+            .AddFastEndpoints(o => o.IncludeAbstractValidators = true)
             .SwaggerDocument(o =>
             {
                 o.DocumentSettings = s =>

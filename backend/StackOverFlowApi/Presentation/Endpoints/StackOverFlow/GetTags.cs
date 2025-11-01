@@ -33,7 +33,7 @@ internal class GetTags : Endpoint<GetTagsRequest, PagedList<TagDto>>
         if(req.Page <= 0)
             ThrowError($"Page must be greater then 0", 400);
         if (req.PageSize <= 0)
-            ThrowError($"PageSize must be greater then 0", 400);
+            ThrowError($"Page size must be greater then 0", 400);
 
         if (!Tag.CheckHavePropertyByName<Tag>(req.SortBy))
             ThrowError($"Property {req.SortBy} doesn't exist in type Tag", 400);
