@@ -56,7 +56,7 @@ public static class Instalation
 
     public static void InfrastructoreStartup(this WebApplication app)
     {
-        app.UseHangfireDashboard("/dashbord", new DashboardOptions
+        app.UseHangfireDashboard("/dashboard", new DashboardOptions
         {
             Authorization = new[] { new AuthorizationFilter() }
         });
