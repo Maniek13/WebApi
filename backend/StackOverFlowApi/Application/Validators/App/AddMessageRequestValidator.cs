@@ -8,6 +8,6 @@ public class AddMessageRequestValidator : AbstractValidator<AddMessageRequest>
     public AddMessageRequestValidator()
     {
         RuleFor(x => x.Message)
-            .MaximumLength(200);
+            .MaximumLength(200).WithMessage("Message max lenght is 200");
     }
 }
