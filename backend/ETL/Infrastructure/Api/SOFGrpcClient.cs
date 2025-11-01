@@ -28,7 +28,11 @@ public class SOFGrpcClient : ISOFGrpcClient
 
         var client = new Users.UsersClient(channel);
 
-        return (await client.GetUsersAsync(new GetUsersRequest())).Users.Select(el => new UserDto(el.UserId, el.DisplayName, el.CreationDate)).ToArray();
+        var users =  (await client.GetUsersAsync(new GetUsersRequest(), cancellationToken: ct)).Users.Select(el => new UserDto(el.UserId, el.DisplayName, el.CreationDate)).ToArray();
+
+        return [.. users
+            .GroupBy(x => x.UserId)
+            .Select(g => g.Last())];
     }
 
     public async Task<UserDto> GetUserAsync(long userId, CancellationToken ct)

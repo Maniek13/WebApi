@@ -50,9 +50,8 @@ public class StackOverFlowApiClient : IStackOverFlowApiClient
             questions.AddRange(listDto!);
         }
 
-        return questions
+        return [.. questions
             .GroupBy(x => x.QuestionId)
-            .Select(g => g.Last())
-            .ToArray();
+            .Select(g => g.Last())];
     }
 }
