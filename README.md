@@ -1,46 +1,6 @@
 Projekt oparty na DDD z rozdzieleniem warstw (Persistence, CQRS — osobne repozytoria, SaveAsync poza domeną). Struktura została celowo rozbudowana, by pokazać dobre praktyki architektoniczne, mimo że przy tej skali byłaby nieopłacalna w realnym wdrożeniu. 
 
 
-Podgląd api w platformie Azure:
-
-Fronted: 
-
-http://4.210.65.98:3000/
-
-
-Endpointy:
-
-http://4.210.65.98:5000/StackOverFlow/Tags 
-
-http://4.210.65.98:5000/StackOverFlow/Tags/RefreshData
-
-http://4.210.65.98:5000/App/Users/Register
-
-http://4.210.65.98:5000/App/Users/Login
-
-
-GraphQl:
-http://4.210.65.98:5000/graphql
-
-Websokety:
-
-ws://4.210.65.98:5000/chat 
-
-ws://4.210.65.98:5000/logs
-
-
-RabbitMq: 
-
-http://4.210.65.98:15672/
-
-
-Hangfire:
-
-http://4.210.65.98:5000/dashboard
-
-http://4.210.65.98:5100/dashboard
-
-
 Applikacje można uruchomić poprzez docker conpose za pomocą polecenia: docker-compose up
 
 __________________________________________________________________________________________________________________________
