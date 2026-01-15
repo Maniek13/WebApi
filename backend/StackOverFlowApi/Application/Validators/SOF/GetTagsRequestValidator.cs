@@ -9,7 +9,7 @@ public class GetTagsRequestValidator : AbstractValidator<GetTagsRequest>
     public GetTagsRequestValidator()
     {
         RuleFor(x => x.SortBy)
-            .Must(el => !Tag.CheckHavePropertyByName<Tag>(el))
+            .Must(el => Tag.CheckHavePropertyByName<Tag>(el))
             .WithMessage(el => $"Property {el} doesn't exist in type Tag");
 
         RuleFor(x => x.Page)

@@ -8,6 +8,6 @@ public class TagType : ObjectType<Tag>
     {
         descriptor.Field(u => u.Name).Type<NonNullType<StringType>>();
         descriptor.Field(u => u.Count).Type<StringType>();
-        descriptor.Field(u => u.Participation).Type<DateTimeType>();
+        descriptor.Field(u => u.Participation).Type<FloatType>();
     }
 }

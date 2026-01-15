@@ -84,7 +84,7 @@ Fronted:
 http://localhost:3000
 
 GraphQl:
-http://localhost/graphql/
+http://localhost:5000/graphql/
  
 Przykłady zapytań:
 
